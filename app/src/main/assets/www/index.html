@@ -180,15 +180,63 @@ canvas#cv { position: absolute; inset: 0; width: 100%; height: 100%; display: bl
 .toast p { margin: 0; flex: 1; }
 .drop { position: absolute; inset: 10px; z-index: 22; border: 2px dashed var(--accent); border-radius: 14px; display: grid; place-items: center; background: var(--accent-soft); font-weight: 600; font-size: 16px; pointer-events: none; }
 
+
+/* secondary strip above toolbar */
+.strip {
+  position: absolute; left: 50%; transform: translateX(-50%); bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+  display: flex; gap: 2px; padding: 4px; background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; box-shadow: var(--shadow); z-index: 6;
+  max-width: calc(100% - 16px); overflow-x: auto; scrollbar-width: none;
+}
+.strip::-webkit-scrollbar { display: none; }
+.sbtn {
+  appearance: none; border: 0; background: none; color: var(--ink); cursor: pointer; border-radius: 8px; flex: none;
+  min-width: 56px; height: 44px; padding: 0 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  font: 500 11px/1 var(--f-ui);
+}
+.sbtn svg { width: 20px; height: 20px; }
+.sbtn:hover { background: var(--panel-2); }
+.sbtn[aria-pressed="true"] { background: var(--accent-soft); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--accent); }
+.sbtn .dot { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 2px rgba(127,127,127,.35); }
+.strip .sep { width: 1px; background: var(--rule); margin: 6px 2px; flex: none; }
+.pop {
+  position: absolute; z-index: 9; left: 50%; transform: translateX(-50%); bottom: calc(136px + env(safe-area-inset-bottom, 0px));
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; box-shadow: var(--shadow); padding: 8px; width: min(300px, calc(100% - 24px));
+}
+.pop h4 { margin: 4px 6px 6px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.pop label { display: flex; align-items: center; gap: 10px; padding: 8px 6px; border-radius: 6px; font-size: 14px; cursor: pointer; }
+.pop label:hover { background: var(--panel-2); }
+.pop input { width: 18px; height: 18px; accent-color: var(--accent); }
+.pop .sym { width: 18px; display: grid; place-items: center; color: var(--accent); }
+
+/* dialog */
+.dlg-back { position: absolute; inset: 0; z-index: 30; background: rgba(10, 12, 14, .45); display: grid; place-items: center; padding: 16px; }
+.dlg { background: var(--panel); color: var(--ink); border-radius: 14px; box-shadow: var(--shadow); width: min(440px, 100%); max-height: calc(100% - 24px); overflow: auto; padding: 16px; }
+.dlg h3 { margin: 0 0 10px; font-size: 17px; font-weight: 650; font-stretch: 105%; }
+.dlg p { margin: 0 0 10px; color: var(--muted); font-size: 13.5px; line-height: 1.45; }
+.dlg textarea { width: 100%; min-height: 96px; resize: vertical; border: 1px solid var(--rule); background: var(--panel-2); color: var(--ink); border-radius: 8px; padding: 10px; font: 15px/1.4 var(--f-ui); box-sizing: border-box; }
+.dlg img { display: block; width: 100%; max-height: 52vh; object-fit: contain; border-radius: 8px; background: var(--panel-2); margin-bottom: 10px; }
+.dlg .acts { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; flex-wrap: wrap; }
+.dlg .btn.danger { color: var(--danger); }
+.dlg .btn.go { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.dlg .opt { display: flex; gap: 10px; align-items: flex-start; padding: 10px; border: 1px solid var(--rule); border-radius: 10px; margin-bottom: 8px; cursor: pointer; }
+.dlg .opt input { margin-top: 2px; accent-color: var(--accent); width: 18px; height: 18px; }
+.dlg .opt b { display: block; font-size: 14px; }
+.dlg .opt span { color: var(--muted); font-size: 12.5px; }
+.lyr.cur { background: var(--accent-soft); }
+.lyr.click { cursor: pointer; }
+.lyr .tag { font: 11px var(--f-num); color: var(--muted); }
+
 @media (max-width: 640px) {
   .sheet { top: auto; width: 100%; height: min(72%, 560px); border-left: 0; border-top: 1px solid var(--rule); border-radius: 16px 16px 0 0; }
-  .tool { width: 62px; }
+  .tool { width: 60px; }
+  .tools { gap: 2px; }
   .mark b { display: none; }
   .file { padding-left: 10px; }
   .btn .lbl-long { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .spin { animation-duration: 2.4s; } }
 </style>
+
 
 <div class="app">
   <div class="bar">
@@ -204,11 +252,12 @@ canvas#cv { position: absolute; inset: 0; width: 100%; height: 100%; display: bl
       </button>
       <div class="menu" id="menu" hidden>
         <button id="pickFile"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 3v9M5 8l4 4 4-4M3 15h12" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span>Dosya seç…<span class="sub">.dwg · .dxf</span></span></button>
-        <button id="openSample"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="3" y="3" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 9h7v6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span>Örnek daire planı<span class="sub">2+1 · DXF</span></span></button>
+        <button id="openSample"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="3" y="3" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 9h7v6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span>Örnek daire planı<span class="sub">2+1 · DXF · A3 pafta</span></span></button>
         <div id="recentWrap" hidden><hr><div class="ttl">Son açılanlar</div><div id="recent"></div></div>
         <hr><div class="note">Dosyalar yalnızca bu cihazda açılır, hiçbir yere yüklenmez. DWG okuma: libredwg-web (GPL-3.0).</div>
       </div>
       <input type="file" id="fileIn" accept=".dwg,.dxf,application/acad,image/vnd.dwg,image/vnd.dxf" hidden>
+      <input type="file" id="photoIn" accept="image/*" capture="environment" hidden>
     </div>
   </div>
 
@@ -231,13 +280,40 @@ canvas#cv { position: absolute; inset: 0; width: 100%; height: 100%; display: bl
     <div class="hud scale" id="scale"><span id="scaleLbl"></span><div class="bar-g" id="scaleBar"></div></div>
     <div class="hud unit"><button class="chip" id="unitChip" title="Çizim birimini değiştir">1 birim = mm</button></div>
 
+    <div class="strip" id="stripM" hidden role="toolbar" aria-label="Ölçüm araçları">
+      <button class="sbtn" data-mode="dist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18 18 4M4 18v-4M4 18h4M18 4h-4M18 4v4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Mesafe</button>
+      <button class="sbtn" data-mode="area"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7 14 4l6 8-6 8-10-3z" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Alan</button>
+      <button class="sbtn" data-mode="angle"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20 18 5M4 20h16M11 20a7 7 0 0 0-2.2-5.1" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Açı</button>
+      <button class="sbtn" data-mode="radius"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 12l5.7-5.7" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg>Yarıçap</button>
+      <span class="sep"></span>
+      <button class="sbtn" id="sSnap" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5" stroke="currentColor" stroke-width="1.6"/></svg>Yakalama</button>
+    </div>
+
+    <div class="strip" id="stripK" hidden role="toolbar" aria-label="İşaretleme araçları">
+      <button class="sbtn" data-mode="m-cloud"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8a2 2 0 0 1 3.5-1.3A2 2 0 0 1 12 6a2 2 0 0 1 3.5.7A2 2 0 0 1 19 8a2 2 0 0 1 0 4 2 2 0 0 1 0 4 2 2 0 0 1-3.5 1.3A2 2 0 0 1 12 18a2 2 0 0 1-3.5-.7A2 2 0 0 1 5 16a2 2 0 0 1 0-4 2 2 0 0 1 0-4z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Bulut</button>
+      <button class="sbtn" data-mode="m-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M19 5h-7M19 5v7" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>Ok</button>
+      <button class="sbtn" data-mode="m-text"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M12 6v13M9 19h6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>Not</button>
+      <button class="sbtn" data-mode="m-pen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4L16 5l3 3L8 19z M14 7l3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Kalem</button>
+      <button class="sbtn" data-mode="m-photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8h4l2-3h6l2 3h4v11H3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Fotoğraf</button>
+      <span class="sep"></span>
+      <button class="sbtn" id="kColor" aria-label="Renk"><span class="dot" id="kDot"></span>Renk</button>
+      <button class="sbtn" id="kPdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z M15 3v4h4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 13h7M9 16.5h7" stroke="currentColor" stroke-width="1.6"/></svg>PDF</button>
+    </div>
+
+    <div class="pop" id="snapPop" hidden>
+      <h4>Yakalama noktaları</h4>
+      <div id="snapList"></div>
+    </div>
+
     <div class="tools" role="toolbar" aria-label="Araçlar">
       <button class="tool" id="tLayers" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 8 12 13l9.5-5z M2.5 12 12 17l9.5-5 M2.5 16 12 21l9.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Katmanlar</button>
-      <button class="tool" id="tDist" aria-pressed="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17 17 3l4 4L7 21z M7 13l2 2 M10 10l2 2 M13 7l2 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Mesafe</button>
-      <button class="tool" id="tArea" aria-pressed="false">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6 15 3l5 9-6 9-10-4z" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Alan</button>
+      <button class="tool" id="tMeasure" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17 17 3l4 4L7 21z M7 13l2 2 M10 10l2 2 M13 7l2 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Ölç</button>
+      <button class="tool" id="tMark" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4L16 5l3 3L8 19z M14 7l3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>İşaretle</button>
+      <button class="tool" id="tSheets" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M15 19v-5h6" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="6" y="8" width="7" height="6" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>Pafta</button>
       <button class="tool" id="tFit" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5 M15 4h5v5 M20 15v5h-5 M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="8.5" y="8.5" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Sığdır</button>
     </div>
@@ -249,9 +325,16 @@ canvas#cv { position: absolute; inset: 0; width: 100%; height: 100%; display: bl
       <div class="foot" id="lyrFoot" hidden></div>
     </aside>
 
+    <aside class="sheet" id="spaces" hidden aria-label="Paftalar">
+      <header><h2>Paftalar</h2><span class="count" id="spCount"></span><button class="x" id="spacesX" aria-label="Kapat"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6"/></svg></button></header>
+      <div class="lyrs" id="spList"></div>
+      <div class="foot">Paftalarda çizim, pafta görünüm pencereleri (viewport) içinden gösterilir. Ölçüm için Model görünümünü kullan.</div>
+    </aside>
+
     <div class="busy" id="busy" hidden><div class="box"><div class="spin"></div><div><b id="busyT">Açılıyor…</b><span id="busyS"></span></div></div></div>
     <div class="toast" id="toast" hidden><p id="toastT"></p><button class="x" id="toastX" aria-label="Kapat"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6"/></svg></button></div>
     <div class="drop" id="drop" hidden>Bırak, açayım</div>
+    <div class="dlg-back" id="dlg" hidden><div class="dlg" role="dialog" aria-modal="true"><h3 id="dlgT"></h3><div id="dlgB"></div><div class="acts" id="dlgA"></div></div></div>
   </div>
 </div>
 
@@ -746,7 +829,7 @@ $SKPOLY
   9
 $TDCREATE
  40
-2461333.9111574073
+2461333.9707638887
   9
 $TDUCREATE
  40
@@ -754,7 +837,7 @@ $TDUCREATE
   9
 $TDUPDATE
  40
-2461333.9111574073
+2461333.9707638887
   9
 $TDUUPDATE
  40
@@ -806,7 +889,7 @@ $SPLINESEGS
   9
 $HANDSEED
   5
-213
+22A
   9
 $SURFTAB1
  70
@@ -1186,11 +1269,11 @@ $PSTYLEMODE
   9
 $FINGERPRINTGUID
   2
-{B3FC8CD7-9E1F-4F8A-B183-A88A52A9EEEE}
+{E89B5708-2D70-4D7D-A344-3E741ABDCFBC}
   9
 $VERSIONGUID
   2
-{99112A16-BBF9-4B00-A8F0-9A94903E6E06}
+{25F719C4-4EF9-48DF-95F1-0D0BACDE5E41}
   9
 $EXTNAMES
 290
@@ -1580,9 +1663,9 @@ ISM
   0
 CLASS
   1
-ACDBPLACEHOLDER
+LAYOUT
   2
-AcDbPlaceHolder
+AcDbLayout
   3
 ObjectDBX Classes
  90
@@ -1596,9 +1679,9 @@ ObjectDBX Classes
   0
 CLASS
   1
-LAYOUT
+ACDBPLACEHOLDER
   2
-AcDbLayout
+AcDbPlaceHolder
   3
 ObjectDBX Classes
  90
@@ -2490,7 +2573,7 @@ LAYER
 100
 AcDbSymbolTable
  70
-12
+13
   0
 LAYER
   5
@@ -2773,6 +2856,30 @@ ZEMIN
 0
  62
 9
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+215
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+PAFTA
+ 70
+0
+ 62
+7
   6
 Continuous
 370
@@ -3582,7 +3689,7 @@ ACAD
   0
 APPID
   5
-210
+227
 330
 3
 100
@@ -3596,7 +3703,7 @@ HATCHBACKGROUNDCOLOR
   0
 APPID
   5
-211
+228
 330
 3
 100
@@ -5298,7 +5405,7 @@ BLOCK_RECORD
 100
 AcDbSymbolTable
  70
-27
+28
   0
 BLOCK_RECORD
   5
@@ -5833,6 +5940,26 @@ AcDbBlockTableRecord
 *D13
 340
 0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+210
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*Paper_Space0
+340
+213
  70
 0
 280
@@ -10923,6 +11050,784 @@ ENDBLK
 202
 330
 200
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+211
+330
+210
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*Paper_Space0
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*Paper_Space0
+  1
+
+  0
+VIEWPORT
+  5
+214
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+VIEWPORTS
+100
+AcDbViewport
+ 10
+210.0
+ 20
+148.5
+ 30
+0.0
+ 40
+462.00000000000006
+ 41
+326.70000000000005
+ 68
+1
+ 69
+1
+ 12
+210.0
+ 22
+148.5
+ 13
+0.0
+ 23
+0.0
+ 14
+10.0
+ 24
+10.0
+ 15
+10.0
+ 25
+10.0
+ 16
+0.0
+ 26
+0.0
+ 36
+1.0
+ 17
+0.0
+ 27
+0.0
+ 37
+0.0
+ 42
+50.0
+ 43
+0.0
+ 44
+0.0
+ 45
+326.70000000000005
+ 50
+0.0
+ 51
+0.0
+ 72
+100
+ 90
+557088
+  1
+
+281
+0
+ 71
+0
+ 74
+0
+110
+0.0
+120
+0.0
+130
+0.0
+111
+1.0
+121
+0.0
+131
+0.0
+112
+0.0
+122
+1.0
+132
+0.0
+ 79
+0
+146
+0.0
+282
+0
+  0
+LWPOLYLINE
+  5
+216
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+10.0
+ 20
+10.0
+ 10
+410.0
+ 20
+10.0
+ 10
+410.0
+ 20
+287.0
+ 10
+10.0
+ 20
+287.0
+  0
+LWPOLYLINE
+  5
+217
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+320.0
+ 20
+10.0
+ 10
+410.0
+ 20
+10.0
+ 10
+410.0
+ 20
+287.0
+ 10
+320.0
+ 20
+287.0
+  0
+LINE
+  5
+218
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+100
+AcDbLine
+ 10
+320.0
+ 20
+60.0
+ 30
+0.0
+ 11
+410.0
+ 21
+60.0
+ 31
+0.0
+  0
+LINE
+  5
+219
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+100
+AcDbLine
+ 10
+320.0
+ 20
+90.0
+ 30
+0.0
+ 11
+410.0
+ 21
+90.0
+ 31
+0.0
+  0
+LINE
+  5
+21A
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+100
+AcDbLine
+ 10
+320.0
+ 20
+120.0
+ 30
+0.0
+ 11
+410.0
+ 21
+120.0
+ 31
+0.0
+  0
+LINE
+  5
+21B
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+100
+AcDbLine
+ 10
+320.0
+ 20
+150.0
+ 30
+0.0
+ 11
+410.0
+ 21
+150.0
+ 31
+0.0
+  0
+VIEWPORT
+  5
+21C
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+Defpoints
+100
+AcDbViewport
+ 10
+165.0
+ 20
+148.5
+ 30
+0.0
+ 40
+300.0
+ 41
+267.0
+ 68
+2
+ 69
+3
+ 12
+5500.0
+ 22
+4000.0
+ 13
+0.0
+ 23
+0.0
+ 14
+10.0
+ 24
+10.0
+ 15
+10.0
+ 25
+10.0
+ 16
+0.0
+ 26
+0.0
+ 36
+1.0
+ 17
+0.0
+ 27
+0.0
+ 37
+0.0
+ 42
+50.0
+ 43
+0.0
+ 44
+0.0
+ 45
+20025.0
+ 50
+0.0
+ 51
+0.0
+ 72
+100
+ 90
+0
+  1
+
+281
+0
+ 71
+0
+ 74
+0
+110
+0.0
+120
+0.0
+130
+0.0
+111
+1.0
+121
+0.0
+131
+0.0
+112
+0.0
+122
+1.0
+132
+0.0
+ 79
+0
+146
+0.0
+282
+0
+  0
+TEXT
+  5
+21D
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+ 62
+8
+100
+AcDbText
+ 10
+324.0
+ 20
+144.0
+ 30
+0.0
+ 40
+2.5
+  1
+PROJE
+ 11
+324.0
+ 21
+144.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+TEXT
+  5
+21E
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+ 62
+7
+100
+AcDbText
+ 10
+324.0
+ 20
+136.0
+ 30
+0.0
+ 40
+4.5
+  1
+ÖRNEK DAİRE
+ 11
+324.0
+ 21
+136.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+TEXT
+  5
+21F
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+ 62
+8
+100
+AcDbText
+ 10
+324.0
+ 20
+114.0
+ 30
+0.0
+ 40
+2.5
+  1
+PAFTA
+ 11
+324.0
+ 21
+114.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+TEXT
+  5
+220
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+ 62
+7
+100
+AcDbText
+ 10
+324.0
+ 20
+106.0
+ 30
+0.0
+ 40
+4.5
+  1
+KAT PLANI
+ 11
+324.0
+ 21
+106.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+TEXT
+  5
+221
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+ 62
+8
+100
+AcDbText
+ 10
+324.0
+ 20
+84.0
+ 30
+0.0
+ 40
+2.5
+  1
+ÖLÇEK
+ 11
+324.0
+ 21
+84.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+TEXT
+  5
+222
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+ 62
+7
+100
+AcDbText
+ 10
+324.0
+ 20
+76.0
+ 30
+0.0
+ 40
+4.5
+  1
+1/75
+ 11
+324.0
+ 21
+76.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+TEXT
+  5
+223
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+ 62
+8
+100
+AcDbText
+ 10
+324.0
+ 20
+54.0
+ 30
+0.0
+ 40
+2.5
+  1
+TARİH
+ 11
+324.0
+ 21
+54.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+TEXT
+  5
+224
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+ 62
+7
+100
+AcDbText
+ 10
+324.0
+ 20
+46.0
+ 30
+0.0
+ 40
+4.5
+  1
+EKİM 2026
+ 11
+324.0
+ 21
+46.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+TEXT
+  5
+225
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+ 62
+7
+100
+AcDbText
+ 10
+324.0
+ 20
+24.0
+ 30
+0.0
+ 40
+9.0
+  1
+A-101
+ 11
+324.0
+ 21
+24.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+TEXT
+  5
+226
+330
+210
+100
+AcDbEntity
+ 67
+1
+  8
+PAFTA
+ 62
+7
+100
+AcDbText
+ 10
+20.0
+ 20
+20.0
+ 30
+0.0
+ 40
+4.0
+  1
+KAT PLANI  ·  1/75
+ 11
+20.0
+ 21
+20.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+ENDBLK
+  5
+212
+330
+210
 100
 AcDbEntity
   8
@@ -16205,6 +17110,10 @@ Model
 Layout1
 350
 1E
+  3
+A3 PAFTA
+350
+213
   0
 DICTIONARY
   5
@@ -17194,7 +18103,7 @@ CREATED_BY_EZDXF
   3
 WRITTEN_BY_EZDXF
 350
-212
+229
   0
 DICTIONARYVAR
   5
@@ -17206,7 +18115,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-10-19T18:52:04.214432+00:00
+1.4.5 @ 2026-10-19T20:17:54.126877+00:00
   0
 VISUALSTYLE
   5
@@ -17908,9 +18817,137 @@ X-Ray
 291
 0
   0
+LAYOUT
+  5
+213
+330
+D
+100
+AcDbPlotSettings
+  1
+
+  2
+DWG to PDF.pc3
+  4
+ezdxf_(420.00_x_297.00_MM)
+  6
+
+ 40
+0.0
+ 41
+0.0
+ 42
+0.0
+ 43
+0.0
+ 44
+420.0
+ 45
+297.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+0.0
+140
+0.0
+141
+0.0
+142
+1.0
+143
+1.0
+ 70
+672
+ 72
+1
+ 73
+0
+ 74
+5
+  7
+
+ 75
+16
+ 76
+0
+ 77
+2
+ 78
+300
+147
+1.0
+148
+0.0
+149
+0.0
+100
+AcDbLayout
+  1
+A3 PAFTA
+ 70
+1
+ 71
+3
+ 10
+-0.0
+ 20
+-0.0
+ 11
+420.0
+ 21
+297.0
+ 12
+0.0
+ 22
+0.0
+ 32
+0.0
+ 14
+1e+20
+ 24
+1e+20
+ 34
+1e+20
+ 15
+-1e+20
+ 25
+-1e+20
+ 35
+-1e+20
+146
+0.0
+ 13
+0.0
+ 23
+0.0
+ 33
+0.0
+ 16
+1.0
+ 26
+0.0
+ 36
+0.0
+ 17
+0.0
+ 27
+1.0
+ 37
+0.0
+ 76
+1
+330
+210
+331
+214
+  0
 DICTIONARYVAR
   5
-212
+229
 330
 2D
 100
@@ -17918,7 +18955,7 @@ DictionaryVariables
 280
 0
   1
-1.4.5 @ 2026-10-19T18:52:04.244512+00:00
+1.4.5 @ 2026-10-19T20:17:54.154537+00:00
   0
 ENDSEC
   0
@@ -17989,7 +19026,8 @@ function parseDxf(bytes) {
     if (Number.isNaN(c)) { i--; continue; }
     C[m] = c; V[m] = lines[i + 1]; m++;
   }
-  const model = { units: 0, ver, layers: [], blocks: {}, ents: [], skipped: {} };
+  const model = { units: 0, ver, layers: [], blocks: {}, ents: [], layouts: [], skipped: {} };
+  const paperBlocks = [], paperActive = [], layoutObjs = [];
   let i = 0;
   const f = (k) => parseFloat(V[k]) || 0;
   const recsUntil = (endName) => {
@@ -18033,33 +19071,65 @@ function parseDxf(bytes) {
         while (i < m && !(C[i] === 0 && V[i].trim() === 'ENDSEC')) {
           if (C[i] === 0 && V[i].trim() === 'BLOCK') {
             const s = ++i; while (i < m && C[i] !== 0) i++;
-            let bn = '', bx = 0, by = 0;
-            for (let k = s; k < i; k++) { if (C[k] === 2) bn = V[k].trim(); else if (C[k] === 10) bx = f(k); else if (C[k] === 20) by = f(k); }
+            let bn = '', bx = 0, by = 0, own = '';
+            for (let k = s; k < i; k++) { if (C[k] === 2) bn = V[k].trim(); else if (C[k] === 10) bx = f(k); else if (C[k] === 20) by = f(k); else if (C[k] === 330) own = V[k].trim().toUpperCase(); }
             const recs = recsUntil('ENDBLK');
             if (C[i] === 0 && V[i].trim() === 'ENDBLK') { i++; while (i < m && C[i] !== 0) i++; }
-            if (/^\*paper_space/i.test(bn)) continue;
+            if (/^\*paper_space/i.test(bn)) { paperBlocks.push({ name: bn, own, ents: buildEnts(recs, C, V, model.skipped, true) }); continue; }
             model.blocks[bn] = { bx, by, ents: buildEnts(recs, C, V, model.skipped, true) };
           } else i++;
         }
       } else if (name === 'ENTITIES') {
         const recs = recsUntil('ENDSEC');
-        model.ents = buildEnts(recs, C, V, model.skipped, false);
+        model.ents = buildEnts(recs, C, V, model.skipped, false, paperActive);
+      } else if (name === 'OBJECTS') {
+        while (i < m && !(C[i] === 0 && V[i].trim() === 'ENDSEC')) {
+          if (C[i] === 0 && V[i].trim() === 'LAYOUT') {
+            const s = ++i; while (i < m && C[i] !== 0) i++;
+            const L = { name: '', tab: 0, lim: [0, 0, 0, 0], refs: [] };
+            for (let k = s; k < i; k++) {
+              if (C[k] === 1) L.name = V[k].trim(); else if (C[k] === 71) L.tab = parseInt(V[k], 10) || 0;
+              else if (C[k] === 10) L.lim[0] = f(k); else if (C[k] === 20) L.lim[1] = f(k);
+              else if (C[k] === 11) L.lim[2] = f(k); else if (C[k] === 21) L.lim[3] = f(k);
+              else if (C[k] === 330) L.refs.push(V[k].trim().toUpperCase());
+            }
+            layoutObjs.push(L);
+          } else i++;
+        }
       } else {
         while (i < m && !(C[i] === 0 && V[i].trim() === 'ENDSEC')) i++;
       }
     } else i++;
   }
+  // layouts (paper space)
+  const used = new Set();
+  for (const L of layoutObjs.sort((a, b) => a.tab - b.tab)) {
+    if (/^model$/i.test(L.name)) continue;
+    const pb = paperBlocks.find(b => b.own && L.refs.includes(b.own) && !used.has(b));
+    let ents = pb ? pb.ents.slice() : [];
+    if (pb) used.add(pb);
+    if (pb && /^\*paper_space$/i.test(pb.name)) ents = ents.concat(paperActive);
+    model.layouts.push(finishLayout(L.name, ents, L.lim, true));
+  }
+  if (!layoutObjs.length && paperActive.length) model.layouts.push(finishLayout('Pafta', paperActive, [0, 0, 0, 0], true));
   return model;
 }
+function finishLayout(name, ents, lim, dxf) {
+  const vpsAll = ents.filter(e => e.k === 'VP');
+  let minId = Infinity; for (const v of vpsAll) minId = Math.min(minId, v.id);
+  const vps = vpsAll.filter(v => (dxf ? v.id !== 1 : v.id !== minId) && v.w > 0 && v.h > 0 && v.vh > 0 && v.st !== 0);
+  return { name, ents: ents.filter(e => e.k !== 'VP'), lim, vps };
+}
 
-function buildEnts(recs, C, V, skipped, inBlock) {
+function buildEnts(recs, C, V, skipped, inBlock, paperOut) {
   const out = [];
   const f = (k) => parseFloat(V[k]) || 0;
   for (let r = 0; r < recs.length; r++) {
     const R = recs[r];
     const g = (code, def) => { for (let k = R.s; k < R.e; k++) if (C[k] === code) return V[k]; return def; };
     const gf = (code, def = 0) => { const v = g(code); return v === undefined ? def : (parseFloat(v) || 0); };
-    if (gf(67) === 1 && !inBlock) { continue; }
+    const toPaper = gf(67) === 1 && !inBlock;
+    if (toPaper && !paperOut) continue;
     if (gf(60) === 1) continue;
     const base = { l: (g(8, '0') || '0').trim(), c: g(62) !== undefined ? parseInt(g(62), 10) : 256 };
     const tc = g(420); if (tc !== undefined) { base.c = -1; base.rgb = parseInt(tc, 10) & 0xffffff; }
@@ -18137,11 +19207,12 @@ function buildEnts(recs, C, V, skipped, inBlock) {
           if (p.length >= 6) e = { k: 'P', p, cl: 0 }; break;
         }
         case 'HATCH': e = parseHatch(R, C, V); break;
-        case 'ATTDEF': case 'SEQEND': case 'VIEWPORT': case 'POINT': break;
+        case 'VIEWPORT': e = { k: 'VP', id: gf(69) | 0, cx: gf(10), cy: gf(20), w: gf(40), h: gf(41), vcx: gf(12) + gf(17), vcy: gf(22) + gf(27), vh: gf(45), tw: gf(51) * Math.PI / 180, st: g(68) === undefined ? 1 : gf(68) }; break;
+        case 'ATTDEF': case 'SEQEND': case 'POINT': break;
         default: skipped[R.type] = (skipped[R.type] || 0) + 1;
       }
     } catch (err) { e = null; }
-    if (e) out.push(Object.assign(base, e));
+    if (e) (toPaper ? paperOut : out).push(Object.assign(base, e));
   }
   return out;
 }
@@ -18356,26 +19427,38 @@ function loopPts(edges) {
 /* ================= scene building ================= */
 let measureCtx = null;
 const CAP = 0.72; // cap height / em for the drawing face
+let FACE = '"Archivo Narrow", "Arial Narrow", sans-serif';
 function textWidth(s, h, ws) {
-  if (!measureCtx) { measureCtx = document.createElement('canvas').getContext('2d'); }
-  measureCtx.font = '100px ' + getComputedStyle(document.documentElement).getPropertyValue('--f-draw');
+  if (!measureCtx) measureCtx = document.createElement('canvas').getContext('2d');
+  measureCtx.font = '100px ' + FACE;
   return measureCtx.measureText(s).width / 100 * (h / CAP) * ws;
 }
 
-function buildScene(model) {
+function makeLayers(model) {
   const layers = [], lidx = new Map();
-  const addLayer = (L) => { if (lidx.has(L.name)) return lidx.get(L.name); lidx.set(L.name, layers.length); layers.push({ name: L.name, c: L.c || 7, rgb: L.rgb, on: !L.off, count: 0 }); return layers.length - 1; };
-  addLayer({ name: '0', c: 7 });
+  const add = (L) => { if (lidx.has(L.name)) return lidx.get(L.name); lidx.set(L.name, layers.length); layers.push({ name: L.name, c: L.c || 7, rgb: L.rgb, on: !L.off, count: 0 }); return layers.length - 1; };
+  add({ name: '0', c: 7 });
   for (const L of model.layers) {
     if (lidx.has(L.name)) { const o = layers[lidx.get(L.name)]; o.c = L.c || 7; o.rgb = L.rgb; o.on = !L.off; }
-    else addLayer(L);
+    else add(L);
   }
-  const li = (name) => lidx.has(name) ? lidx.get(name) : addLayer({ name, c: 7 });
+  return { layers, lidx, add };
+}
+
+// SNAP kinds
+const SK = { END: 0, MID: 1, CEN: 2, INS: 3, INT: 4, PERP: 5, NEAR: 6 };
+const SK_LABEL = ['Uç nokta', 'Orta nokta', 'Merkez', 'Ekleme noktası', 'Kesişim', 'Dik', 'En yakın'];
+
+function buildScene(model, ents, LS, countLayers) {
+  const { layers, lidx } = LS;
+  const li = (name) => lidx.has(name) ? lidx.get(name) : LS.add({ name, c: 7 });
   const layerColor = (i) => layers[i].rgb != null ? 'r' + layers[i].rgb : 'a' + layers[i].c;
 
   const strokes = new Map(), fills = new Map();
   const hatches = [], texts = [];
-  const snapX = [], snapY = [], snapL = [];
+  const snapX = [], snapY = [], snapL = [], snapK = [];
+  const segPolys = []; // {p, L, T, ci}
+  const circles = [];  // [x, y, r]
   let ptCount = 0, truncated = false;
   const LIMIT = 9e6;
 
@@ -18386,10 +19469,23 @@ function buildScene(model) {
     ptCount += pts.length / 2;
     return o;
   };
-  const snap = (M, x, y, L) => { snapX.push(M[0] * x + M[2] * y + M[4]); snapY.push(M[1] * x + M[3] * y + M[5]); snapL.push(L); };
+  const stroke = (L, Tl, ck, M, pts, ci) => {
+    const p = tf(M, pts);
+    bucket(strokes, L, Tl, ck).polys.push(p);
+    segPolys.push({ p, L, T: Tl, ci: ci == null ? -1 : ci });
+    return p;
+  };
+  const snap = (M, x, y, L, k) => { snapX.push(M[0] * x + M[2] * y + M[4]); snapY.push(M[1] * x + M[3] * y + M[5]); snapL.push(L); snapK.push(k); };
+  const similar = (M) => Math.abs(Math.abs(M[0]) - Math.abs(M[3])) < 1e-9 * (Math.abs(M[0]) + Math.abs(M[1]) + 1e-300) + 1e-12 && Math.abs(Math.abs(M[1]) - Math.abs(M[2])) < 1e-9 * (Math.abs(M[0]) + Math.abs(M[1]) + 1e-300) + 1e-12;
+  const addCircle = (M, x, y, r) => {
+    if (!similar(M)) return -1;
+    const sc = Math.hypot(M[0], M[1]);
+    circles.push([M[0] * x + M[2] * y + M[4], M[1] * x + M[3] * y + M[5], r * sc]);
+    return circles.length - 1;
+  };
 
-  function walk(ents, M, pL, pC, topL, depth) {
-    for (const e of ents) {
+  function walk(list, M, pL, pC, topL, depth) {
+    for (const e of list) {
       if (ptCount > LIMIT) { truncated = true; return; }
       const L = (e.l === '0' && pL != null) ? pL : li(e.l);
       const Tl = topL != null ? topL : L;
@@ -18399,35 +19495,43 @@ function buildScene(model) {
       else if (e.c === -1) ck = 'r' + e.rgb;
       else ck = 'a' + Math.min(255, Math.abs(e.c));
       const Me = e.neg ? mul(M, MIRROR) : M;
-      if (depth === 0) layers[L].count++;
+      if (depth === 0 && countLayers) layers[L].count++;
       switch (e.k) {
-        case 'L': bucket(strokes, L, Tl, ck).polys.push(tf(Me, e.a)); snap(Me, e.a[0], e.a[1], L); snap(Me, e.a[2], e.a[3], L); snap(Me, (e.a[0] + e.a[2]) / 2, (e.a[1] + e.a[3]) / 2, L); break;
+        case 'L': stroke(L, Tl, ck, Me, e.a); snap(Me, e.a[0], e.a[1], L, SK.END); snap(Me, e.a[2], e.a[3], L, SK.END); snap(Me, (e.a[0] + e.a[2]) / 2, (e.a[1] + e.a[3]) / 2, L, SK.MID); break;
         case 'P': {
           if (e.p.length < 6) break;
-          const pts = polyPts(e.p, e.cl);
-          bucket(strokes, L, Tl, ck).polys.push(tf(Me, pts));
-          for (let i = 0; i < e.p.length; i += 3) snap(Me, e.p[i], e.p[i + 1], L);
+          stroke(L, Tl, ck, Me, polyPts(e.p, e.cl));
+          const nv = e.p.length / 3;
+          for (let i = 0; i < nv; i++) {
+            snap(Me, e.p[i * 3], e.p[i * 3 + 1], L, SK.END);
+            const j = i + 1 < nv ? i + 1 : (e.cl ? 0 : -1);
+            if (j >= 0 && !e.p[i * 3 + 2]) snap(Me, (e.p[i * 3] + e.p[j * 3]) / 2, (e.p[i * 3 + 1] + e.p[j * 3 + 1]) / 2, L, SK.MID);
+          }
           break;
         }
         case 'A': {
           let sw = e.e - e.s; while (sw <= 0) sw += TAU;
-          bucket(strokes, L, Tl, ck).polys.push(tf(Me, arcPts([], e.x, e.y, e.r, e.s, sw)));
-          snap(Me, e.x, e.y, L); snap(Me, e.x + e.r * Math.cos(e.s), e.y + e.r * Math.sin(e.s), L); snap(Me, e.x + e.r * Math.cos(e.e), e.y + e.r * Math.sin(e.e), L);
+          const ci = addCircle(Me, e.x, e.y, e.r);
+          stroke(L, Tl, ck, Me, arcPts([], e.x, e.y, e.r, e.s, sw), ci);
+          snap(Me, e.x, e.y, L, SK.CEN);
+          snap(Me, e.x + e.r * Math.cos(e.s), e.y + e.r * Math.sin(e.s), L, SK.END);
+          snap(Me, e.x + e.r * Math.cos(e.e), e.y + e.r * Math.sin(e.e), L, SK.END);
+          snap(Me, e.x + e.r * Math.cos(e.s + sw / 2), e.y + e.r * Math.sin(e.s + sw / 2), L, SK.MID);
           break;
         }
-        case 'C': bucket(strokes, L, Tl, ck).polys.push(tf(Me, arcPts([], e.x, e.y, e.r, 0, TAU))); snap(Me, e.x, e.y, L); break;
-        case 'E': bucket(strokes, L, Tl, ck).polys.push(tf(Me, ellipsePts(e.x, e.y, e.mx, e.my, e.ra, e.s, e.e))); snap(Me, e.x, e.y, L); break;
-        case 'SP': { const p = splinePts(e.deg, e.cp, e.kn, e.w, e.fp, e.cl); if (p.length >= 4) { bucket(strokes, L, Tl, ck).polys.push(tf(Me, p)); snap(Me, p[0], p[1], L); snap(Me, p[p.length - 2], p[p.length - 1], L); } break; }
+        case 'C': { const ci = addCircle(Me, e.x, e.y, e.r); stroke(L, Tl, ck, Me, arcPts([], e.x, e.y, e.r, 0, TAU), ci); snap(Me, e.x, e.y, L, SK.CEN); break; }
+        case 'E': stroke(L, Tl, ck, Me, ellipsePts(e.x, e.y, e.mx, e.my, e.ra, e.s, e.e)); snap(Me, e.x, e.y, L, SK.CEN); break;
+        case 'SP': { const p = splinePts(e.deg, e.cp, e.kn, e.w, e.fp, e.cl); if (p.length >= 4) { stroke(L, Tl, ck, Me, p); snap(Me, p[0], p[1], L, SK.END); snap(Me, p[p.length - 2], p[p.length - 1], L, SK.END); } break; }
         case 'F': bucket(fills, L, Tl, ck).polys.push(tf(Me, e.p)); break;
         case 'T': {
-          let s = e.m ? cleanMText(e.s) : cleanCommon(e.s);
+          const s = e.m ? cleanMText(e.s) : cleanCommon(e.s);
           if (!s.trim()) break;
           const x = Me[0] * e.x + Me[2] * e.y + Me[4], y = Me[1] * e.x + Me[3] * e.y + Me[5];
           const dx = Me[0] * Math.cos(e.r) + Me[2] * Math.sin(e.r), dy = Me[1] * Math.cos(e.r) + Me[3] * Math.sin(e.r);
           const ux = -Me[0] * Math.sin(e.r) + Me[2] * Math.cos(e.r), uy = -Me[1] * Math.sin(e.r) + Me[3] * Math.cos(e.r);
           const sl = Math.hypot(dx, dy) || 1, su = Math.hypot(ux, uy) || 1;
           const h = Math.abs(e.h) * su, ws = (e.ws || 1) * sl / su;
-          let ang = Math.atan2(dy, dx);
+          const ang = Math.atan2(dy, dx);
           let lines = s.split('\n');
           if (e.m && e.rw > 0) {
             const maxW = e.rw * sl, wrapped = [];
@@ -18454,8 +19558,8 @@ function buildScene(model) {
             const va = e.va | 0; dy0 = va === 2 ? h / 2 : va === 3 ? h : 0;
           }
           const rad = Math.hypot(wmax, lines.length * pitch + h) + h;
-          texts.push({ x, y, ang, h, ws, lines, ha, dy0, pitch, L, T: Tl, ck, rad });
-          snap(Me, e.x, e.y, L);
+          texts.push({ x, y, ang, h, ws, lines, ha, dy0, pitch, L, T: Tl, ck, rad, w0: textWidth(lines[0] || '', h, 1) });
+          snap(Me, e.x, e.y, L, SK.INS);
           break;
         }
         case 'H': {
@@ -18489,10 +19593,9 @@ function buildScene(model) {
         }
         case 'I': {
           const B = model.blocks[e.n];
-          snap(Me, e.x, e.y, L);
+          snap(Me, e.x, e.y, L, SK.INS);
           if (B && depth < 14) {
             const nc = Math.max(1, e.nc | 0), nr = Math.max(1, e.nr | 0);
-            const BASE = mul(Rm(e.r), Sm(e.sx, e.sy));
             for (let r = 0; r < nr; r++) for (let c = 0; c < nc; c++) {
               let Mi = mul(Me, T(e.x, e.y));
               Mi = mul(Mi, Rm(e.r));
@@ -18501,7 +19604,6 @@ function buildScene(model) {
               Mi = mul(Mi, T(-B.bx, -B.by));
               walk(B.ents, Mi, L, ck, Tl, depth + 1);
             }
-            void BASE;
           }
           if (e.att && e.att.length) walk(e.att, Me, L, ck, Tl, depth + 1);
           break;
@@ -18510,9 +19612,9 @@ function buildScene(model) {
       }
     }
   }
-  walk(model.ents, I, null, null, null, 0);
+  walk(ents, I, null, null, null, 0);
 
-  // robust extents from all stroke vertices (sampled)
+  // robust extents
   const xs = [], ys = [];
   let total = 0; for (const b of strokes.values()) total += b.polys.length;
   for (const b of fills.values()) total += b.polys.length;
@@ -18530,7 +19632,6 @@ function buildScene(model) {
     const q = (a, t) => a[Math.min(a.length - 1, Math.max(0, Math.round(t * (a.length - 1))))];
     const lo = sx.length > 200 ? 0.003 : 0, hi = 1 - lo;
     ext = [q(sx, lo), q(sy, lo), q(sx, hi), q(sy, hi)];
-    // keep true extents when outliers are mild (e.g. a drawing frame)
     const rw = ext[2] - ext[0], rh = ext[3] - ext[1];
     if (sx[0] >= ext[0] - rw * 0.6) ext[0] = sx[0];
     if (sx[sx.length - 1] <= ext[2] + rw * 0.6) ext[2] = sx[sx.length - 1];
@@ -18557,37 +19658,65 @@ function buildScene(model) {
   for (const h of hatches) {
     h.path = mkPath(h.loops, true);
     h.bb = [h.bb[0] - ox, h.bb[1] - oy, h.bb[2] - ox, h.bb[3] - oy];
-    for (const ln of h.lines) { ln.b = [ln.b[0] - ox, ln.b[1] - oy]; }
+    for (const ln of h.lines) ln.b = [ln.b[0] - ox, ln.b[1] - oy];
     delete h.loops;
   }
   for (const t of texts) { t.x -= ox; t.y -= oy; }
 
-  // snap grid
-  const sn = snapX.length, SX = new Float64Array(sn), SY = new Float64Array(sn), SL = new Uint32Array(sn);
-  for (let i = 0; i < sn; i++) { SX[i] = snapX[i] - ox; SY[i] = snapY[i] - oy; SL[i] = snapL[i]; }
-  const cell = Math.max(ext[2] - ext[0], ext[3] - ext[1]) / 256 || 1;
+  const span = Math.max(ext[2] - ext[0], ext[3] - ext[1]) || 1;
+  const cell = span / 256;
+  // point snaps
+  const sn = snapX.length, SX = new Float64Array(sn), SY = new Float64Array(sn), SL = new Uint32Array(sn), SKA = new Uint8Array(sn);
   const grid = new Map();
   for (let i = 0; i < sn; i++) {
+    SX[i] = snapX[i] - ox; SY[i] = snapY[i] - oy; SL[i] = snapL[i]; SKA[i] = snapK[i];
     const k = Math.floor(SX[i] / cell) + ',' + Math.floor(SY[i] / cell);
     let a = grid.get(k); if (!a) grid.set(k, a = []); a.push(i);
   }
+  // segment index
+  let nseg = 0; for (const sp of segPolys) nseg += sp.p.length / 2 - 1;
+  let segs = null;
+  if (nseg > 0 && nseg < 3e6) {
+    const A = new Float64Array(nseg * 4), SLs = new Uint32Array(nseg), STs = new Uint32Array(nseg), SC = new Int32Array(nseg);
+    const sgrid = new Map(), big = [];
+    let k = 0;
+    for (const sp of segPolys) {
+      const p = sp.p;
+      for (let i = 0; i + 3 < p.length; i += 2, k++) {
+        const x1 = p[i] - ox, y1 = p[i + 1] - oy, x2 = p[i + 2] - ox, y2 = p[i + 3] - oy;
+        A[k * 4] = x1; A[k * 4 + 1] = y1; A[k * 4 + 2] = x2; A[k * 4 + 3] = y2;
+        SLs[k] = sp.L; STs[k] = sp.T; SC[k] = sp.ci;
+        const cx0 = Math.floor(Math.min(x1, x2) / cell), cx1 = Math.floor(Math.max(x1, x2) / cell);
+        const cy0 = Math.floor(Math.min(y1, y2) / cell), cy1 = Math.floor(Math.max(y1, y2) / cell);
+        if ((cx1 - cx0 + 1) * (cy1 - cy0 + 1) > 1500) { big.push(k); continue; }
+        for (let gx = cx0; gx <= cx1; gx++) for (let gy = cy0; gy <= cy1; gy++) {
+          const key = gx + ',' + gy; let a = sgrid.get(key); if (!a) sgrid.set(key, a = []); a.push(k);
+        }
+      }
+    }
+    segs = { A, L: SLs, T: STs, C: SC, grid: sgrid, big, n: nseg };
+  }
+  const circ = circles.map(c => [c[0] - ox, c[1] - oy, c[2]]);
   return {
     layers, strokes: S, fills: F, hatches, texts, ox, oy,
     ext: [ext[0] - ox, ext[1] - oy, ext[2] - ox, ext[3] - oy],
-    snaps: { X: SX, Y: SY, L: SL, grid, cell }, truncated, skipped: model.skipped || {},
-    units: model.units | 0, entCount: model.ents.length,
+    snaps: { X: SX, Y: SY, L: SL, K: SKA, grid, cell }, segs, circles: circ,
+    truncated, skipped: model.skipped || {}, units: model.units | 0, entCount: ents.length,
   };
 }
 
 /* ================= state & view ================= */
 const stage = $('stage'), cv = $('cv'), ctx = cv.getContext('2d');
 const loupe = $('loupe'), lctx = loupe.getContext('2d');
-let scene = null, docInfo = { name: '', kind: '' };
+let doc = null;         // { model, LS, modelScene, layoutScenes: [], name, kind, key }
+let space = -1;         // -1 = model, i = layout index
+let scene = null;       // current scene (model or layout)
 const view = { s: 1, tx: 0, ty: 0 };
 let W = 0, H = 0, dpr = 1;
 let dark = false;
 let unitM = 0.001, unitName = 'mm';
 const UNITS = [['mm', 0.001], ['cm', 0.01], ['m', 1], ['inç', 0.0254], ['ft', 0.3048]];
+const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 
 function isDark() {
   const a = document.documentElement.getAttribute('data-theme');
@@ -18595,7 +19724,7 @@ function isDark() {
   return matchMedia('(prefers-color-scheme: dark)').matches;
 }
 const colorCache = new Map();
-function css(ck) {
+function colorOf(ck) {
   let v = colorCache.get(ck); if (v) return v;
   let rgb;
   if (ck[0] === 'r') { const n = +ck.slice(1); rgb = [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
@@ -18607,7 +19736,7 @@ function css(ck) {
   colorCache.set(ck, v);
   return v;
 }
-function readTheme() { dark = isDark(); colorCache.clear(); requestDraw(); }
+function readTheme() { dark = isDark(); colorCache.clear(); FACE = css('--f-draw') || FACE; requestDraw(true); }
 new MutationObserver(readTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readTheme);
 
@@ -18619,13 +19748,24 @@ function resize() {
   W = nw; H = nh;
   cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
   snapshot = null;
-  requestDraw();
+  requestDraw(true);
 }
 new ResizeObserver(resize).observe(stage);
 
+function sceneExt() {
+  if (space >= 0) {
+    const lay = doc.model.layouts[space];
+    const l = lay.lim, sc = scene;
+    if (l && l[2] - l[0] > 1e-6 && l[3] - l[1] > 1e-6) return [l[0] - sc.ox, l[1] - sc.oy, l[2] - sc.ox, l[3] - sc.oy];
+    let e = sc.ext.slice();
+    for (const v of lay.vps) { e[0] = Math.min(e[0], v.cx - v.w / 2 - sc.ox); e[1] = Math.min(e[1], v.cy - v.h / 2 - sc.oy); e[2] = Math.max(e[2], v.cx + v.w / 2 - sc.ox); e[3] = Math.max(e[3], v.cy + v.h / 2 - sc.oy); }
+    return e;
+  }
+  return scene.ext;
+}
 function fit() {
   if (!scene) return;
-  const [x0, y0, x1, y1] = scene.ext;
+  const [x0, y0, x1, y1] = sceneExt();
   const padT = 70, padB = 110, padS = 24;
   const s = Math.min((W - padS * 2) / (x1 - x0), (H - padT - padB) / (y1 - y0));
   view.s = s > 0 && isFinite(s) ? s : 1;
@@ -18635,6 +19775,9 @@ function fit() {
 }
 const toScreen = (x, y) => [x * view.s + view.tx, -y * view.s + view.ty];
 const toWorld = (sx, sy) => [(sx - view.tx) / view.s, (view.ty - sy) / view.s];
+// world (document) coords <-> scene coords
+const w2s = (p) => [p[0] - scene.ox, p[1] - scene.oy];
+const s2w = (p) => [p[0] + scene.ox, p[1] + scene.oy];
 
 /* ================= drawing ================= */
 let drawQueued = false, fullQueued = false, lastFullMs = 0, snapshot = null, gestureActive = false, idleTimer = 0;
@@ -18647,12 +19790,142 @@ function requestDraw(full) {
     const useSnap = gestureActive && snapshot && lastFullMs > 22 && !fullQueued;
     if (useSnap) drawFromSnapshot(); else drawFull();
     fullQueued = false;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    drawMarks(ctx, view, false);
     drawOverlay();
     updateScale();
     if (loupeOn) drawLoupe();
   });
 }
-function bgColor() { return getComputedStyle(document.documentElement).getPropertyValue('--canvas').trim() || (dark ? '#13171b' : '#fbfbf8'); }
+function bgColor() { return css('--canvas') || (dark ? '#13171b' : '#fbfbf8'); }
+
+// Draws one scene into g (already in css-px units via base transform pr) with mapping T = {s, tx, ty}.
+function drawScene(g, pr, sc, Tv, Wc, Hc, clip, lwk = 1) {
+  const { s, tx, ty } = Tv;
+  const L = sc.layers;
+  const vis = (b) => L[b.L].on && L[b.T].on;
+  let vx0 = (0 - tx) / s, vx1 = (Wc - tx) / s, vy0 = (ty - Hc) / s, vy1 = ty / s;
+  g.save();
+  if (clip) {
+    g.setTransform(pr, 0, 0, pr, 0, 0);
+    g.beginPath(); g.rect(clip[0], clip[1], clip[2], clip[3]); g.clip();
+    vx0 = Math.max(vx0, (clip[0] - tx) / s); vx1 = Math.min(vx1, (clip[0] + clip[2] - tx) / s);
+    vy0 = Math.max(vy0, (ty - clip[1] - clip[3]) / s); vy1 = Math.min(vy1, (ty - clip[1]) / s);
+  }
+  g.setTransform(pr * s, 0, 0, -pr * s, pr * tx, pr * ty);
+  for (const b of sc.fills) { if (!vis(b)) continue; g.fillStyle = colorOf(b.ck); g.fill(b.path); }
+  const lw = (pr > 1 ? 0.85 : 1) * lwk / s;
+  for (const h of sc.hatches) {
+    if (!vis(h)) continue;
+    const bb = h.bb; if (bb[2] < vx0 || bb[0] > vx1 || bb[3] < vy0 || bb[1] > vy1) continue;
+    const col = colorOf(h.ck);
+    if (h.sol) { g.fillStyle = col; g.fill(h.path, 'evenodd'); continue; }
+    const cx0 = Math.max(bb[0], vx0), cx1 = Math.min(bb[2], vx1), cy0 = Math.max(bb[1], vy0), cy1 = Math.min(bb[3], vy1);
+    g.save();
+    g.clip(h.path, 'evenodd');
+    let dense = false;
+    for (const ln of h.lines) if (ln.sp * s < 2.6) dense = true;
+    if (dense || !h.lines.length) { g.globalAlpha = 0.22; g.fillStyle = col; g.fillRect(cx0, cy0, cx1 - cx0, cy1 - cy0); g.restore(); continue; }
+    g.strokeStyle = col; g.lineWidth = lw * 0.85; g.globalAlpha = 0.8;
+    const cs = [[cx0, cy0], [cx1, cy0], [cx1, cy1], [cx0, cy1]];
+    for (const ln of h.lines) {
+      const [ux, uy] = ln.u, nx = -uy, ny = ux;
+      const on = ln.o[0] * nx + ln.o[1] * ny;
+      if (Math.abs(on) < 1e-12) continue;
+      let tmin = Infinity, tmax = -Infinity, amin = Infinity, amax = -Infinity;
+      for (const c of cs) { const t = c[0] * nx + c[1] * ny, a = c[0] * ux + c[1] * uy; if (t < tmin) tmin = t; if (t > tmax) tmax = t; if (a < amin) amin = a; if (a > amax) amax = a; }
+      const tb = ln.b[0] * nx + ln.b[1] * ny;
+      const k0 = Math.ceil(Math.min((tmin - tb) / on, (tmax - tb) / on)), k1 = Math.floor(Math.max((tmin - tb) / on, (tmax - tb) / on));
+      if (k1 - k0 > 3000) { g.globalAlpha = 0.22; g.fillStyle = col; g.fillRect(cx0, cy0, cx1 - cx0, cy1 - cy0); g.globalAlpha = 0.8; continue; }
+      let dash = null, period = 0, lead = 0;
+      if (ln.ds.length) {
+        const segs = [];
+        for (const d of ln.ds) { const on2 = d >= 0, len = Math.max(Math.abs(d), on2 ? 0.9 / s : 0); if (segs.length && segs[segs.length - 1][1] === on2) segs[segs.length - 1][0] += len; else segs.push([len, on2]); }
+        if (segs.length && !segs[0][1]) { lead = segs[0][0]; segs.push(segs.shift()); }
+        if (segs.length && segs.length % 2) segs.push([0, false]);
+        dash = segs.map(x => x[0]); period = dash.reduce((a, b) => a + b, 0);
+        if (period * s < 1.5) dash = null;
+      }
+      if (dash) {
+        g.setLineDash(dash);
+        for (let k = k0; k <= k1; k++) {
+          const qx = ln.b[0] + k * ln.o[0], qy = ln.b[1] + k * ln.o[1], qa = qx * ux + qy * uy;
+          g.beginPath();
+          g.moveTo(qx + ux * (amin - qa), qy + uy * (amin - qa));
+          g.lineTo(qx + ux * (amax - qa), qy + uy * (amax - qa));
+          let off = ((qa - amin) - lead) % period; if (off < 0) off += period;
+          g.lineDashOffset = -off;
+          g.stroke();
+        }
+        g.setLineDash([]);
+      } else {
+        g.beginPath();
+        for (let k = k0; k <= k1; k++) {
+          const qx = ln.b[0] + k * ln.o[0], qy = ln.b[1] + k * ln.o[1], qa = qx * ux + qy * uy;
+          g.moveTo(qx + ux * (amin - qa), qy + uy * (amin - qa));
+          g.lineTo(qx + ux * (amax - qa), qy + uy * (amax - qa));
+        }
+        g.stroke();
+      }
+    }
+    g.restore();
+  }
+  g.lineWidth = lw; g.lineJoin = 'round'; g.lineCap = 'round';
+  for (const b of sc.strokes) { if (!vis(b)) continue; g.strokeStyle = colorOf(b.ck); g.stroke(b.path); }
+  // texts
+  g.setTransform(pr, 0, 0, pr, 0, 0);
+  g.textBaseline = 'alphabetic';
+  for (const t of sc.texts) {
+    if (!L[t.L].on || !L[t.T].on) continue;
+    const hp = t.h * s;
+    if (hp < 1.8) continue;
+    if (t.x + t.rad < vx0 || t.x - t.rad > vx1 || t.y + t.rad < vy0 || t.y - t.rad > vy1) continue;
+    const sx = t.x * s + tx, sy = -t.y * s + ty;
+    g.save();
+    g.translate(sx, sy); g.rotate(-t.ang);
+    if (t.ws !== 1) g.scale(t.ws, 1);
+    g.fillStyle = colorOf(t.ck);
+    if (hp < 3.2) {
+      g.globalAlpha = 0.5;
+      const w = t.w0 * s;
+      const x0 = t.ha === 1 ? -w / 2 : t.ha === 2 ? -w : 0;
+      for (let i = 0; i < t.lines.length; i++) g.fillRect(x0, (t.dy0 + i * t.pitch) * s - hp, w, Math.max(0.8, hp * 0.6));
+    } else {
+      g.font = (hp / CAP).toFixed(1) + 'px ' + FACE;
+      g.textAlign = t.ha === 1 ? 'center' : t.ha === 2 ? 'right' : 'left';
+      for (let i = 0; i < t.lines.length; i++) g.fillText(t.lines[i], 0, (t.dy0 + i * t.pitch) * s);
+    }
+    g.restore();
+  }
+  g.restore();
+}
+
+// Renders the current space (model or layout with viewports) into g.
+function renderSpace(g, pr, Tv, Wc, Hc, paperBg, lwk = 1) {
+  if (!doc) return;
+  if (space < 0) { drawScene(g, pr, doc.modelScene, Tv, Wc, Hc, null, lwk); return; }
+  const lay = doc.model.layouts[space], P = scene, M = doc.modelScene;
+  // paper sheet
+  const e = sceneExt();
+  const px0 = e[0] * Tv.s + Tv.tx, py0 = -e[3] * Tv.s + Tv.ty, pw = (e[2] - e[0]) * Tv.s, ph = (e[3] - e[1]) * Tv.s;
+  g.save(); g.setTransform(pr, 0, 0, pr, 0, 0);
+  g.shadowColor = 'rgba(0,0,0,.25)'; g.shadowBlur = 12; g.shadowOffsetY = 2;
+  g.fillStyle = paperBg; g.fillRect(px0, py0, pw, ph);
+  g.restore();
+  for (const v of lay.vps) {
+    const k = v.h / v.vh;
+    const Tm = {
+      s: Tv.s * k,
+      tx: Tv.tx + Tv.s * (v.cx - P.ox - (v.vcx - M.ox) * k),
+      ty: Tv.ty - Tv.s * (v.cy - P.oy - (v.vcy - M.oy) * k),
+    };
+    const cx = (v.cx - P.ox - v.w / 2) * Tv.s + Tv.tx, cy = -(v.cy - P.oy + v.h / 2) * Tv.s + Tv.ty;
+    const clip = [cx, cy, v.w * Tv.s, v.h * Tv.s];
+    if (clip[0] > Wc || clip[1] > Hc || clip[0] + clip[2] < 0 || clip[1] + clip[3] < 0) continue;
+    drawScene(g, pr, M, Tm, Wc, Hc, clip, lwk);
+  }
+  drawScene(g, pr, P, Tv, Wc, Hc, null, lwk);
+}
 
 function drawFull() {
   const t0 = performance.now();
@@ -18660,105 +19933,7 @@ function drawFull() {
   ctx.fillStyle = bgColor();
   ctx.fillRect(0, 0, cv.width, cv.height);
   if (!scene) return;
-  const { s, tx, ty } = view;
-  const L = scene.layers;
-  const vis = (b) => L[b.L].on && L[b.T].on;
-  const vx0 = (0 - tx) / s, vx1 = (W - tx) / s, vy0 = (ty - H) / s, vy1 = ty / s;
-  ctx.setTransform(dpr * s, 0, 0, -dpr * s, dpr * tx, dpr * ty);
-  // fills (solids)
-  for (const b of scene.fills) { if (!vis(b)) continue; ctx.fillStyle = css(b.ck); ctx.fill(b.path); }
-  // hatches
-  const lw = (dpr > 1 ? 0.85 : 1) / s;
-  for (const h of scene.hatches) {
-    if (!vis(h)) continue;
-    const bb = h.bb; if (bb[2] < vx0 || bb[0] > vx1 || bb[3] < vy0 || bb[1] > vy1) continue;
-    const col = css(h.ck);
-    if (h.sol) { ctx.fillStyle = col; ctx.fill(h.path, 'evenodd'); continue; }
-    const cx0 = Math.max(bb[0], vx0), cx1 = Math.min(bb[2], vx1), cy0 = Math.max(bb[1], vy0), cy1 = Math.min(bb[3], vy1);
-    ctx.save();
-    ctx.clip(h.path, 'evenodd');
-    let dense = false;
-    for (const ln of h.lines) if (ln.sp * s < 2.6) dense = true;
-    if (dense || !h.lines.length) { ctx.globalAlpha = 0.22; ctx.fillStyle = col; ctx.fillRect(cx0, cy0, cx1 - cx0, cy1 - cy0); ctx.restore(); continue; }
-    ctx.strokeStyle = col; ctx.lineWidth = lw * 0.85; ctx.globalAlpha = 0.8;
-    const cs = [[cx0, cy0], [cx1, cy0], [cx1, cy1], [cx0, cy1]];
-    for (const ln of h.lines) {
-      const [ux, uy] = ln.u, nx = -uy, ny = ux;
-      const on = ln.o[0] * nx + ln.o[1] * ny; // perpendicular step per line index
-      if (Math.abs(on) < 1e-12) continue;
-      let tmin = Infinity, tmax = -Infinity, amin = Infinity, amax = -Infinity;
-      for (const c of cs) { const t = c[0] * nx + c[1] * ny, a = c[0] * ux + c[1] * uy; if (t < tmin) tmin = t; if (t > tmax) tmax = t; if (a < amin) amin = a; if (a > amax) amax = a; }
-      const tb = ln.b[0] * nx + ln.b[1] * ny;
-      let k0 = Math.ceil((tmin - tb) / on), k1 = Math.floor((tmax - tb) / on);
-      if (k0 > k1) { const t = k0; k0 = k1; k1 = t; k0 = Math.ceil(Math.min((tmin - tb) / on, (tmax - tb) / on)); k1 = Math.floor(Math.max((tmin - tb) / on, (tmax - tb) / on)); }
-      if (k1 - k0 > 3000) { ctx.globalAlpha = 0.22; ctx.fillStyle = col; ctx.fillRect(cx0, cy0, cx1 - cx0, cy1 - cy0); ctx.globalAlpha = 0.8; continue; }
-      let dash = null, period = 0;
-      if (ln.ds.length) {
-        const segs = [];
-        for (const d of ln.ds) { const on2 = d >= 0, len = Math.max(Math.abs(d), on2 ? 0.9 / s : 0); if (segs.length && segs[segs.length - 1][1] === on2) segs[segs.length - 1][0] += len; else segs.push([len, on2]); }
-        let lead = 0; if (segs.length && !segs[0][1]) { lead = segs[0][0]; segs.push(segs.shift()); }
-        if (segs.length && segs.length % 2) segs.push([0, false]);
-        dash = segs.map(x => x[0]); period = dash.reduce((a, b) => a + b, 0);
-        if (period * s < 1.5) dash = null; else ln._lead = lead;
-      }
-      if (dash) {
-        ctx.setLineDash(dash);
-        for (let k = k0; k <= k1; k++) {
-          const qx = ln.b[0] + k * ln.o[0], qy = ln.b[1] + k * ln.o[1];
-          const qa = qx * ux + qy * uy;
-          ctx.beginPath();
-          ctx.moveTo(qx + ux * (amin - qa), qy + uy * (amin - qa));
-          ctx.lineTo(qx + ux * (amax - qa), qy + uy * (amax - qa));
-          let off = ((qa - amin) - (ln._lead || 0)) % period; if (off < 0) off += period;
-          ctx.lineDashOffset = -off;
-          ctx.stroke();
-        }
-        ctx.setLineDash([]);
-      } else {
-        ctx.beginPath();
-        for (let k = k0; k <= k1; k++) {
-          const qx = ln.b[0] + k * ln.o[0], qy = ln.b[1] + k * ln.o[1];
-          const qa = qx * ux + qy * uy;
-          ctx.moveTo(qx + ux * (amin - qa), qy + uy * (amin - qa));
-          ctx.lineTo(qx + ux * (amax - qa), qy + uy * (amax - qa));
-        }
-        ctx.stroke();
-      }
-    }
-    ctx.restore();
-  }
-  // strokes
-  ctx.lineWidth = lw; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-  for (const b of scene.strokes) { if (!vis(b)) continue; ctx.strokeStyle = css(b.ck); ctx.stroke(b.path); }
-  // texts
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  const face = getComputedStyle(document.documentElement).getPropertyValue('--f-draw');
-  ctx.textBaseline = 'alphabetic';
-  let lastFont = '';
-  for (const t of scene.texts) {
-    if (!L[t.L].on || !L[t.T].on) continue;
-    const hp = t.h * s;
-    if (hp < 1.8) continue;
-    if (t.x + t.rad < vx0 || t.x - t.rad > vx1 || t.y + t.rad < vy0 || t.y - t.rad > vy1) continue;
-    const [sx, sy] = toScreen(t.x, t.y);
-    ctx.save();
-    ctx.translate(sx, sy); ctx.rotate(-t.ang);
-    if (t.ws !== 1) ctx.scale(t.ws, 1);
-    ctx.fillStyle = css(t.ck);
-    if (hp < 3.2) {
-      ctx.globalAlpha = 0.5;
-      const w = textWidth(t.lines[0] || '', t.h, 1) * s;
-      const x0 = t.ha === 1 ? -w / 2 : t.ha === 2 ? -w : 0;
-      for (let i = 0; i < t.lines.length; i++) ctx.fillRect(x0, (t.dy0 + i * t.pitch) * s - hp, w, Math.max(0.8, hp * 0.6));
-    } else {
-      const font = (hp / CAP).toFixed(1) + 'px ' + face;
-      if (font !== lastFont) { ctx.font = font; lastFont = font; }
-      ctx.textAlign = t.ha === 1 ? 'center' : t.ha === 2 ? 'right' : 'left';
-      for (let i = 0; i < t.lines.length; i++) ctx.fillText(t.lines[i], 0, (t.dy0 + i * t.pitch) * s);
-    }
-    ctx.restore();
-    lastFont = '';
-  }
+  renderSpace(ctx, dpr, view, W, H, dark ? '#1b2026' : '#ffffff');
   lastFullMs = performance.now() - t0;
   if (lastFullMs > 22) {
     if (!snapshot) snapshot = document.createElement('canvas');
@@ -18776,14 +19951,114 @@ function drawFromSnapshot() {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 
+/* ================= snapping ================= */
+const SNAP_DEFAULT = { 0: true, 1: true, 2: true, 3: false, 4: true, 5: true, 6: true };
+let snapOn = { ...SNAP_DEFAULT };
+try { const sv = JSON.parse(localStorage.getItem('acad.snap') || 'null'); if (sv) snapOn = { ...SNAP_DEFAULT, ...sv }; } catch (e) { /* ignore */ }
+const anySnap = () => Object.values(snapOn).some(Boolean);
+
+function findSnap(sx, sy, prev) {
+  if (!scene) return null;
+  const R = 16;
+  const [wx, wy] = toWorld(sx, sy);
+  const rw = R / view.s, rw2 = rw * rw;
+  const LY = scene.layers;
+  let best = null;
+  const consider = (x, y, k) => {
+    const d = (x - wx) ** 2 + (y - wy) ** 2;
+    if (d > rw2) return;
+    const pri = k <= SK.INT ? 0 : k === SK.PERP ? 1 : 2;
+    if (!best || pri < best.pri || (pri === best.pri && d < best.d)) best = { p: [x, y], k, d, pri };
+  };
+  // point snaps
+  const { X, Y, L, K, grid, cell } = scene.snaps;
+  const cx0 = Math.floor((wx - rw) / cell), cx1 = Math.floor((wx + rw) / cell), cy0 = Math.floor((wy - rw) / cell), cy1 = Math.floor((wy + rw) / cell);
+  const ncells = (cx1 - cx0 + 1) * (cy1 - cy0 + 1);
+  if (ncells <= 900) {
+    for (let gx = cx0; gx <= cx1; gx++) for (let gy = cy0; gy <= cy1; gy++) {
+      const a = grid.get(gx + ',' + gy); if (!a) continue;
+      for (const i of a) { if (!snapOn[K[i]] || !LY[L[i]].on) continue; consider(X[i], Y[i], K[i]); }
+    }
+  }
+  // segment-based snaps
+  const sg = scene.segs;
+  if (sg && ncells <= 900 && (snapOn[SK.INT] || snapOn[SK.PERP] || snapOn[SK.NEAR])) {
+    const cand = new Set();
+    for (let gx = cx0; gx <= cx1; gx++) for (let gy = cy0; gy <= cy1; gy++) {
+      const a = sg.grid.get(gx + ',' + gy); if (!a) continue;
+      for (const i of a) { cand.add(i); if (cand.size > 3000) break; }
+    }
+    for (const i of sg.big) cand.add(i);
+    const A = sg.A, list = [];
+    for (const i of cand) {
+      if (!LY[sg.L[i]].on || !LY[sg.T[i]].on) continue;
+      const x1 = A[i * 4], y1 = A[i * 4 + 1], x2 = A[i * 4 + 2], y2 = A[i * 4 + 3];
+      const dx = x2 - x1, dy = y2 - y1, l2 = dx * dx + dy * dy;
+      if (l2 < 1e-24) continue;
+      let t = ((wx - x1) * dx + (wy - y1) * dy) / l2; t = Math.max(0, Math.min(1, t));
+      const nx = x1 + t * dx, ny = y1 + t * dy;
+      if ((nx - wx) ** 2 + (ny - wy) ** 2 > rw2 * 4) continue;
+      list.push(i);
+      if (snapOn[SK.NEAR]) consider(nx, ny, SK.NEAR);
+      if (snapOn[SK.PERP] && prev) {
+        const tp = ((prev[0] - x1) * dx + (prev[1] - y1) * dy) / l2;
+        if (tp >= 0 && tp <= 1) consider(x1 + tp * dx, y1 + tp * dy, SK.PERP);
+      }
+    }
+    if (snapOn[SK.INT] && list.length < 600) {
+      for (let a = 0; a < list.length; a++) {
+        const i = list[a], ax = A[i * 4], ay = A[i * 4 + 1], bx = A[i * 4 + 2], by = A[i * 4 + 3];
+        for (let b = a + 1; b < list.length; b++) {
+          const j = list[b];
+          if (sg.C[i] >= 0 && sg.C[i] === sg.C[j]) continue;
+          const cx = A[j * 4], cy = A[j * 4 + 1], dx2 = A[j * 4 + 2], dy2 = A[j * 4 + 3];
+          const r1x = bx - ax, r1y = by - ay, r2x = dx2 - cx, r2y = dy2 - cy;
+          const den = r1x * r2y - r1y * r2x;
+          if (Math.abs(den) < 1e-18) continue;
+          const t = ((cx - ax) * r2y - (cy - ay) * r2x) / den, u = ((cx - ax) * r1y - (cy - ay) * r1x) / den;
+          if (t < -1e-9 || t > 1 + 1e-9 || u < -1e-9 || u > 1 + 1e-9) continue;
+          // skip shared endpoints of consecutive polyline segments
+          if ((t < 1e-6 || t > 1 - 1e-6) && (u < 1e-6 || u > 1 - 1e-6)) continue;
+          consider(ax + t * r1x, ay + t * r1y, SK.INT);
+        }
+      }
+    }
+  }
+  return best;
+}
+function pickPoint(sx, sy, prev) { const s = findSnap(sx, sy, prev); return s ? { p: s.p, snap: s } : { p: toWorld(sx, sy), snap: null }; }
+function findCircle(sx, sy) {
+  const sg = scene && scene.segs; if (!sg) return null;
+  const [wx, wy] = toWorld(sx, sy);
+  const rw = 26 / view.s, c = scene.snaps.cell;
+  const cx0 = Math.floor((wx - rw) / c), cx1 = Math.floor((wx + rw) / c), cy0 = Math.floor((wy - rw) / c), cy1 = Math.floor((wy + rw) / c);
+  if ((cx1 - cx0 + 1) * (cy1 - cy0 + 1) > 900) return null;
+  let best = -1, bd = rw * rw; const A = sg.A, LY = scene.layers;
+  for (let gx = cx0; gx <= cx1; gx++) for (let gy = cy0; gy <= cy1; gy++) {
+    const a = sg.grid.get(gx + ',' + gy); if (!a) continue;
+    for (const i of a) {
+      if (sg.C[i] < 0 || !LY[sg.L[i]].on) continue;
+      const x1 = A[i * 4], y1 = A[i * 4 + 1], dx = A[i * 4 + 2] - x1, dy = A[i * 4 + 3] - y1, l2 = dx * dx + dy * dy || 1e-30;
+      let t = ((wx - x1) * dx + (wy - y1) * dy) / l2; t = Math.max(0, Math.min(1, t));
+      const d = (x1 + t * dx - wx) ** 2 + (y1 + t * dy - wy) ** 2;
+      if (d < bd) { bd = d; best = sg.C[i]; }
+    }
+  }
+  if (best < 0) return null;
+  const c0 = scene.circles[best];
+  return { c: [c0[0], c0[1]], r: c0[2], p: [wx, wy] };
+}
+
 /* ================= measuring ================= */
-let mode = 'view'; // view | dist | area
-let pts = [];          // current measurement points (world, offset coords)
-let done = [];         // finished: {mode, pts}
+let mode = 'view'; // view | dist | area | angle | radius | m-cloud | m-arrow | m-text | m-pen | m-photo
+let pts = [];
+let done = [];
 let hoverPt = null, snapHit = null;
+const isMeasure = (m) => m === 'dist' || m === 'area' || m === 'angle' || m === 'radius';
+const isMark = (m) => m.startsWith('m-');
 
 function fmtNum(v, d = 2) { return v.toLocaleString('tr-TR', { minimumFractionDigits: d, maximumFractionDigits: d }); }
-function fmtLen(u) { // u in drawing units
+function fmtLen(u) {
   const m = u * unitM;
   if (Math.abs(m) >= 1) return fmtNum(m, 2) + ' m';
   if (Math.abs(m) >= 0.01) return fmtNum(m * 100, 1) + ' cm';
@@ -18792,51 +20067,50 @@ function fmtLen(u) { // u in drawing units
 function fmtArea(a) { const m2 = a * unitM * unitM; return m2 >= 0.01 ? fmtNum(m2, 2) + ' m²' : fmtNum(m2 * 1e4, 1) + ' cm²'; }
 function polyLen(P, closed) { let s = 0; for (let i = 1; i < P.length; i++) s += Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]); if (closed && P.length > 2) s += Math.hypot(P[0][0] - P[P.length - 1][0], P[0][1] - P[P.length - 1][1]); return s; }
 function polyArea(P) { let a = 0; for (let i = 0; i < P.length; i++) { const j = (i + 1) % P.length; a += P[i][0] * P[j][1] - P[j][0] * P[i][1]; } return Math.abs(a) / 2; }
-
-function findSnap(sx, sy) {
-  if (!scene) return null;
-  const R = 16;
-  const [wx, wy] = toWorld(sx, sy);
-  const rw = R / view.s, c = scene.snaps.cell;
-  const cx0 = Math.floor((wx - rw) / c), cx1 = Math.floor((wx + rw) / c), cy0 = Math.floor((wy - rw) / c), cy1 = Math.floor((wy + rw) / c);
-  if ((cx1 - cx0 + 1) * (cy1 - cy0 + 1) > 900) return null;
-  let best = -1, bd = rw * rw;
-  const { X, Y, L, grid } = scene.snaps, LY = scene.layers;
-  for (let gx = cx0; gx <= cx1; gx++) for (let gy = cy0; gy <= cy1; gy++) {
-    const a = grid.get(gx + ',' + gy); if (!a) continue;
-    for (const i of a) { if (!LY[L[i]].on) continue; const d = (X[i] - wx) ** 2 + (Y[i] - wy) ** 2; if (d < bd) { bd = d; best = i; } }
-  }
-  return best >= 0 ? [X[best], Y[best]] : null;
+function angleAt(A, B, C) {
+  const a1 = Math.atan2(A[1] - B[1], A[0] - B[0]), a2 = Math.atan2(C[1] - B[1], C[0] - B[0]);
+  let d = Math.abs(a2 - a1) * 180 / Math.PI; if (d > 180) d = 360 - d;
+  return d;
 }
-function pickPoint(sx, sy) { const s = findSnap(sx, sy); return s ? { p: s, snapped: true } : { p: toWorld(sx, sy), snapped: false }; }
 
 function setMode(m) {
   if (m === mode) m = 'view';
-  if (mode !== 'view' && pts.length >= (mode === 'area' ? 3 : 2)) done.push({ mode, pts });
+  if (isMeasure(m) && space >= 0) { toast('Ölçüm Model görünümünde yapılır. Pafta menüsünden Model\'e geç.', true); m = 'view'; }
+  commitCurrent();
   pts = []; hoverPt = null; snapHit = null;
   mode = m;
-  $('tDist').setAttribute('aria-pressed', mode === 'dist');
-  $('tArea').setAttribute('aria-pressed', mode === 'area');
+  document.querySelectorAll('.sbtn[data-mode]').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === mode));
   stage.classList.toggle('measuring', mode !== 'view');
   updateCard(); requestDraw();
 }
-function addPoint(p) { pts.push(p); updateCard(); requestDraw(); }
+function commitCurrent() {
+  if (!isMeasure(mode)) return;
+  const need = mode === 'area' ? 3 : mode === 'angle' ? 3 : 2;
+  if (pts.length >= need) done.push({ mode, pts });
+}
+function addPoint(p) {
+  pts.push(p);
+  if (mode === 'angle' && pts.length === 3) { done.push({ mode, pts }); pts = []; }
+  updateCard(); requestDraw();
+}
 function finishArea() { if (mode === 'area' && pts.length >= 3) { done.push({ mode, pts }); pts = []; updateCard(); requestDraw(); } }
 
 function updateCard() {
   const card = $('mcard');
-  const hasDone = done.length > 0;
-  if (mode === 'view' && !hasDone) { card.hidden = true; return; }
+  $('mDone').hidden = true;
+  if (isMark(mode)) { updateMarkCard(); return; }
+  const last = done[done.length - 1];
+  if (!isMeasure(mode) && !done.length) { card.hidden = true; return; }
   card.hidden = false;
   const rows = [];
   let val = '—', hint = '';
   const touch = matchMedia('(pointer: coarse)').matches;
-  const last = done[done.length - 1];
-  const showMode = mode !== 'view' ? mode : last.mode;
+  const showMode = isMeasure(mode) ? mode : last.mode;
   const fromDone = !pts.length && last && last.mode === showMode;
   const P = pts.length ? pts : (fromDone ? last.pts : []);
+  const titles = { dist: 'Mesafe', area: 'Alan', angle: 'Açı', radius: 'Yarıçap' };
+  $('mTitle').textContent = titles[showMode];
   if (showMode === 'dist') {
-    $('mTitle').textContent = 'Mesafe';
     if (P.length >= 2) {
       const a = P[P.length - 2], b = P[P.length - 1];
       val = fmtLen(polyLen(P));
@@ -18844,75 +20118,444 @@ function updateCard() {
       if (P.length > 2) rows.push(['Son parça', fmtLen(Math.hypot(dx, dy))]);
       rows.push(['Δx', fmtLen(Math.abs(dx))], ['Δy', fmtLen(Math.abs(dy))]);
       let ang = Math.atan2(dy, dx) * 180 / Math.PI; if (ang < 0) ang += 360;
-      rows.push(['Açı', fmtNum(ang, 1) + '°']);
+      rows.push(['Yön açısı', fmtNum(ang, 1) + '°']);
       rows.push(['Çizim birimi', fmtNum(polyLen(P), polyLen(P) > 100 ? 0 : 2) + ' ' + unitName]);
     }
-    if (mode === 'dist') hint = pts.length === 0 ? (fromDone ? 'Yeni ölçüm için başlangıç noktasını seç.' : touch ? 'Başlangıç noktasına dokun. Hassas seçim için parmağını basılı tut: büyüteç açılır.' : 'Başlangıç noktasına tıkla. Uç ve merkez noktalarına otomatik yakalar.') : 'Sonraki noktayı seç. Her nokta yeni bir parça ekler.';
-  } else {
-    $('mTitle').textContent = 'Alan';
+    if (mode === 'dist') hint = pts.length === 0 ? (fromDone ? 'Yeni ölçüm için başlangıç noktasını seç.' : touch ? 'Başlangıç noktasına dokun. Hassas seçim için basılı tut: büyüteç açılır.' : 'Başlangıç noktasına tıkla.') : 'Sonraki noktayı seç. Her nokta yeni bir parça ekler.';
+  } else if (showMode === 'area') {
     if (P.length >= 3) { val = fmtArea(polyArea(P)); rows.push(['Çevre', fmtLen(polyLen(P, true))], ['Köşe', String(P.length)]); }
     else if (P.length === 2) val = fmtLen(polyLen(P));
-    if (mode === 'area') hint = pts.length === 0 && fromDone ? 'Yeni alan için ilk köşeyi seç.' : P.length < 3 ? (touch ? 'Alanın köşelerine sırayla dokun (en az 3).' : 'Köşelere sırayla tıkla. Bitirmek için çift tıkla ya da Enter.') : 'Köşe eklemeye devam et ya da alanı kapat.';
+    if (mode === 'area') { hint = pts.length === 0 && fromDone ? 'Yeni alan için ilk köşeyi seç.' : P.length < 3 ? (touch ? 'Alanın köşelerine sırayla dokun (en az 3).' : 'Köşelere sırayla tıkla. Bitirmek için çift tıkla ya da Enter.') : 'Köşe eklemeye devam et ya da alanı kapat.'; $('mDone').hidden = !(pts.length >= 3); }
+  } else if (showMode === 'angle') {
+    if (P.length === 3) { const d = angleAt(P[0], P[1], P[2]); val = fmtNum(d, 2) + '°'; rows.push(['Tamamlayıcı', fmtNum(180 - d, 2) + '°'], ['Dış açı', fmtNum(360 - d, 2) + '°'], ['Kol 1', fmtLen(Math.hypot(P[0][0] - P[1][0], P[0][1] - P[1][1]))], ['Kol 2', fmtLen(Math.hypot(P[2][0] - P[1][0], P[2][1] - P[1][1]))]); }
+    if (mode === 'angle') hint = pts.length === 0 ? (fromDone ? 'Yeni açı için ilk kolun ucunu seç.' : 'Sırayla seç: 1. kolun ucu, köşe, 2. kolun ucu.') : pts.length === 1 ? 'Şimdi köşe noktasını seç.' : 'Şimdi 2. kolun ucunu seç.';
+  } else if (showMode === 'radius') {
+    const R = fromDone ? last : null;
+    if (R && R.r) { val = 'R ' + fmtLen(R.r); rows.push(['Çap', 'Ø ' + fmtLen(R.r * 2)], ['Çevre', fmtLen(R.r * TAU)], ['Alan', fmtArea(Math.PI * R.r * R.r)]); }
+    if (mode === 'radius') hint = 'Bir daireye ya da yaya dokun.';
   }
   $('mVal').innerHTML = val.replace(/ (\S+)$/, ' <small>$1</small>');
   $('mRows').innerHTML = rows.map(r => `<span>${r[0]}</span><span>${r[1]}</span>`).join('');
   $('mHint').textContent = hint; $('mHint').hidden = !hint;
   $('mCount').textContent = done.length ? done.length + ' ölçüm' : '';
-  $('mDone').hidden = !(mode === 'area' && pts.length >= 3);
   $('mUndo').disabled = !pts.length && !done.length;
+}
+
+function label(g, txt, x, y, bg, fg) {
+  const w = g.measureText(txt).width + 12;
+  g.fillStyle = bg; g.beginPath(); if (g.roundRect) g.roundRect(x - w / 2, y - 10, w, 20, 6); else g.rect(x - w / 2, y - 10, w, 20); g.fill();
+  g.fillStyle = fg; g.fillText(txt, x, y + 0.5);
+}
+function drawSnapMarker(g, x, y, k, acc) {
+  g.lineWidth = 2; g.strokeStyle = acc; g.beginPath();
+  const r = 6.5;
+  switch (k) {
+    case SK.END: g.rect(x - r, y - r, 2 * r, 2 * r); break;
+    case SK.MID: g.moveTo(x, y - r - 1); g.lineTo(x + r + 1, y + r); g.lineTo(x - r - 1, y + r); g.closePath(); break;
+    case SK.CEN: g.arc(x, y, r, 0, TAU); break;
+    case SK.INS: g.rect(x - r, y - r, 2 * r, 2 * r); g.moveTo(x - r, y); g.lineTo(x + r, y); break;
+    case SK.INT: g.moveTo(x - r, y - r); g.lineTo(x + r, y + r); g.moveTo(x + r, y - r); g.lineTo(x - r, y + r); break;
+    case SK.PERP: g.moveTo(x - r, y + r); g.lineTo(x + r, y + r); g.moveTo(x, y + r); g.lineTo(x, y - r); break;
+    case SK.NEAR: g.moveTo(x - r, y - r); g.lineTo(x + r, y - r); g.lineTo(x - r, y + r); g.lineTo(x + r, y + r); g.closePath(); break;
+  }
+  g.stroke();
 }
 
 function drawOverlay() {
   if (!scene) return;
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  const acc = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-  const halo = bgColor();
-  const drawSet = (P, isArea, live, faded) => {
-    if (!P.length) return;
-    const S = P.map(p => toScreen(p[0], p[1]));
-    if (live && hoverPt) S.push(toScreen(hoverPt[0], hoverPt[1]));
-    ctx.save();
-    ctx.globalAlpha = faded ? 0.55 : 1;
-    if (isArea && S.length >= 3) {
-      ctx.beginPath(); S.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath();
-      ctx.fillStyle = acc; ctx.globalAlpha *= 0.16; ctx.fill(); ctx.globalAlpha = faded ? 0.55 : 1;
+  const g = ctx;
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const acc = css('--accent'), accInk = css('--accent-ink'), halo = bgColor();
+  g.font = '500 12px ' + css('--f-num');
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  const dot = (p) => { g.beginPath(); g.arc(p[0], p[1], 4, 0, TAU); g.fillStyle = halo; g.fill(); g.lineWidth = 2; g.strokeStyle = acc; g.stroke(); };
+  const path = (S, close, dashed) => {
+    g.beginPath(); S.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); if (close) g.closePath();
+    g.lineWidth = 4; g.strokeStyle = halo; g.stroke();
+    g.lineWidth = 2; g.strokeStyle = acc; g.setLineDash(dashed ? [7, 4] : []); g.stroke(); g.setLineDash([]);
+  };
+  const drawSet = (d, live, faded) => {
+    const P = d.pts || [];
+    g.save(); g.globalAlpha = faded ? 0.6 : 1;
+    if (d.mode === 'radius') {
+      const c = toScreen(d.c[0], d.c[1]), p = toScreen(d.p[0], d.p[1]);
+      const ang = Math.atan2(p[1] - c[1], p[0] - c[0]), rr = d.r * view.s;
+      const e = [c[0] + rr * Math.cos(ang), c[1] + rr * Math.sin(ang)];
+      g.beginPath(); g.arc(c[0], c[1], rr, 0, TAU); g.lineWidth = 2; g.strokeStyle = acc; g.setLineDash([5, 4]); g.stroke(); g.setLineDash([]);
+      path([c, e], false, false); dot(c);
+      label(g, 'R ' + fmtLen(d.r), (c[0] + e[0]) / 2, (c[1] + e[1]) / 2, acc, accInk);
+      g.restore(); return;
     }
-    ctx.beginPath(); S.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); if (isArea && S.length >= 3) ctx.closePath();
-    ctx.lineWidth = 4; ctx.strokeStyle = halo; ctx.stroke();
-    ctx.lineWidth = 2; ctx.strokeStyle = acc; ctx.setLineDash(live ? [7, 4] : []); ctx.stroke(); ctx.setLineDash([]);
-    for (const p of S.slice(0, P.length)) { ctx.beginPath(); ctx.arc(p[0], p[1], 4, 0, TAU); ctx.fillStyle = halo; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = acc; ctx.stroke(); }
-    // labels
-    ctx.font = '500 12px ' + getComputedStyle(document.documentElement).getPropertyValue('--f-num');
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const label = (txt, x, y) => {
-      const w = ctx.measureText(txt).width + 12;
-      ctx.fillStyle = acc; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x - w / 2, y - 10, w, 20, 6) : ctx.rect(x - w / 2, y - 10, w, 20); ctx.fill();
-      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-ink').trim(); ctx.fillText(txt, x, y + 0.5);
-    };
     const WP = live && hoverPt ? [...P, hoverPt] : P;
-    if (!isArea) {
+    if (!WP.length) { g.restore(); return; }
+    const S = WP.map(p => toScreen(p[0], p[1]));
+    if (d.mode === 'area' && S.length >= 3) {
+      g.beginPath(); S.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.closePath();
+      g.fillStyle = acc; g.globalAlpha *= 0.16; g.fill(); g.globalAlpha = faded ? 0.6 : 1;
+    }
+    path(S, d.mode === 'area' && S.length >= 3, live);
+    for (const p of S.slice(0, P.length)) dot(p);
+    if (d.mode === 'dist') {
       for (let i = 1; i < WP.length; i++) {
         const a = S[i - 1], b = S[i];
         if (Math.hypot(b[0] - a[0], b[1] - a[1]) < 60) continue;
-        label(fmtLen(Math.hypot(WP[i][0] - WP[i - 1][0], WP[i][1] - WP[i - 1][1])), (a[0] + b[0]) / 2, (a[1] + b[1]) / 2);
+        label(g, fmtLen(Math.hypot(WP[i][0] - WP[i - 1][0], WP[i][1] - WP[i - 1][1])), (a[0] + b[0]) / 2, (a[1] + b[1]) / 2, acc, accInk);
       }
-    } else if (WP.length >= 3) {
+    } else if (d.mode === 'area' && WP.length >= 3) {
       let cx = 0, cy = 0; S.forEach(p => { cx += p[0]; cy += p[1]; });
-      label(fmtArea(polyArea(WP)), cx / S.length, cy / S.length);
+      label(g, fmtArea(polyArea(WP)), cx / S.length, cy / S.length, acc, accInk);
+    } else if (d.mode === 'angle' && WP.length === 3) {
+      const B = S[1], a1 = Math.atan2(S[0][1] - B[1], S[0][0] - B[0]), a2 = Math.atan2(S[2][1] - B[1], S[2][0] - B[0]);
+      let sw = a2 - a1; while (sw > Math.PI) sw -= TAU; while (sw < -Math.PI) sw += TAU;
+      const rr = Math.min(40, Math.hypot(S[0][0] - B[0], S[0][1] - B[1]) * 0.6, Math.hypot(S[2][0] - B[0], S[2][1] - B[1]) * 0.6);
+      g.beginPath(); g.arc(B[0], B[1], rr, a1, a1 + sw, sw < 0); g.lineWidth = 2; g.strokeStyle = acc; g.stroke();
+      const am = a1 + sw / 2;
+      label(g, fmtNum(angleAt(WP[0], WP[1], WP[2]), 1) + '°', B[0] + Math.cos(am) * (rr + 22), B[1] + Math.sin(am) * (rr + 22), acc, accInk);
     }
-    ctx.restore();
+    g.restore();
   };
-  for (const d of done) drawSet(d.pts, d.mode === 'area', false, true);
-  if (mode !== 'view') drawSet(pts, mode === 'area', true, false);
-  if (snapHit && mode !== 'view') {
-    const [x, y] = toScreen(snapHit[0], snapHit[1]);
-    ctx.lineWidth = 2; ctx.strokeStyle = acc; ctx.strokeRect(x - 6, y - 6, 12, 12);
+  for (const d of done) drawSet(d, false, true);
+  if (isMeasure(mode) && mode !== 'radius') drawSet({ mode, pts }, true, false);
+  if (snapHit && (isMeasure(mode))) {
+    const [x, y] = toScreen(snapHit.p[0], snapHit.p[1]);
+    drawSnapMarker(g, x, y, snapHit.k, acc);
+    if (!matchMedia('(pointer: coarse)').matches || loupeOn) {
+      g.font = '500 11px ' + css('--f-ui'); g.textAlign = 'left';
+      const t = SK_LABEL[snapHit.k], w = g.measureText(t).width + 10;
+      g.fillStyle = css('--panel'); g.fillRect(x + 10, y + 8, w, 18); g.fillStyle = css('--ink'); g.fillText(t, x + 15, y + 17.5);
+    }
   }
+  if (draft) drawMark(g, draft, view, true);
   if (loupeOn && loupeTarget) {
     const [x, y] = loupeTarget;
-    ctx.strokeStyle = acc; ctx.lineWidth = 1.2;
-    ctx.beginPath(); ctx.moveTo(x - 14, y); ctx.lineTo(x - 4, y); ctx.moveTo(x + 4, y); ctx.lineTo(x + 14, y); ctx.moveTo(x, y - 14); ctx.lineTo(x, y - 4); ctx.moveTo(x, y + 4); ctx.lineTo(x, y + 14); ctx.stroke();
+    g.strokeStyle = acc; g.lineWidth = 1.2;
+    g.beginPath(); g.moveTo(x - 14, y); g.lineTo(x - 4, y); g.moveTo(x + 4, y); g.lineTo(x + 14, y); g.moveTo(x, y - 14); g.lineTo(x, y - 4); g.moveTo(x, y + 4); g.lineTo(x, y + 14); g.stroke();
   }
+}
+
+/* ================= markups ================= */
+const MCOLORS = ['#e5484d', '#f2a516', '#2f7df6', '#1f9d55', '#9b51e0'];
+let markColor = MCOLORS[0];
+try { markColor = localStorage.getItem('acad.mcolor') || markColor; } catch (e) { /* ignore */ }
+let marks = [];      // {id, t, sp (space name), pts:[[x,y]...] world, col, txt, img, n}
+let draft = null;
+let pendingPhotoPt = null;
+const spaceName = () => space < 0 ? 'Model' : doc.model.layouts[space].name;
+const visibleMarks = () => marks.filter(m => m.sp === spaceName());
+function renumber() { let n = 0; for (const m of marks) if (m.t === 'text' || m.t === 'photo') m.n = ++n; }
+
+function drawMark(g, m, Tv, isDraft) {
+  if (!scene) return;
+  const S = m.pts.map(p => [(p[0] - scene.ox) * Tv.s + Tv.tx, -(p[1] - scene.oy) * Tv.s + Tv.ty]);
+  g.save();
+  g.lineJoin = 'round'; g.lineCap = 'round';
+  g.strokeStyle = m.col; g.fillStyle = m.col; g.lineWidth = 2.4;
+  if (isDraft) g.globalAlpha = 0.85;
+  if (m.t === 'cloud' && S.length === 2) {
+    const x0 = Math.min(S[0][0], S[1][0]), x1 = Math.max(S[0][0], S[1][0]), y0 = Math.min(S[0][1], S[1][1]), y1 = Math.max(S[0][1], S[1][1]);
+    const corners = [[x0, y0], [x1, y0], [x1, y1], [x0, y1]];
+    const per = 2 * ((x1 - x0) + (y1 - y0));
+    const bump = Math.max(6, Math.min(16, per / 40));
+    g.beginPath();
+    for (let c = 0; c < 4; c++) {
+      const a = corners[c], b = corners[(c + 1) % 4];
+      const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      const n = Math.max(1, Math.round(len / (bump * 2)));
+      const dx = (b[0] - a[0]) / n, dy = (b[1] - a[1]) / n;
+      for (let i = 0; i < n; i++) {
+        const sx = a[0] + dx * i, sy = a[1] + dy * i, ex = sx + dx, ey = sy + dy;
+        const mx = (sx + ex) / 2, my = (sy + ey) / 2, r = Math.hypot(dx, dy) / 2;
+        const ang = Math.atan2(ey - sy, ex - sx);
+        if (c === 0 && i === 0) g.moveTo(sx, sy);
+        g.arc(mx, my, r, ang + Math.PI, ang, false);
+      }
+    }
+    g.stroke();
+  } else if (m.t === 'arrow' && S.length === 2) {
+    const [a, b] = S, ang = Math.atan2(b[1] - a[1], b[0] - a[0]), hl = 14;
+    g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke();
+    g.beginPath(); g.moveTo(b[0], b[1]); g.lineTo(b[0] - hl * Math.cos(ang - 0.42), b[1] - hl * Math.sin(ang - 0.42)); g.lineTo(b[0] - hl * Math.cos(ang + 0.42), b[1] - hl * Math.sin(ang + 0.42)); g.closePath(); g.fill();
+  } else if (m.t === 'pen' && S.length >= 2) {
+    g.beginPath(); S.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.stroke();
+  } else if (m.t === 'text' && S.length) {
+    const [x, y] = S[0];
+    g.font = '600 13px ' + css('--f-ui');
+    const lines = String(m.txt || '').split('\n').slice(0, 4).map(s => s.length > 34 ? s.slice(0, 33) + '…' : s);
+    const w = Math.max(...lines.map(s => g.measureText(s).width)) + 34, h = lines.length * 17 + 10;
+    g.globalAlpha = 0.96; g.fillStyle = dark ? '#1b2026' : '#ffffff';
+    g.beginPath(); if (g.roundRect) g.roundRect(x, y - h, w, h, 6); else g.rect(x, y - h, w, h); g.fill();
+    g.globalAlpha = 1; g.lineWidth = 2; g.stroke();
+    g.beginPath(); g.arc(x, y, 4, 0, TAU); g.fill();
+    g.fillStyle = m.col; g.beginPath(); g.arc(x + 13, y - h + 13, 9, 0, TAU); g.fill();
+    g.fillStyle = '#fff'; g.font = '700 11px ' + css('--f-num'); g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(String(m.n || ''), x + 13, y - h + 13.5);
+    g.textAlign = 'left'; g.textBaseline = 'alphabetic'; g.fillStyle = dark ? '#e5e8eb' : '#1b1f24'; g.font = '600 13px ' + css('--f-ui');
+    lines.forEach((s, i) => g.fillText(s, x + 27, y - h + 18 + i * 17));
+  } else if (m.t === 'photo' && S.length) {
+    const [x, y] = S[0];
+    g.beginPath(); g.moveTo(x, y); g.lineTo(x - 7, y - 14); g.arc(x, y - 22, 12, Math.PI * 0.78, Math.PI * 0.22, false); g.closePath(); g.fill();
+    g.fillStyle = '#fff'; g.font = '700 12px ' + css('--f-num'); g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(String(m.n || ''), x, y - 22);
+  }
+  g.restore();
+}
+function drawMarks(g, Tv) { for (const m of visibleMarks()) drawMark(g, m, Tv, false); }
+function hitMark(sx, sy) {
+  let best = null, bd = 22 * 22;
+  for (const m of visibleMarks()) {
+    if (m.t !== 'text' && m.t !== 'photo') continue;
+    const [x, y] = toScreen(m.pts[0][0] - scene.ox, m.pts[0][1] - scene.oy);
+    const cy = m.t === 'photo' ? y - 22 : y - 12;
+    const d = (sx - x - (m.t === 'text' ? 12 : 0)) ** 2 + (sy - cy) ** 2;
+    if (d < bd) { bd = d; best = m; }
+  }
+  return best;
+}
+function updateMarkCard() {
+  const card = $('mcard'); card.hidden = false;
+  const names = { 'm-cloud': 'Revizyon bulutu', 'm-arrow': 'Ok', 'm-text': 'Not', 'm-pen': 'Kalem', 'm-photo': 'Fotoğraf' };
+  const hints = {
+    'm-cloud': 'Bulutu çizmek için tek parmakla sürükle. İki parmakla kaydırıp yakınlaştırabilirsin.',
+    'm-arrow': 'Oku çizmek için başlangıçtan uca doğru sürükle.',
+    'm-text': 'Notun yerine dokun, sonra metni yaz.',
+    'm-pen': 'Serbest çizim için sürükle.',
+    'm-photo': 'Fotoğrafın ait olduğu yere dokun, sonra fotoğraf çek ya da seç.',
+  };
+  const vm = visibleMarks();
+  $('mTitle').textContent = names[mode] || 'İşaretleme';
+  $('mVal').innerHTML = vm.length + ' <small>işaret</small>';
+  const np = vm.filter(m => m.t === 'photo').length, nt = vm.filter(m => m.t === 'text').length;
+  $('mRows').innerHTML = `<span>Fotoğraf</span><span>${np}</span><span>Not</span><span>${nt}</span>`;
+  $('mHint').textContent = hints[mode] || ''; $('mHint').hidden = false;
+  $('mCount').textContent = spaceName();
+  $('mUndo').disabled = !vm.length;
+}
+function addMark(m) {
+  m.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  m.sp = spaceName();
+  marks.push(m); renumber(); saveMarks(); updateCard(); requestDraw();
+}
+function removeMark(m) { marks = marks.filter(x => x !== m); renumber(); saveMarks(); updateCard(); requestDraw(); }
+
+// persistence (IndexedDB, per document)
+async function saveMarks() {
+  if (!doc) return;
+  try {
+    const db = await idb();
+    const tx = db.transaction('marks', 'readwrite');
+    if (marks.length) tx.objectStore('marks').put({ key: doc.key, marks }); else tx.objectStore('marks').delete(doc.key);
+  } catch (e) { /* storage unavailable */ }
+}
+async function loadMarks() {
+  marks = [];
+  if (!doc) return;
+  try {
+    const db = await idb();
+    const r = await new Promise(res => { const q = db.transaction('marks').objectStore('marks').get(doc.key); q.onsuccess = () => res(q.result); q.onerror = () => res(null); });
+    if (r && Array.isArray(r.marks)) marks = r.marks;
+  } catch (e) { /* ignore */ }
+  renumber(); requestDraw(); updateCard();
+}
+
+/* dialog helper */
+function openDialog({ title, body, actions, onOpen }) {
+  $('dlgT').textContent = title;
+  const B = $('dlgB'); B.innerHTML = ''; if (typeof body === 'string') B.innerHTML = body; else if (body) B.appendChild(body);
+  const A = $('dlgA'); A.innerHTML = '';
+  for (const a of actions) {
+    const b = document.createElement('button'); b.className = 'btn' + (a.primary ? ' go' : '') + (a.danger ? ' danger' : ''); b.textContent = a.label;
+    b.addEventListener('click', () => { const keep = a.onClick && a.onClick() === false; if (!keep) closeDialog(); });
+    A.appendChild(b);
+  }
+  $('dlg').hidden = false;
+  if (onOpen) onOpen();
+}
+function closeDialog() { $('dlg').hidden = true; }
+$('dlg').addEventListener('click', (e) => { if (e.target.id === 'dlg') closeDialog(); });
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function noteDialog(pt, existing, img) {
+  openDialog({
+    title: existing ? (existing.t === 'photo' ? 'Fotoğraf ' + existing.n : 'Not ' + existing.n) : img ? 'Fotoğraf notu' : 'Yeni not',
+    body: (img || existing?.img ? `<img src="${esc(img || existing.img)}" alt="Fotoğraf">` : '') + `<textarea id="noteTxt" placeholder="${img || existing?.img ? 'Açıklama (isteğe bağlı)' : 'Notunu yaz'}">${esc(existing?.txt || '')}</textarea>`,
+    actions: [
+      ...(existing ? [{ label: 'Sil', danger: true, onClick: () => { confirmDialog('Bu işaret silinsin mi?', () => removeMark(existing)); return false; } }] : []),
+      { label: 'Vazgeç' },
+      { label: 'Kaydet', primary: true, onClick: () => {
+        const txt = $('noteTxt').value.trim();
+        if (existing) { existing.txt = txt; saveMarks(); requestDraw(); return; }
+        if (!img && !txt) return;
+        addMark({ t: img ? 'photo' : 'text', pts: [pt], col: markColor, txt, img: img || null });
+      } },
+    ],
+    onOpen: () => setTimeout(() => { try { $('noteTxt').focus(); } catch (e) { /* ignore */ } }, 50),
+  });
+}
+function confirmDialog(msg, yes) {
+  openDialog({ title: msg, body: '', actions: [{ label: 'Vazgeç' }, { label: 'Evet', danger: true, onClick: yes }] });
+}
+async function downscale(file, max = 1600) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+    const c = document.createElement('canvas'); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    return c.toDataURL('image/jpeg', 0.82);
+  } finally { URL.revokeObjectURL(url); }
+}
+$('photoIn').addEventListener('change', async () => {
+  const f = $('photoIn').files[0]; $('photoIn').value = '';
+  if (!f || !pendingPhotoPt) return;
+  try { const data = await downscale(f); noteDialog(pendingPhotoPt, null, data); }
+  catch (e) { toast('Fotoğraf açılamadı.'); }
+  pendingPhotoPt = null;
+});
+
+/* ================= PDF export ================= */
+function pdfFromJpegs(pages) {
+  // pages: [{wpt, hpt, jpeg: Uint8Array, pw, ph}]
+  const enc = new TextEncoder();
+  const chunks = []; let len = 0; const offs = [];
+  const push = (x) => { const b = typeof x === 'string' ? enc.encode(x) : x; chunks.push(b); len += b.length; };
+  const obj = (n, body) => { offs[n] = len; push(`${n} 0 obj\n`); if (Array.isArray(body)) body.forEach(push); else push(body); push('\nendobj\n'); };
+  push('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+  const n = pages.length;
+  const kids = pages.map((_, i) => `${3 + i * 3} 0 R`).join(' ');
+  obj(1, '<< /Type /Catalog /Pages 2 0 R >>');
+  obj(2, `<< /Type /Pages /Kids [${kids}] /Count ${n} >>`);
+  pages.forEach((p, i) => {
+    const pn = 3 + i * 3, cn = pn + 1, im = pn + 2;
+    obj(pn, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${p.wpt.toFixed(2)} ${p.hpt.toFixed(2)}] /Resources << /XObject << /Im0 ${im} 0 R >> >> /Contents ${cn} 0 R >>`);
+    const cs = `q ${p.wpt.toFixed(2)} 0 0 ${p.hpt.toFixed(2)} 0 0 cm /Im0 Do Q`;
+    obj(cn, `<< /Length ${cs.length} >>\nstream\n${cs}\nendstream`);
+    obj(im, [`<< /Type /XObject /Subtype /Image /Width ${p.pw} /Height ${p.ph} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${p.jpeg.length} >>\nstream\n`, p.jpeg, '\nendstream']);
+  });
+  const xref = len;
+  let x = `xref\n0 ${2 + n * 3 + 1}\n0000000000 65535 f \n`;
+  for (let i = 1; i <= 2 + n * 3; i++) x += String(offs[i]).padStart(10, '0') + ' 00000 n \n';
+  push(x);
+  push(`trailer\n<< /Size ${2 + n * 3 + 1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
+  const out = new Uint8Array(len); let o = 0; for (const c of chunks) { out.set(c, o); o += c.length; }
+  return out;
+}
+const canvasJpeg = (c, q = 0.86) => { const d = c.toDataURL('image/jpeg', q); const b = atob(d.split(',')[1]); const u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; };
+
+function pdfDialog() {
+  if (!doc) return;
+  const vm = visibleMarks();
+  openDialog({
+    title: 'PDF rapor',
+    body: `<p>${esc(doc.name)} · ${esc(spaceName())} · ${vm.length} işaret</p>
+      <label class="opt"><input type="radio" name="pdfArea" value="view" checked><div><b>Ekranda görünen alan</b><span>Yakınlaştırdığın bölge, işaretleriyle birlikte.</span></div></label>
+      <label class="opt"><input type="radio" name="pdfArea" value="all"><div><b>Tüm çizim</b><span>${space < 0 ? 'Modelin tamamı.' : 'Paftanın tamamı.'}</span></div></label>
+      <label class="opt"><input type="checkbox" id="pdfNotes" checked><div><b>Not ve fotoğraf sayfaları</b><span>Her not ve fotoğraf numarasıyla ayrı sayfalarda listelenir.</span></div></label>`,
+    actions: [{ label: 'Vazgeç' }, { label: 'PDF oluştur', primary: true, onClick: () => { const area = document.querySelector('input[name=pdfArea]:checked').value; const notes = $('pdfNotes').checked; setTimeout(() => makePdf(area, notes), 30); } }],
+  });
+}
+
+async function makePdf(area, withNotes) {
+  busy(true, 'PDF hazırlanıyor…', doc.name);
+  await new Promise(r => setTimeout(r, 30));
+  const wasDark = dark;
+  try {
+    dark = false; colorCache.clear();
+    const pages = [];
+    // ---- page 1: drawing (A3 landscape, 200 dpi) ----
+    const PW = 3307, PH = 2339, head = 150, pad = 70;
+    const c = document.createElement('canvas'); c.width = PW; c.height = PH;
+    const g = c.getContext('2d');
+    g.fillStyle = '#ffffff'; g.fillRect(0, 0, PW, PH);
+    const dw = PW - pad * 2, dh = PH - head - pad * 2;
+    let ext;
+    if (area === 'view') { const a = toWorld(0, H), b = toWorld(W, 0); ext = [a[0], a[1], b[0], b[1]]; }
+    else { const e0 = sceneExt(), mx = (e0[2] - e0[0]) * 0.03, my = (e0[3] - e0[1]) * 0.03; ext = [e0[0] - mx, e0[1] - my, e0[2] + mx, e0[3] + my]; }
+    const s = Math.min(dw / (ext[2] - ext[0]), dh / (ext[3] - ext[1]));
+    const Tv = { s, tx: pad + dw / 2 - (ext[0] + ext[2]) / 2 * s, ty: head + pad + dh / 2 + (ext[1] + ext[3]) / 2 * s };
+    g.save(); g.beginPath(); g.rect(pad, head + pad, dw, dh); g.clip();
+    renderSpace(g, 1, Tv, PW, PH, '#ffffff', 2.2);
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    // scale marks up for print
+    g.save(); g.scale(2, 2); drawMarks(g, { s: Tv.s / 2, tx: Tv.tx / 2, ty: Tv.ty / 2 }); g.restore();
+    g.restore();
+    g.strokeStyle = '#1b1f24'; g.lineWidth = 3; g.strokeRect(pad, head + pad, dw, dh);
+    // header
+    g.fillStyle = '#1b1f24'; g.fillRect(0, 0, PW, head);
+    g.fillStyle = '#f2b23e'; g.fillRect(pad, 52, 8, 46);
+    g.fillStyle = '#ffffff'; g.textBaseline = 'middle'; g.textAlign = 'left';
+    g.font = '700 54px ' + css('--f-ui'); g.fillText(doc.name, pad + 28, 62);
+    g.font = '400 32px ' + css('--f-num'); g.fillStyle = '#c9ced4';
+    const now = new Date();
+    g.fillText(`${spaceName()}  ·  ${now.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })} ${now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}  ·  ${visibleMarks().length} işaret`, pad + 28, 112);
+    g.textAlign = 'right'; g.font = '700 46px ' + css('--f-ui'); g.fillStyle = '#ffffff'; g.fillText('Acad', PW - pad, 75);
+    // scale bar
+    if (space < 0) {
+      const pxPerM = s / unitM, target = 500 / pxPerM, p10 = Math.pow(10, Math.floor(Math.log10(target)));
+      let L = p10; for (const f of [1, 2, 5, 10]) if (f * p10 <= target * 1.4) L = f * p10;
+      const bw = L * pxPerM, bx = pad + 20, by = PH - pad - 40;
+      g.fillStyle = '#ffffff'; g.fillRect(bx - 14, by - 46, bw + 28 + 160, 70);
+      g.strokeStyle = '#1b1f24'; g.lineWidth = 4; g.beginPath(); g.moveTo(bx, by - 14); g.lineTo(bx, by); g.lineTo(bx + bw, by); g.lineTo(bx + bw, by - 14); g.stroke();
+      g.fillStyle = '#1b1f24'; g.font = '500 30px ' + css('--f-num'); g.textAlign = 'left'; g.textBaseline = 'alphabetic';
+      g.fillText(L >= 1 ? fmtNum(L, L % 1 ? 1 : 0) + ' m' : fmtNum(L * 100, 0) + ' cm', bx + bw + 16, by);
+    }
+    pages.push({ wpt: 1190.55, hpt: 841.89, jpeg: canvasJpeg(c), pw: PW, ph: PH });
+    // ---- note pages: A4 portrait, 2 notes per page ----
+    const notes = visibleMarks().filter(m => m.t === 'text' || m.t === 'photo');
+    if (withNotes && notes.length) {
+      const NW = 1654, NH = 2339;
+      for (let i = 0; i < notes.length; i += 2) {
+        const pc = document.createElement('canvas'); pc.width = NW; pc.height = NH;
+        const q = pc.getContext('2d');
+        q.fillStyle = '#fff'; q.fillRect(0, 0, NW, NH);
+        q.fillStyle = '#1b1f24'; q.font = '700 40px ' + css('--f-ui'); q.textBaseline = 'alphabetic'; q.textAlign = 'left';
+        q.fillText(doc.name + ' · Notlar', 100, 120);
+        q.fillStyle = '#5b6570'; q.font = '400 26px ' + css('--f-num'); q.textAlign = 'right';
+        q.fillText(`Sayfa ${pages.length + 1}`, NW - 100, 120);
+        q.fillStyle = '#d3d8de'; q.fillRect(100, 150, NW - 200, 3);
+        for (let j = 0; j < 2 && i + j < notes.length; j++) {
+          const m = notes[i + j], top = 200 + j * 1060;
+          q.fillStyle = m.col; q.beginPath(); q.arc(140, top + 40, 36, 0, TAU); q.fill();
+          q.fillStyle = '#fff'; q.font = '700 36px ' + css('--f-num'); q.textAlign = 'center'; q.textBaseline = 'middle'; q.fillText(String(m.n), 140, top + 42);
+          q.textAlign = 'left'; q.textBaseline = 'alphabetic'; q.fillStyle = '#1b1f24'; q.font = '650 34px ' + css('--f-ui');
+          q.fillText(m.t === 'photo' ? 'Fotoğraf ' + m.n : 'Not ' + m.n, 200, top + 52);
+          let y = top + 110;
+          if (m.img) {
+            const im = await new Promise((res) => { const x = new Image(); x.onload = () => res(x); x.onerror = () => res(null); x.src = m.img; });
+            if (im) {
+              const maxW = NW - 200, maxH = 700, k = Math.min(maxW / im.width, maxH / im.height);
+              q.drawImage(im, 100, y, im.width * k, im.height * k); y += im.height * k + 40;
+            }
+          }
+          q.fillStyle = '#1b1f24'; q.font = '400 32px ' + css('--f-ui');
+          const words = String(m.txt || '').split(/\s+/); let line = ''; let lines = 0;
+          for (const w of words) {
+            const t = line ? line + ' ' + w : w;
+            if (q.measureText(t).width > NW - 200 && line) { q.fillText(line, 100, y); y += 44; line = w; if (++lines > 6) break; } else line = t;
+          }
+          if (line) q.fillText(line, 100, y);
+        }
+        pages.push({ wpt: 595.28, hpt: 841.89, jpeg: canvasJpeg(pc, 0.84), pw: NW, ph: NH });
+      }
+    }
+    const pdf = pdfFromJpegs(pages);
+    const base = doc.name.replace(/\.(dwg|dxf)$/i, '').replace(/[^\wğüşıöçĞÜŞİÖÇ\- ]+/g, '').trim() || 'cizim';
+    const fname = `${base} - ${now.toISOString().slice(0, 10)}.pdf`;
+    await saveFile(fname, 'application/pdf', pdf);
+  } catch (err) {
+    toast('PDF oluşturulamadı: ' + (err.message || err));
+  } finally {
+    dark = wasDark; colorCache.clear(); busy(false); requestDraw(true);
+  }
+}
+async function saveFile(name, mime, bytes) {
+  if (window.AcadNative && window.AcadNative.shareFile) {
+    let bin = ''; const CH = 0x8000;
+    for (let i = 0; i < bytes.length; i += CH) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + CH));
+    window.AcadNative.shareFile(name, mime, btoa(bin));
+    return;
+  }
+  const url = URL.createObjectURL(new Blob([bytes], { type: mime }));
+  const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 30000);
+  toast('PDF hazır: ' + name, true);
 }
 
 /* ================= loupe ================= */
@@ -18931,22 +20574,20 @@ function drawLoupe() {
   lctx.save(); lctx.beginPath(); lctx.arc(loupe.width / 2, loupe.height / 2, loupe.width / 2, 0, TAU); lctx.clip();
   lctx.drawImage(cv, x * dpr - src / 2, y * dpr - src / 2, src, src, 0, 0, loupe.width, loupe.height);
   lctx.restore();
-  const acc = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-  lctx.strokeStyle = acc; lctx.lineWidth = 2;
+  lctx.strokeStyle = css('--accent'); lctx.lineWidth = 2;
   const c = loupe.width / 2;
   lctx.beginPath(); lctx.moveTo(c - 22, c); lctx.lineTo(c + 22, c); lctx.moveTo(c, c - 22); lctx.lineTo(c, c + 22); lctx.stroke();
 }
 
-/* ================= scale bar ================= */
+/* ================= scale bar & units ================= */
 function updateScale() {
-  if (!scene) { $('scale').hidden = true; return; }
+  if (!scene || space >= 0) { $('scale').hidden = true; return; }
   $('scale').hidden = false;
   const pxPerM = view.s / unitM;
-  const target = 110 / pxPerM; // metres
+  const target = 110 / pxPerM;
   const p = Math.pow(10, Math.floor(Math.log10(target)));
   let L = p; for (const f of [1, 2, 5, 10]) if (f * p <= target * 1.4) L = f * p;
-  const px = L * pxPerM;
-  $('scaleBar').style.width = px.toFixed(1) + 'px';
+  $('scaleBar').style.width = (L * pxPerM).toFixed(1) + 'px';
   $('scaleLbl').textContent = L >= 1000 ? fmtNum(L / 1000, L % 1000 ? 1 : 0) + ' km' : L >= 1 ? fmtNum(L, L % 1 ? 1 : 0) + ' m' : L >= 0.01 ? fmtNum(L * 100, 0) + ' cm' : fmtNum(L * 1000, 0) + ' mm';
 }
 function setUnit(name) {
@@ -18955,10 +20596,7 @@ function setUnit(name) {
   $('unitChip').textContent = '1 birim = ' + unitName;
   updateCard(); requestDraw();
 }
-$('unitChip').addEventListener('click', () => {
-  const i = UNITS.findIndex(x => x[0] === unitName);
-  setUnit(UNITS[(i + 1) % UNITS.length][0]);
-});
+$('unitChip').addEventListener('click', () => { const i = UNITS.findIndex(x => x[0] === unitName); setUnit(UNITS[(i + 1) % UNITS.length][0]); });
 
 /* ================= input ================= */
 const ptrs = new Map();
@@ -18966,54 +20604,67 @@ let gesture = null, lastTap = 0, lastTapXY = null, pressTimer = 0;
 const rel = (e) => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
 function beginGesture() { gestureActive = true; clearTimeout(idleTimer); }
 function endGesture() { clearTimeout(idleTimer); idleTimer = setTimeout(() => { gestureActive = false; requestDraw(true); }, 140); }
+const drawTool = () => mode === 'm-cloud' || mode === 'm-arrow' || mode === 'm-pen';
+const lastPt = () => pts.length ? pts[pts.length - 1] : null;
 
 cv.addEventListener('pointerdown', (e) => {
   cv.setPointerCapture(e.pointerId);
   const p = rel(e);
   ptrs.set(e.pointerId, p);
-  closeMenu();
+  closeMenu(); $('snapPop').hidden = true;
   if (ptrs.size === 1) {
-    gesture = { type: 'press', start: p, last: p, t: performance.now(), touch: e.pointerType !== 'mouse' };
-    if (mode !== 'view' && e.pointerType !== 'mouse') {
+    const panBtn = e.pointerType === 'mouse' && (e.button === 1 || e.button === 2);
+    gesture = { type: 'press', start: p, last: p, t: performance.now(), touch: e.pointerType !== 'mouse', panBtn };
+    if (drawTool() && !panBtn) {
+      const w = s2w(toWorld(p[0], p[1]));
+      draft = { t: mode.slice(2), pts: mode === 'm-pen' ? [w] : [w, w], col: markColor };
+      gesture.type = 'draw';
+    } else if (isMeasure(mode) && mode !== 'radius' && e.pointerType !== 'mouse') {
       clearTimeout(pressTimer);
       pressTimer = setTimeout(() => {
         if (gesture && gesture.type === 'press') { gesture.type = 'precise'; loupeOn = true; loupe.hidden = false; updatePrecise(gesture.last); }
       }, 260);
     }
   } else if (ptrs.size === 2) {
-    clearTimeout(pressTimer); loupeOn = false; loupe.hidden = true;
+    clearTimeout(pressTimer); loupeOn = false; loupe.hidden = true; draft = null;
     const [a, b] = [...ptrs.values()];
     gesture = { type: 'pinch', d: Math.hypot(a[0] - b[0], a[1] - b[1]), c: [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], s: view.s, tx: view.tx, ty: view.ty };
     beginGesture();
   }
 });
+cv.addEventListener('contextmenu', (e) => e.preventDefault());
 function updatePrecise(p) {
   const target = [p[0], p[1] - 64];
-  const hit = findSnap(target[0], target[1]);
+  const hit = anySnap() ? findSnap(target[0], target[1], lastPt()) : null;
   snapHit = hit;
-  loupeTarget = hit ? toScreen(hit[0], hit[1]) : target;
-  hoverPt = hit || toWorld(target[0], target[1]);
+  loupeTarget = hit ? toScreen(hit.p[0], hit.p[1]) : target;
+  hoverPt = hit ? hit.p : toWorld(target[0], target[1]);
   requestDraw();
 }
 cv.addEventListener('pointermove', (e) => {
   const p = rel(e);
   if (ptrs.has(e.pointerId)) ptrs.set(e.pointerId, p);
   if (!gesture) {
-    if (e.pointerType === 'mouse' && mode !== 'view') {
-      const hit = findSnap(p[0], p[1]); snapHit = hit; hoverPt = hit || toWorld(p[0], p[1]); requestDraw();
+    if (e.pointerType === 'mouse' && isMeasure(mode) && mode !== 'radius') {
+      const hit = anySnap() ? findSnap(p[0], p[1], lastPt()) : null; snapHit = hit; hoverPt = hit ? hit.p : toWorld(p[0], p[1]); requestDraw();
     }
     return;
   }
   if (gesture.type === 'pinch' && ptrs.size >= 2) {
     const [a, b] = [...ptrs.values()];
     const d = Math.hypot(a[0] - b[0], a[1] - b[1]), c = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
-    const k = d / gesture.d;
-    const ns = clampS(gesture.s * k), kk = ns / gesture.s;
+    const ns = clampS(gesture.s * d / gesture.d), kk = ns / gesture.s;
     view.s = ns;
     view.tx = c[0] - (gesture.c[0] - gesture.tx) * kk;
     view.ty = c[1] - (gesture.c[1] - gesture.ty) * kk;
     requestDraw();
     return;
+  }
+  if (gesture.type === 'draw' && draft) {
+    const w = s2w(toWorld(p[0], p[1]));
+    if (draft.t === 'pen') { const l = draft.pts[draft.pts.length - 1]; if (Math.hypot(w[0] - l[0], w[1] - l[1]) * view.s > 2.5) draft.pts.push(w); }
+    else draft.pts[1] = w;
+    requestDraw(); return;
   }
   if (gesture.type === 'precise') { gesture.last = p; updatePrecise(p); return; }
   const dx = p[0] - gesture.last[0], dy = p[1] - gesture.last[1];
@@ -19022,7 +20673,7 @@ cv.addEventListener('pointermove', (e) => {
   }
   if (gesture.type === 'pan') { view.tx += dx; view.ty += dy; requestDraw(); }
   gesture.last = p;
-  if (e.pointerType === 'mouse' && mode !== 'view') { const hit = findSnap(p[0], p[1]); snapHit = hit; hoverPt = hit || toWorld(p[0], p[1]); }
+  if (e.pointerType === 'mouse' && isMeasure(mode) && mode !== 'radius') { const hit = anySnap() ? findSnap(p[0], p[1], lastPt()) : null; snapHit = hit; hoverPt = hit ? hit.p : toWorld(p[0], p[1]); }
 });
 function pointerEnd(e) {
   const p = rel(e);
@@ -19037,22 +20688,50 @@ function pointerEnd(e) {
   if (ptrs.size > 0) return;
   gesture = null;
   stage.classList.remove('panning');
+  if (g.type === 'draw') {
+    const d = draft; draft = null;
+    if (d && e.type !== 'pointercancel') {
+      const a = toScreen(d.pts[0][0] - scene.ox, d.pts[0][1] - scene.oy), b = toScreen(d.pts[d.pts.length - 1][0] - scene.ox, d.pts[d.pts.length - 1][1] - scene.oy);
+      const big = d.t === 'pen' ? d.pts.length > 2 : Math.hypot(b[0] - a[0], b[1] - a[1]) > 12;
+      if (big) addMark(d);
+      else {
+        const m = hitMark(p[0], p[1]);
+        if (m) noteDialog(null, m);
+      }
+    }
+    requestDraw(); return;
+  }
   if (g.type === 'precise') {
     loupeOn = false; loupe.hidden = true; loupeTarget = null;
-    if (e.type !== 'pointercancel') addPoint(hoverPt);
-    hoverPt = null; snapHit = null; requestDraw();
+    if (e.type !== 'pointercancel' && hoverPt) addPoint(hoverPt);
+    hoverPt = null; requestDraw();
     return;
   }
   if (g.type === 'pan') { endGesture(); return; }
   if (g.type === 'press' && e.type !== 'pointercancel') {
     const now = performance.now();
-    if (mode !== 'view') {
-      const pk = pickPoint(p[0], p[1]);
+    if (isMeasure(mode)) {
+      if (mode === 'radius') {
+        const r = findCircle(p[0], p[1]);
+        if (r) { done.push({ mode: 'radius', ...r }); updateCard(); requestDraw(); }
+        else toast('Burada daire ya da yay bulunamadı. Çizginin üstüne dokun.', true);
+        return;
+      }
+      const pk = anySnap() ? pickPoint(p[0], p[1], lastPt()) : { p: toWorld(p[0], p[1]), snap: null };
       if (mode === 'area' && e.pointerType === 'mouse' && now - lastTap < 320 && lastTapXY && Math.hypot(p[0] - lastTapXY[0], p[1] - lastTapXY[1]) < 8) { finishArea(); lastTap = 0; return; }
       addPoint(pk.p);
-      if (g.touch) { hoverPt = null; snapHit = pk.snapped ? pk.p : null; }
-    } else if (now - lastTap < 300 && lastTapXY && Math.hypot(p[0] - lastTapXY[0], p[1] - lastTapXY[1]) < 24) {
-      zoomAt(p[0], p[1], 2, true); lastTap = 0; return;
+      if (g.touch) { hoverPt = null; snapHit = pk.snap; }
+    } else if (mode === 'm-text' || mode === 'm-photo') {
+      const m = hitMark(p[0], p[1]);
+      if (m) { noteDialog(null, m); return; }
+      const w = s2w(toWorld(p[0], p[1]));
+      if (mode === 'm-text') noteDialog(w, null, null);
+      else { pendingPhotoPt = w; $('photoIn').click(); }
+      return;
+    } else {
+      const m = hitMark(p[0], p[1]);
+      if (m) { noteDialog(null, m); return; }
+      if (now - lastTap < 300 && lastTapXY && Math.hypot(p[0] - lastTapXY[0], p[1] - lastTapXY[1]) < 24) { zoomAt(p[0], p[1], 2, true); lastTap = 0; return; }
     }
     lastTap = now; lastTapXY = p;
   }
@@ -19080,33 +20759,70 @@ cv.addEventListener('wheel', (e) => {
   beginGesture(); zoomAt(p[0], p[1], k, false); endGesture();
 }, { passive: false });
 window.addEventListener('keydown', (e) => {
-  if (e.target.tagName === 'INPUT') return;
-  if (e.key === 'Escape') { if (!$('sheet').hidden) toggleSheet(false); else if (mode !== 'view') { pts = []; setMode(mode); } closeMenu(); }
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'Escape') { if (!$('dlg').hidden) closeDialog(); else if (!$('sheet').hidden) toggleSheet(false); else if (!$('spaces').hidden) toggleSpaces(false); else if (mode !== 'view') { pts = []; setMode(mode); } closeMenu(); }
   else if (e.key === 'Enter') finishArea();
   else if ((e.key === 'z' && (e.ctrlKey || e.metaKey)) || e.key === 'Backspace') undo();
   else if (e.key === 'f' || e.key === 'F') fit();
-  else if (e.key === 'm' || e.key === 'M') setMode('dist');
-  else if (e.key === 'a' || e.key === 'A') setMode('area');
+  else if (e.key === 'm' || e.key === 'M') { showStrip('M'); setMode('dist'); }
+  else if (e.key === 'a' || e.key === 'A') { showStrip('M'); setMode('area'); }
   else if (e.key === '+' || e.key === '=') zoomAt(W / 2, H / 2, 1.5, true);
   else if (e.key === '-') zoomAt(W / 2, H / 2, 1 / 1.5, true);
 });
 function undo() {
+  if (isMark(mode)) { const vm = visibleMarks(); if (vm.length) removeMark(vm[vm.length - 1]); return; }
   if (pts.length) pts.pop();
-  else if (done.length) { const d = done.pop(); if (mode === d.mode) { pts = d.pts; pts.pop(); } }
+  else if (done.length) { const d = done.pop(); if (mode === d.mode && d.pts) { pts = d.pts.slice(0, -1); } }
   updateCard(); requestDraw();
 }
 
-$('tDist').addEventListener('click', () => setMode('dist'));
-$('tArea').addEventListener('click', () => setMode('area'));
+/* ================= toolbar & strips ================= */
+let strip = null;
+function showStrip(which) {
+  strip = strip === which ? null : which;
+  $('stripM').hidden = strip !== 'M'; $('stripK').hidden = strip !== 'K';
+  $('tMeasure').setAttribute('aria-pressed', strip === 'M'); $('tMark').setAttribute('aria-pressed', strip === 'K');
+  $('snapPop').hidden = true;
+  if (!strip && mode !== 'view') setMode(mode);
+  if (strip === 'M' && !isMeasure(mode)) setMode(space >= 0 ? 'view' : 'dist');
+  if (strip === 'K' && !isMark(mode)) setMode('m-cloud');
+}
+$('tMeasure').addEventListener('click', () => { if (space >= 0) { toast('Ölçüm Model görünümünde yapılır. Pafta menüsünden Model\'e geç.', true); return; } showStrip('M'); });
+$('tMark').addEventListener('click', () => showStrip('K'));
+document.querySelectorAll('.sbtn[data-mode]').forEach(b => b.addEventListener('click', () => { if (mode !== b.dataset.mode) setMode(b.dataset.mode); }));
 $('tFit').addEventListener('click', fit);
 $('mUndo').addEventListener('click', undo);
-$('mClear').addEventListener('click', () => { pts = []; done = []; updateCard(); requestDraw(); });
+$('mClear').addEventListener('click', () => {
+  if (isMark(mode)) { if (!visibleMarks().length) return; confirmDialog('Bu görünümdeki tüm işaretler silinsin mi?', () => { const sp = spaceName(); marks = marks.filter(m => m.sp !== sp); renumber(); saveMarks(); updateCard(); requestDraw(); }); return; }
+  pts = []; done = []; updateCard(); requestDraw();
+});
 $('mDone').addEventListener('click', finishArea);
+function paintColor() { $('kDot').style.background = markColor; }
+$('kColor').addEventListener('click', () => { const i = MCOLORS.indexOf(markColor); markColor = MCOLORS[(i + 1) % MCOLORS.length]; try { localStorage.setItem('acad.mcolor', markColor); } catch (e) { /* ignore */ } paintColor(); });
+$('kPdf').addEventListener('click', pdfDialog);
+paintColor();
+// snap popover
+const SNAP_UI = [[SK.END, 'Uç nokta'], [SK.MID, 'Orta nokta'], [SK.CEN, 'Merkez'], [SK.INT, 'Kesişim'], [SK.PERP, 'Dik'], [SK.NEAR, 'En yakın'], [SK.INS, 'Ekleme / yazı noktası']];
+function renderSnapPop() {
+  const box = $('snapList'); box.innerHTML = '';
+  for (const [k, name] of SNAP_UI) {
+    const lb = document.createElement('label');
+    const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = !!snapOn[k]; cb.id = 'snap' + k;
+    const sym = document.createElement('canvas'); sym.width = 36; sym.height = 36; sym.style.width = '18px'; sym.style.height = '18px';
+    const sg = sym.getContext('2d'); sg.scale(2, 2); drawSnapMarker(sg, 9, 9, k, css('--accent'));
+    cb.addEventListener('change', () => { snapOn[k] = cb.checked; try { localStorage.setItem('acad.snap', JSON.stringify(snapOn)); } catch (e) { /* ignore */ } updSnapBtn(); });
+    lb.append(cb, sym, document.createTextNode(name)); box.appendChild(lb);
+  }
+}
+function updSnapBtn() { $('sSnap').setAttribute('aria-pressed', anySnap()); }
+$('sSnap').addEventListener('click', (e) => { e.stopPropagation(); const p = $('snapPop'); p.hidden = !p.hidden; if (!p.hidden) renderSnapPop(); });
+updSnapBtn();
 
 /* ================= layers sheet ================= */
 function toggleSheet(open) {
   const sh = $('sheet');
   open = open === undefined ? sh.hidden : open;
+  if (open) toggleSpaces(false);
   sh.hidden = !open; $('tLayers').setAttribute('aria-pressed', open);
   if (open) renderLayers();
 }
@@ -19117,36 +20833,89 @@ $('lyrAll').addEventListener('click', () => { if (!scene) return; for (const l o
 $('lyrNone').addEventListener('click', () => { if (!scene) return; for (const l of filteredLayers()) l.on = false; renderLayers(); requestDraw(true); });
 function filteredLayers() {
   const q = $('lyrQ').value.trim().toLocaleLowerCase('tr');
-  return scene.layers.filter(l => (l.count > 0 || l.name !== '0') && (!q || l.name.toLocaleLowerCase('tr').includes(q)));
+  return doc.LS.layers.filter(l => (l.count > 0 || l.name !== '0') && (!q || l.name.toLocaleLowerCase('tr').includes(q)));
 }
 const EYE = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M1.5 10S5 4 10 4s8.5 6 8.5 6S15 16 10 16 1.5 10 1.5 10z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2.6" fill="currentColor"/></svg>';
 const EYE_OFF = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M1.5 10S5 4 10 4s8.5 6 8.5 6S15 16 10 16 1.5 10 1.5 10z" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".45"/><path d="M3 17 17 3" stroke="currentColor" stroke-width="1.6"/></svg>';
 function renderLayers() {
-  if (!scene) return;
+  if (!doc) return;
+  const all = doc.LS.layers;
   const list = filteredLayers().slice().sort((a, b) => a.name.localeCompare(b.name, 'tr', { numeric: true }));
-  const used = scene.layers.filter(l => l.count > 0).length;
-  $('lyrCount').textContent = scene.layers.filter(l => l.on && l.count > 0).length + ' / ' + used + ' açık';
-  const box = $('lyrs');
-  box.innerHTML = '';
+  const used = all.filter(l => l.count > 0).length;
+  $('lyrCount').textContent = all.filter(l => l.on && l.count > 0).length + ' / ' + used + ' açık';
+  const box = $('lyrs'); box.innerHTML = '';
   const frag = document.createDocumentFragment();
   for (const l of list) {
     const row = document.createElement('div');
     row.className = 'lyr' + (l.on ? '' : ' off');
-    const sw = document.createElement('span'); sw.className = 'sw'; sw.style.background = css(l.rgb != null ? 'r' + l.rgb : 'a' + l.c);
+    const sw = document.createElement('span'); sw.className = 'sw'; sw.style.background = colorOf(l.rgb != null ? 'r' + l.rgb : 'a' + l.c);
     const nm = document.createElement('span'); nm.className = 'ln'; nm.textContent = l.name;
-    const sm = document.createElement('small'); sm.textContent = l.count ? l.count.toLocaleString('tr-TR') + ' nesne' : 'blok içinde'; nm.appendChild(sm);
+    const sm = document.createElement('small'); sm.textContent = l.count ? l.count.toLocaleString('tr-TR') + ' nesne' : 'blok / pafta içinde'; nm.appendChild(sm);
     const b = document.createElement('button'); b.innerHTML = l.on ? EYE : EYE_OFF; b.setAttribute('aria-label', (l.on ? 'Gizle: ' : 'Göster: ') + l.name); b.setAttribute('aria-pressed', l.on);
     b.addEventListener('click', () => { l.on = !l.on; renderLayers(); requestDraw(true); });
     row.append(sw, nm, b); frag.appendChild(row);
   }
   box.appendChild(frag);
-  const sk = Object.entries(scene.skipped).map(([k, v]) => [k.replace(/^\?/, ''), v]).filter(([k]) => !/^(VIEWPORT|POINT|ATTDEF|SEQEND)$/.test(k));
-  const foot = $('lyrFoot');
+  const sk = Object.entries(doc.modelScene.skipped).map(([k, v]) => [k.replace(/^\?/, ''), v]).filter(([k]) => !/^(VIEWPORT|POINT|ATTDEF|SEQEND)$/.test(k));
   const notes = [];
   if (sk.length) notes.push('Gösterilmeyen nesne türleri: ' + sk.map(([k, v]) => `${k} ×${v}`).join(', ') + '.');
-  if (scene.truncated) notes.push('Çizim çok büyük olduğu için bazı bloklar atlandı.');
-  foot.textContent = notes.join(' ');
-  foot.hidden = !notes.length;
+  if (doc.modelScene.truncated) notes.push('Çizim çok büyük olduğu için bazı bloklar atlandı.');
+  $('lyrFoot').textContent = notes.join(' ');
+  $('lyrFoot').hidden = !notes.length;
+}
+
+/* ================= spaces (layouts) ================= */
+function toggleSpaces(open) {
+  const sh = $('spaces');
+  open = open === undefined ? sh.hidden : open;
+  if (open) { $('sheet').hidden = true; $('tLayers').setAttribute('aria-pressed', false); }
+  sh.hidden = !open; $('tSheets').setAttribute('aria-pressed', open);
+  if (open) renderSpaces();
+}
+$('tSheets').addEventListener('click', () => toggleSpaces());
+$('spacesX').addEventListener('click', () => toggleSpaces(false));
+function layoutUsable(l) { return l.ents.length > 0 || l.vps.length > 0; }
+function renderSpaces() {
+  if (!doc) return;
+  const box = $('spList'); box.innerHTML = '';
+  const items = [{ i: -1, name: 'Model', sub: 'Çizimin tamamı, gerçek ölçülerle' }];
+  doc.model.layouts.forEach((l, i) => { if (layoutUsable(l)) items.push({ i, name: l.name, sub: l.vps.length + ' görünüm penceresi · ' + l.ents.length + ' nesne' }); });
+  $('spCount').textContent = (items.length - 1) + ' pafta';
+  for (const it of items) {
+    const row = document.createElement('div');
+    row.className = 'lyr click' + (it.i === space ? ' cur' : '');
+    row.tabIndex = 0;
+    const nm = document.createElement('span'); nm.className = 'ln'; nm.textContent = it.name;
+    const sm = document.createElement('small'); sm.textContent = it.sub; nm.appendChild(sm);
+    const tg = document.createElement('span'); tg.className = 'tag'; tg.textContent = it.i === space ? 'açık' : '';
+    row.append(nm, tg);
+    const go = () => { switchSpace(it.i); toggleSpaces(false); };
+    row.addEventListener('click', go); row.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
+    box.appendChild(row);
+  }
+}
+function switchSpace(i) {
+  if (!doc) return;
+  if (i >= 0 && !doc.layoutScenes[i]) {
+    busy(true, 'Pafta hazırlanıyor…', doc.model.layouts[i].name);
+    try { doc.layoutScenes[i] = buildScene(doc.model, doc.model.layouts[i].ents, doc.LS, false); }
+    finally { busy(false); }
+  }
+  space = i;
+  scene = i < 0 ? doc.modelScene : doc.layoutScenes[i];
+  pts = []; done = [];
+  if (isMeasure(mode) && i >= 0) setMode('view');
+  if (strip === 'M' && i >= 0) showStrip('M');
+  updateMeta(); updateCard(); fit();
+}
+function updateMeta() {
+  const sc = doc.modelScene, used = doc.LS.layers.filter(l => l.count > 0).length;
+  const parts = [doc.kind + (doc.model.ver ? ' ' + doc.model.ver : '')];
+  if (space >= 0) parts.push('Pafta: ' + spaceName());
+  parts.push(sc.entCount.toLocaleString('tr-TR') + ' nesne', used + ' katman');
+  $('fmeta').textContent = parts.join(' · ');
+  const nl = doc.model.layouts.filter(layoutUsable).length;
+  $('tSheets').style.opacity = nl ? '' : '0.45';
 }
 
 /* ================= files ================= */
@@ -19158,7 +20927,7 @@ function getWorker() {
   worker.onmessage = (ev) => {
     const { id, stage: st, model, error } = ev.data;
     const p = pending.get(id); if (!p) return;
-    if (st === 'engine') busy(true, 'DWG motoru yükleniyor…', 'İlk açılışta yaklaşık 9 MB indirilir.');
+    if (st === 'engine') busy(true, 'DWG motoru yükleniyor…', 'İlk açılışta yaklaşık 9 MB okunur.');
     else if (st === 'parse') busy(true, 'Çizim okunuyor…', p.name);
     else { pending.delete(id); error ? p.reject(new Error(error)) : p.resolve(model); }
   };
@@ -19190,33 +20959,35 @@ async function openBytes(name, bytes, opts = {}) {
       if (!/^AC1\d{3}/.test(head)) throw new Error('Bu dosya geçerli bir DWG gibi görünmüyor.');
       if (head < 'AC1012') throw new Error(`Bu DWG çok eski bir sürüm (${head}). R14 ve sonrası desteklenir.`);
       try { model = await parseDwg(bytes.slice().buffer, name); }
-      catch (err) {
-        throw new Error('DWG okunamadı (' + String(err.message || err).slice(0, 80) + '). Dosyayı ZWCAD\'de "Farklı kaydet → DXF" ile kaydedip tekrar deneyin.');
-      }
+      catch (err) { throw new Error('DWG okunamadı (' + String(err.message || err).slice(0, 80) + '). Dosyayı ZWCAD\'de "Farklı kaydet → DXF" ile kaydedip tekrar deneyin.'); }
       model.ver = head;
     } else {
       model = parseDxf(bytes);
     }
+    model.layouts = model.layouts || [];
     busy(true, 'Çiziliyor…', name);
     await new Promise(r => setTimeout(r, 10));
     try { await Promise.race([document.fonts.load('100px "Archivo Narrow"'), new Promise(r => setTimeout(r, 1500))]); } catch (e) { /* ignore */ }
-    const sc = buildScene(model);
-    if (!sc.strokes.length && !sc.texts.length && !sc.hatches.length) throw new Error('Çizimde gösterilecek model alanı nesnesi bulunamadı.');
-    scene = sc;
-    docInfo = { name, kind: isDwg ? 'DWG' : 'DXF' };
-    pts = []; done = []; mode = 'view'; setMode('view');
-    // units
+    FACE = css('--f-draw') || FACE;
+    const LS = makeLayers(model);
+    const ms = buildScene(model, model.ents, LS, true);
+    const hasLayouts = model.layouts.some(layoutUsable);
+    if (!ms.strokes.length && !ms.texts.length && !ms.hatches.length && !hasLayouts) throw new Error('Çizimde gösterilecek nesne bulunamadı.');
+    doc = { model, LS, modelScene: ms, layoutScenes: [], name: opts.label || name, kind: isDwg ? 'DWG' : 'DXF', key: name + '|' + bytes.length };
+    space = -1; scene = ms;
+    pts = []; done = []; mode = 'view'; strip = null; showStrip(null);
     const umap = { 1: 'inç', 2: 'ft', 4: 'mm', 5: 'cm', 6: 'm' };
-    let un = umap[sc.units];
-    if (!un) { const w = Math.max(sc.ext[2] - sc.ext[0], sc.ext[3] - sc.ext[1]); un = w > 4000 ? 'mm' : w > 300 ? 'cm' : 'm'; }
+    let un = umap[ms.units];
+    if (!un) { const w = Math.max(ms.ext[2] - ms.ext[0], ms.ext[3] - ms.ext[1]); un = w > 4000 ? 'mm' : w > 300 ? 'cm' : 'm'; }
     setUnit(un);
-    $('fname').textContent = opts.label || name;
-    const used = sc.layers.filter(l => l.count > 0).length;
-    $('fmeta').textContent = [docInfo.kind + (model.ver ? ' ' + model.ver : ''), sc.entCount.toLocaleString('tr-TR') + ' nesne', used + ' katman'].join(' · ');
+    $('fname').textContent = doc.name;
+    updateMeta();
     colorCache.clear();
     fit();
     if (!$('sheet').hidden) renderLayers();
+    if (!$('spaces').hidden) renderSpaces();
     if (opts.remember) remember(name, bytes);
+    loadMarks();
   } catch (err) {
     toast(err.message || String(err));
   } finally { busy(false); }
@@ -19224,7 +20995,7 @@ async function openBytes(name, bytes, opts = {}) {
 
 $('openBtn').addEventListener('click', (e) => { e.stopPropagation(); const m = $('menu'); m.hidden = !m.hidden; $('openBtn').setAttribute('aria-expanded', !m.hidden); if (!m.hidden) listRecent(); });
 function closeMenu() { $('menu').hidden = true; $('openBtn').setAttribute('aria-expanded', 'false'); }
-document.addEventListener('click', (e) => { if (!e.target.closest('.menuwrap')) closeMenu(); });
+document.addEventListener('click', (e) => { if (!e.target.closest('.menuwrap')) closeMenu(); if (!e.target.closest('#snapPop') && !e.target.closest('#sSnap')) $('snapPop').hidden = true; });
 $('pickFile').addEventListener('click', () => { closeMenu(); $('fileIn').click(); });
 $('openSample').addEventListener('click', () => { closeMenu(); openSample(); });
 $('fileIn').addEventListener('change', async () => {
@@ -19237,8 +21008,6 @@ function openSample() {
   const txt = $('sample-dxf').textContent.replace(/^\s+/, '');
   openBytes('ornek-daire.dxf', new TextEncoder().encode(txt), { label: 'Örnek daire planı' });
 }
-
-// drag & drop
 let dragDepth = 0;
 stage.addEventListener('dragenter', (e) => { e.preventDefault(); dragDepth++; $('drop').hidden = false; });
 stage.addEventListener('dragover', (e) => e.preventDefault());
@@ -19249,12 +21018,15 @@ stage.addEventListener('drop', async (e) => {
   openBytes(f.name, new Uint8Array(await f.arrayBuffer()), { remember: true });
 });
 
-/* recent files in this browser (IndexedDB) */
 function idb() {
   return new Promise((res, rej) => {
     try {
-      const r = indexedDB.open('acad', 1);
-      r.onupgradeneeded = () => r.result.createObjectStore('files', { keyPath: 'name' });
+      const r = indexedDB.open('acad', 2);
+      r.onupgradeneeded = () => {
+        const db = r.result;
+        if (!db.objectStoreNames.contains('files')) db.createObjectStore('files', { keyPath: 'name' });
+        if (!db.objectStoreNames.contains('marks')) db.createObjectStore('marks', { keyPath: 'key' });
+      };
       r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
     } catch (e) { rej(e); }
   });
@@ -19290,16 +21062,16 @@ async function listRecent() {
     wrap.hidden = !all.length;
   } catch (e) { wrap.hidden = true; }
 }
+async function openUrl(url, name) {
+  try { busy(true, 'Açılıyor…', name); const r = await fetch(url); if (!r.ok) throw new Error('Dosya okunamadı (' + r.status + ').'); await openBytes(name, new Uint8Array(await r.arrayBuffer()), { remember: true }); }
+  catch (err) { busy(false); toast(err.message || String(err)); }
+}
 
 /* ================= boot ================= */
 readTheme();
 resize();
 openSample();
-async function openUrl(url, name) {
-  try { busy(true, 'Açılıyor…', name); const r = await fetch(url); if (!r.ok) throw new Error('Dosya okunamadı (' + r.status + ').'); await openBytes(name, new Uint8Array(await r.arrayBuffer()), { remember: true }); }
-  catch (err) { busy(false); toast(err.message || String(err)); }
-}
-window.__acad = { get scene() { return scene; }, openBytes, openUrl, view };
+window.__acad = { get scene() { return scene; }, get doc() { return doc; }, get marks() { return marks; }, openBytes, openUrl, view, switchSpace, setMode, makePdf, pdfFromJpegs, findSnap, findCircle, toScreen };
 })();
 </script>
 </body></html>

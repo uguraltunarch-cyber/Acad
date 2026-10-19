@@ -110,6 +110,10 @@ function conv(e) {
       const defs = (e.definitionLines || []).map(d => [num(d.angle), num(d.base?.x), num(d.base?.y), num(d.offset?.x), num(d.offset?.y), d.dashLengths || []]);
       return { k: 'H', ...base(e), sol: e.solidFill === 1 ? 1 : 0, pat: e.patternName || '', loops, defs, ps: num(e.patternScale) || 1, pa: num(e.patternAngle) };
     }
+    case 'VIEWPORT': {
+      const c = e.viewportCenter || {}, d = e.displayCenter || {}, t = e.targetPoint || {};
+      return { k: 'VP', l: e.layer || '0', c: 256, id: e.viewportId | 0, cx: num(c.x), cy: num(c.y), w: num(e.width), h: num(e.height), vcx: num(d.x) + num(t.x), vcy: num(d.y) + num(t.y), vh: num(e.viewHeight), tw: num(e.viewTwistAngle), st: 1 };
+    }
     case 'WIPEOUT': return null;
     default: return null;
   }
@@ -147,15 +151,28 @@ function convertDb(db) {
   };
   const blocks = {};
   let model = null;
+  const paperByHandle = new Map();
   for (const b of db.tables.BLOCK_RECORD?.entries || []) {
     const nm = b.name || '';
     const up = nm.toUpperCase();
     if (up === '*MODEL_SPACE') { model = convList(b.entities); continue; }
-    if (up.startsWith('*PAPER_SPACE')) continue;
+    if (up.startsWith('*PAPER_SPACE')) { paperByHandle.set(String(b.handle).toUpperCase(), b); continue; }
     blocks[nm] = { bx: num(b.basePoint?.x), by: num(b.basePoint?.y), ents: convList(b.entities) };
   }
   if (!model) model = convList(db.entities.filter(e => !e.isInPaperSpace));
-  return { units: db.header?.INSUNITS | 0, layers, blocks, ents: model, skipped: counts };
+  const layouts = [];
+  const los = (db.objects?.LAYOUT || []).filter(l => !/^model$/i.test(l.layoutName || '')).sort((a, b) => (a.tabOrder | 0) - (b.tabOrder | 0));
+  for (const L of los) {
+    const b = paperByHandle.get(String(L.paperSpaceTableId || '').toUpperCase());
+    if (!b) continue;
+    const ents = convList(b.entities);
+    const vpsAll = ents.filter(e => e.k === 'VP');
+    let minId = Infinity; for (const v of vpsAll) minId = Math.min(minId, v.id);
+    const vps = vpsAll.filter(v => v.id !== minId && v.w > 0 && v.h > 0 && v.vh > 0);
+    const lim = [num(L.minLimit?.x), num(L.minLimit?.y), num(L.maxLimit?.x), num(L.maxLimit?.y)];
+    layouts.push({ name: L.layoutName || 'Pafta', ents: ents.filter(e => e.k !== 'VP'), lim, vps });
+  }
+  return { units: db.header?.INSUNITS | 0, layers, blocks, ents: model, layouts, skipped: counts };
 }
 
 self.onmessage = async ev => {
