@@ -231,14 +231,25 @@ public class MainActivity extends Activity {
             } catch (Exception e) {
                 return;
             }
-            runOnUiThread(() -> exportFile(name, mime, bytes));
+            runOnUiThread(() -> exportFile(name, mime, bytes, true));
+        }
+
+        @JavascriptInterface
+        public void shareOnly(String name, String mime, String b64) {
+            final byte[] bytes;
+            try {
+                bytes = Base64.decode(b64, Base64.DEFAULT);
+            } catch (Exception e) {
+                return;
+            }
+            runOnUiThread(() -> exportFile(name, mime, bytes, false));
         }
     }
 
-    private void exportFile(String rawName, String mime, byte[] bytes) {
+    private void exportFile(String rawName, String mime, byte[] bytes, boolean toDownloads) {
         String name = rawName.replaceAll("[\\\\/:*?\"<>|]", "_");
         boolean saved = false;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (toDownloads && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             try {
                 ContentValues cv = new ContentValues();
                 cv.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
@@ -266,16 +277,16 @@ public class MainActivity extends Activity {
             send.putExtra(Intent.EXTRA_SUBJECT, name);
             send.setClipData(ClipData.newRawUri("", share));
             send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(Intent.createChooser(send, "PDF'i paylaş"));
+            startActivity(Intent.createChooser(send, "Paylaş"));
         } catch (Exception e) {
             // sharing not available
         }
-        Toast.makeText(this, saved ? "İndirilenler › Acad klasörüne kaydedildi" : "PDF hazır", Toast.LENGTH_LONG).show();
+        if (toDownloads) Toast.makeText(this, saved ? "İndirilenler › Acad klasörüne kaydedildi" : "PDF hazır", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onBackPressed() {
-        web.evaluateJavascript("(function(){var s=document.getElementById('sheet');if(s&&!s.hidden){s.hidden=true;document.getElementById('tLayers').setAttribute('aria-pressed','false');return 'closed';}return 'none';})()",
+        web.evaluateJavascript("(window.__acad && window.__acad.back) ? window.__acad.back() : 'none'",
                 v -> { if (!"\"closed\"".equals(v)) MainActivity.super.onBackPressed(); });
     }
 
