@@ -105,12 +105,15 @@ public class MainActivity extends Activity {
                 fileCallback = callback;
                 boolean wantsImage = false;
                 if (params != null && params.getAcceptTypes() != null) {
-                    for (String t : params.getAcceptTypes()) if (t != null && t.startsWith("image")) wantsImage = true;
+                    for (String t : params.getAcceptTypes()) if (t != null && (t.equals("image/*") || t.equals("image/jpeg") || t.equals("image/png"))) wantsImage = true;
                 }
                 if (wantsImage) return openPhotoChooser();
+                // DWG/DXF: open the system file manager (Files) directly
                 Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 i.addCategory(Intent.CATEGORY_OPENABLE);
                 i.setType("*/*");
+                i.putExtra("android.provider.extra.SHOW_ADVANCED", true);
+                i.putExtra("android.content.extra.SHOW_ADVANCED", true);
                 try {
                     startActivityForResult(i, PICK_FILE);
                 } catch (ActivityNotFoundException e) {
