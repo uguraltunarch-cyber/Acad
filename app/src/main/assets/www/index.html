@@ -123,6 +123,7 @@ canvas#cv { position: absolute; inset: 0; width: 100%; height: 100%; display: bl
   font: 500 12px/1 var(--f-num); padding: 7px 10px; border-radius: 999px; box-shadow: var(--shadow);
 }
 .unit { right: max(14px, env(safe-area-inset-right, 0px)); bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+.stage.has-strip .scale, .stage.has-strip .unit { bottom: calc(142px + env(safe-area-inset-bottom, 0px)); }
 
 /* measure card */
 .mcard {
@@ -230,6 +231,14 @@ canvas#cv { position: absolute; inset: 0; width: 100%; height: 100%; display: bl
   .sheet { top: auto; width: 100%; height: min(72%, 560px); border-left: 0; border-top: 1px solid var(--rule); border-radius: 16px 16px 0 0; }
   .tool { width: 60px; }
   .tools { gap: 2px; }
+  .sbtn { min-width: 44px; padding: 0 3px; font-size: 10.5px; }
+  .strip { gap: 0; padding: 3px; }
+  .strip .sep { margin: 6px 1px; }
+  .mcard { padding: 10px 12px; }
+  .mcard .v { font-size: 22px; margin-top: 4px; }
+  .mcard .rows { margin-top: 6px; }
+  .mcard .hint { font-size: 12px; margin-top: 6px; }
+  .mcard .acts { margin-top: 8px; }
   .mark b { display: none; }
   .file { padding-left: 10px; }
   .btn .lbl-long { display: none; }
@@ -20782,6 +20791,7 @@ function showStrip(which) {
   strip = strip === which ? null : which;
   $('stripM').hidden = strip !== 'M'; $('stripK').hidden = strip !== 'K';
   $('tMeasure').setAttribute('aria-pressed', strip === 'M'); $('tMark').setAttribute('aria-pressed', strip === 'K');
+  stage.classList.toggle('has-strip', !!strip);
   $('snapPop').hidden = true;
   if (!strip && mode !== 'view') setMode(mode);
   if (strip === 'M' && !isMeasure(mode)) setMode(space >= 0 ? 'view' : 'dist');
