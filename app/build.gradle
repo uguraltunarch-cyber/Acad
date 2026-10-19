@@ -1,0 +1,47 @@
+plugins {
+    id 'com.android.application'
+}
+
+def runNumber = (System.getenv('GITHUB_RUN_NUMBER') ?: '1') as int
+
+android {
+    namespace 'com.uguraltun.acad'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.uguraltun.acad'
+        minSdk 24
+        targetSdk 34
+        versionCode runNumber
+        versionName "1.0.${runNumber}"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('acad-release.jks')
+            storePassword 'acad-ugur-2026'
+            keyAlias 'acad'
+            keyPassword 'acad-ugur-2026'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    androidResources {
+        noCompress += ['wasm']
+    }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.11.0'
+}

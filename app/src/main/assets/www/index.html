@@ -1,0 +1,19305 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"><style>:root{color-scheme:light dark;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Acad</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#14181c">
+<style>@font-face{font-family:'Archivo';font-style:normal;font-display:swap;font-weight:100 900;font-stretch:62% 125%;src:url(fonts/archivo-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Archivo';font-style:normal;font-display:swap;font-weight:100 900;font-stretch:62% 125%;src:url(fonts/archivo-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Archivo Narrow';font-style:normal;font-display:swap;font-weight:400;src:url(fonts/narrow-latin-ext-400.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Archivo Narrow';font-style:normal;font-display:swap;font-weight:400;src:url(fonts/narrow-latin-400.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-display:swap;font-weight:400;src:url(fonts/mono-latin-ext-400.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-display:swap;font-weight:400;src:url(fonts/mono-latin-400.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-display:swap;font-weight:500;src:url(fonts/mono-latin-ext-500.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'IBM Plex Mono';font-style:normal;font-display:swap;font-weight:500;src:url(fonts/mono-latin-500.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}</style>
+<style>
+/* Layout: full-height drafting surface; thin top bar, floating thumb toolbar, side/bottom sheet for layers */
+:root {
+  --chrome: #e9ecef;
+  --panel: #ffffff;
+  --panel-2: #f4f6f8;
+  --ink: #1b1f24;
+  --muted: #5b6570;
+  --rule: #d3d8de;
+  --canvas: #fbfbf8;
+  --grid: rgba(27, 31, 36, .045);
+  --accent: #b86e00;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(184, 110, 0, .12);
+  --danger: #b4232c;
+  --shadow: 0 1px 2px rgba(16, 20, 24, .08), 0 6px 20px rgba(16, 20, 24, .10);
+  --f-ui: "Archivo", "Segoe UI", system-ui, sans-serif;
+  --f-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --f-draw: "Archivo Narrow", "Arial Narrow", "Roboto Condensed", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --chrome: #0e1114; --panel: #191e24; --panel-2: #20262d; --ink: #e5e8eb; --muted: #97a1ab;
+    --rule: #2b323a; --canvas: #13171b; --grid: rgba(229, 232, 235, .04);
+    --accent: #f2b23e; --accent-ink: #1d1404; --accent-soft: rgba(242, 178, 62, .16); --danger: #ff6b72;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --chrome: #0e1114; --panel: #191e24; --panel-2: #20262d; --ink: #e5e8eb; --muted: #97a1ab;
+  --rule: #2b323a; --canvas: #13171b; --grid: rgba(229, 232, 235, .04);
+  --accent: #f2b23e; --accent-ink: #1d1404; --accent-soft: rgba(242, 178, 62, .16); --danger: #ff6b72;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  background: var(--chrome); color: var(--ink); font-family: var(--f-ui); font-size: 14px;
+  overflow: hidden; -webkit-tap-highlight-color: transparent; overscroll-behavior: none;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--chrome); }
+.app { height: 100%; display: grid; grid-template-rows: auto 1fr; grid-template-columns: minmax(0, 1fr); }
+.app > * { min-width: 0; }
+
+/* top bar */
+.bar {
+  display: flex; align-items: center; gap: 12px; min-height: 52px;
+  padding-block: 6px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  border-bottom: 1px solid var(--rule); background: var(--chrome); position: relative; z-index: 5;
+}
+.mark { display: flex; align-items: center; gap: 8px; flex: none; }
+.mark svg { display: block; }
+.mark b { font-weight: 700; font-stretch: 112%; font-size: 19px; letter-spacing: -.01em; }
+.file { min-width: 0; flex: 1; display: flex; flex-direction: column; line-height: 1.2; padding-left: 12px; border-left: 1px solid var(--rule); }
+.file .nm { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.file .meta { color: var(--muted); font-size: 12px; font-family: var(--f-num); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.btn {
+  appearance: none; border: 1px solid var(--rule); background: var(--panel); color: var(--ink);
+  font: 600 14px/1 var(--f-ui); padding: 0 14px; height: 38px; border-radius: 8px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+}
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+.btn:focus-visible, .tool:focus-visible, .lyr button:focus-visible, .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.menuwrap { position: relative; }
+.menu {
+  position: absolute; right: 0; top: calc(100% + 6px); width: min(320px, calc(100vw - 32px)); background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 10px; box-shadow: var(--shadow); padding: 6px; z-index: 30;
+}
+.menu button {
+  width: 100%; text-align: left; appearance: none; border: 0; background: none; color: var(--ink); cursor: pointer;
+  padding: 10px 10px; border-radius: 6px; font: 500 14px/1.25 var(--f-ui); display: flex; gap: 10px; align-items: center;
+}
+.menu button:hover, .menu button:focus-visible { background: var(--panel-2); outline: none; }
+.menu .sub { color: var(--muted); font-size: 12px; font-family: var(--f-num); display: block; }
+.menu .ttl { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 10px 10px 4px; }
+.menu .note { font-size: 11.5px; line-height: 1.45; color: var(--muted); padding: 4px 10px 6px; }
+.menu hr { border: 0; border-top: 1px solid var(--rule); margin: 6px 4px; }
+
+/* stage */
+.stage { position: relative; overflow: hidden; background: var(--canvas); touch-action: none; }
+canvas#cv { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; }
+.stage.measuring canvas#cv { cursor: crosshair; }
+.stage.panning canvas#cv { cursor: grabbing; }
+#loupe {
+  position: absolute; width: 132px; height: 132px; border-radius: 50%; pointer-events: none; z-index: 4;
+  border: 2px solid var(--accent); box-shadow: var(--shadow); background: var(--canvas);
+}
+
+/* floating toolbar */
+.tools {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  display: flex; gap: 4px; padding: 5px; background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; box-shadow: var(--shadow); z-index: 6;
+}
+.tool {
+  appearance: none; border: 0; background: none; color: var(--ink); cursor: pointer; border-radius: 10px;
+  width: 70px; height: 54px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  font: 500 11.5px/1 var(--f-ui); letter-spacing: .01em;
+}
+.tool svg { width: 22px; height: 22px; }
+.tool:hover { background: var(--panel-2); }
+.tool[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+
+/* readouts */
+.hud { position: absolute; z-index: 5; pointer-events: none; font-family: var(--f-num); }
+.scale { left: max(14px, env(safe-area-inset-left, 0px)); bottom: calc(88px + env(safe-area-inset-bottom, 0px)); color: var(--muted); font-size: 11px; }
+.scale .bar-g { height: 7px; border: 1.5px solid var(--muted); border-top: 0; margin-top: 3px; }
+.chip {
+  pointer-events: auto; appearance: none; cursor: pointer; border: 1px solid var(--rule); background: var(--panel); color: var(--ink);
+  font: 500 12px/1 var(--f-num); padding: 7px 10px; border-radius: 999px; box-shadow: var(--shadow);
+}
+.unit { right: max(14px, env(safe-area-inset-right, 0px)); bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+
+/* measure card */
+.mcard {
+  position: absolute; z-index: 6; left: max(12px, env(safe-area-inset-left, 0px)); top: 12px; width: min(300px, calc(100% - 24px));
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; box-shadow: var(--shadow); padding: 12px 14px 12px;
+}
+.mcard .k { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+.mcard .v { font: 500 28px/1.15 var(--f-num); margin-top: 6px; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.mcard .v small { font-size: 15px; color: var(--muted); letter-spacing: 0; }
+.mcard .rows { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; margin-top: 8px; font: 12px/1.4 var(--f-num); color: var(--muted); }
+.mcard .rows span:nth-child(even) { color: var(--ink); text-align: right; font-variant-numeric: tabular-nums; }
+.mcard .hint { margin-top: 8px; font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+.mcard .acts { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.mcard .acts .btn { height: 32px; padding: 0 10px; font-size: 13px; }
+.mcard .acts .btn.go { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+/* layers sheet */
+.sheet {
+  position: absolute; z-index: 8; top: 0; right: 0; bottom: 0; width: min(340px, 100%);
+  background: var(--panel); border-left: 1px solid var(--rule); box-shadow: var(--shadow);
+  display: flex; flex-direction: column; padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.sheet header { display: flex; align-items: center; gap: 10px; padding: 14px 14px 10px max(14px, 0px); padding-right: max(14px, env(safe-area-inset-right, 0px)); }
+.sheet header h2 { margin: 0; font-size: 16px; font-weight: 650; flex: 1; font-stretch: 105%; }
+.sheet header .count { color: var(--muted); font: 12px var(--f-num); }
+.x { appearance: none; border: 0; background: var(--panel-2); color: var(--ink); width: 34px; height: 34px; border-radius: 8px; cursor: pointer; display: grid; place-items: center; }
+.sheet .tools-row { display: flex; gap: 6px; padding: 0 14px 10px; }
+.sheet input[type="search"] {
+  flex: 1; min-width: 0; height: 36px; border: 1px solid var(--rule); background: var(--panel-2); color: var(--ink); border-radius: 8px; padding: 0 10px; font: 14px var(--f-ui);
+}
+.sheet .tools-row .btn { height: 36px; padding: 0 10px; font-size: 13px; }
+.lyrs { overflow: auto; flex: 1; border-top: 1px solid var(--rule); }
+.lyr { display: flex; align-items: center; gap: 10px; padding: 0 14px; min-height: 46px; border-bottom: 1px solid var(--rule); }
+.lyr .sw { width: 14px; height: 14px; border-radius: 3px; flex: none; box-shadow: inset 0 0 0 1px rgba(127,127,127,.35); }
+.lyr .ln { flex: 1; min-width: 0; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lyr .ln small { display: block; color: var(--muted); font: 11px var(--f-num); }
+.lyr.off .ln, .lyr.off .sw { opacity: .4; }
+.lyr button { appearance: none; border: 0; background: none; color: var(--ink); width: 40px; height: 40px; border-radius: 8px; cursor: pointer; display: grid; place-items: center; }
+.lyr button:hover { background: var(--panel-2); }
+.sheet .foot { padding: 10px 14px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--rule); line-height: 1.45; }
+
+/* overlays */
+.busy { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; background: color-mix(in srgb, var(--canvas) 70%, transparent); }
+.busy .box { background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; box-shadow: var(--shadow); padding: 18px 20px; display: flex; gap: 14px; align-items: center; max-width: calc(100% - 32px); }
+.spin { width: 22px; height: 22px; border-radius: 50%; border: 2.5px solid var(--rule); border-top-color: var(--accent); animation: sp .8s linear infinite; flex: none; }
+@keyframes sp { to { transform: rotate(1turn); } }
+.busy b { display: block; font-size: 14px; }
+.busy span { color: var(--muted); font-size: 12.5px; }
+.toast {
+  position: absolute; z-index: 25; left: 50%; transform: translateX(-50%); top: 14px; width: min(440px, calc(100% - 24px));
+  background: var(--panel); border: 1px solid var(--rule); border-left: 4px solid var(--danger); border-radius: 10px; box-shadow: var(--shadow);
+  padding: 12px 14px; font-size: 13.5px; line-height: 1.45; display: flex; gap: 10px; align-items: flex-start;
+}
+.toast.ok { border-left-color: var(--accent); }
+.toast p { margin: 0; flex: 1; }
+.drop { position: absolute; inset: 10px; z-index: 22; border: 2px dashed var(--accent); border-radius: 14px; display: grid; place-items: center; background: var(--accent-soft); font-weight: 600; font-size: 16px; pointer-events: none; }
+
+@media (max-width: 640px) {
+  .sheet { top: auto; width: 100%; height: min(72%, 560px); border-left: 0; border-top: 1px solid var(--rule); border-radius: 16px 16px 0 0; }
+  .tool { width: 62px; }
+  .mark b { display: none; }
+  .file { padding-left: 10px; }
+  .btn .lbl-long { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .spin { animation-duration: 2.4s; } }
+</style>
+
+<div class="app">
+  <div class="bar">
+    <div class="mark" aria-label="Acad">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="1" y="1" width="24" height="24" rx="6" fill="var(--ink)"/><path d="M13 5v16M5 13h16" stroke="var(--accent)" stroke-width="1.6"/><rect x="9.5" y="9.5" width="7" height="7" fill="none" stroke="var(--panel)" stroke-width="1.6"/></svg>
+      <b>Acad</b>
+    </div>
+    <div class="file"><span class="nm" id="fname">—</span><span class="meta" id="fmeta"></span></div>
+    <div class="menuwrap">
+      <button class="btn primary" id="openBtn" aria-haspopup="true" aria-expanded="false">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4.5h4l1.5 1.5H14v6.5a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span>Aç</span><span class="lbl-long">— DWG / DXF</span>
+      </button>
+      <div class="menu" id="menu" hidden>
+        <button id="pickFile"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 3v9M5 8l4 4 4-4M3 15h12" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span>Dosya seç…<span class="sub">.dwg · .dxf</span></span></button>
+        <button id="openSample"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="3" y="3" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 9h7v6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span>Örnek daire planı<span class="sub">2+1 · DXF</span></span></button>
+        <div id="recentWrap" hidden><hr><div class="ttl">Son açılanlar</div><div id="recent"></div></div>
+        <hr><div class="note">Dosyalar yalnızca bu cihazda açılır, hiçbir yere yüklenmez. DWG okuma: libredwg-web (GPL-3.0).</div>
+      </div>
+      <input type="file" id="fileIn" accept=".dwg,.dxf,application/acad,image/vnd.dwg,image/vnd.dxf" hidden>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+    <canvas id="cv"></canvas>
+    <canvas id="loupe" width="264" height="264" hidden></canvas>
+
+    <div class="mcard" id="mcard" hidden>
+      <div class="k"><span id="mTitle">Mesafe</span><span id="mCount"></span></div>
+      <div class="v" id="mVal">—</div>
+      <div class="rows" id="mRows"></div>
+      <div class="hint" id="mHint"></div>
+      <div class="acts">
+        <button class="btn" id="mUndo">Geri al</button>
+        <button class="btn" id="mClear">Temizle</button>
+        <button class="btn go" id="mDone" hidden>Alanı kapat</button>
+      </div>
+    </div>
+
+    <div class="hud scale" id="scale"><span id="scaleLbl"></span><div class="bar-g" id="scaleBar"></div></div>
+    <div class="hud unit"><button class="chip" id="unitChip" title="Çizim birimini değiştir">1 birim = mm</button></div>
+
+    <div class="tools" role="toolbar" aria-label="Araçlar">
+      <button class="tool" id="tLayers" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 8 12 13l9.5-5z M2.5 12 12 17l9.5-5 M2.5 16 12 21l9.5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Katmanlar</button>
+      <button class="tool" id="tDist" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17 17 3l4 4L7 21z M7 13l2 2 M10 10l2 2 M13 7l2 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Mesafe</button>
+      <button class="tool" id="tArea" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6 15 3l5 9-6 9-10-4z" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Alan</button>
+      <button class="tool" id="tFit" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5 M15 4h5v5 M20 15v5h-5 M9 20H4v-5" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="8.5" y="8.5" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Sığdır</button>
+    </div>
+
+    <aside class="sheet" id="sheet" hidden aria-label="Katmanlar">
+      <header><h2>Katmanlar</h2><span class="count" id="lyrCount"></span><button class="x" id="sheetX" aria-label="Kapat"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6"/></svg></button></header>
+      <div class="tools-row"><input type="search" id="lyrQ" placeholder="Katman ara"><button class="btn" id="lyrAll">Hepsi</button><button class="btn" id="lyrNone">Hiçbiri</button></div>
+      <div class="lyrs" id="lyrs"></div>
+      <div class="foot" id="lyrFoot" hidden></div>
+    </aside>
+
+    <div class="busy" id="busy" hidden><div class="box"><div class="spin"></div><div><b id="busyT">Açılıyor…</b><span id="busyS"></span></div></div></div>
+    <div class="toast" id="toast" hidden><p id="toastT"></p><button class="x" id="toastX" aria-label="Kapat"><svg width="12" height="12" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="1.6"/></svg></button></div>
+    <div class="drop" id="drop" hidden>Bırak, açayım</div>
+  </div>
+</div>
+
+<script type="text/plain" id="sample-dxf">  0
+SECTION
+  2
+HEADER
+  9
+$ACADVER
+  1
+AC1024
+  9
+$ACADMAINTVER
+ 70
+6
+  9
+$DWGCODEPAGE
+  3
+ANSI_1252
+  9
+$LASTSAVEDBY
+  1
+ezdxf
+  9
+$INSBASE
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$EXTMIN
+ 10
+1e+20
+ 20
+1e+20
+ 30
+1e+20
+  9
+$EXTMAX
+ 10
+-1e+20
+ 20
+-1e+20
+ 30
+-1e+20
+  9
+$LIMMIN
+ 10
+0.0
+ 20
+0.0
+  9
+$LIMMAX
+ 10
+420.0
+ 20
+297.0
+  9
+$ORTHOMODE
+ 70
+0
+  9
+$REGENMODE
+ 70
+1
+  9
+$FILLMODE
+ 70
+1
+  9
+$QTEXTMODE
+ 70
+0
+  9
+$MIRRTEXT
+ 70
+1
+  9
+$LTSCALE
+ 40
+1.0
+  9
+$ATTMODE
+ 70
+1
+  9
+$TEXTSIZE
+ 40
+2.5
+  9
+$TRACEWID
+ 40
+1.0
+  9
+$TEXTSTYLE
+  7
+OpenSans
+  9
+$CLAYER
+  8
+0
+  9
+$CELTYPE
+  6
+ByLayer
+  9
+$CECOLOR
+ 62
+256
+  9
+$CELTSCALE
+ 40
+1.0
+  9
+$DISPSILH
+ 70
+0
+  9
+$DIMSCALE
+ 40
+1.0
+  9
+$DIMASZ
+ 40
+0.175
+  9
+$DIMEXO
+ 40
+0.125
+  9
+$DIMDLI
+ 40
+3.75
+  9
+$DIMRND
+ 40
+0.0
+  9
+$DIMDLE
+ 40
+0.0
+  9
+$DIMEXE
+ 40
+0.375
+  9
+$DIMTP
+ 40
+0.0
+  9
+$DIMTM
+ 40
+0.0
+  9
+$DIMTXT
+ 40
+0.25
+  9
+$DIMCEN
+ 40
+2.5
+  9
+$DIMTSZ
+ 40
+0.0
+  9
+$DIMTOL
+ 70
+0
+  9
+$DIMLIM
+ 70
+0
+  9
+$DIMTIH
+ 70
+0
+  9
+$DIMTOH
+ 70
+0
+  9
+$DIMSE1
+ 70
+0
+  9
+$DIMSE2
+ 70
+0
+  9
+$DIMTAD
+ 70
+1
+  9
+$DIMZIN
+ 70
+12
+  9
+$DIMBLK
+  1
+ARCHTICK
+  9
+$DIMASO
+ 70
+1
+  9
+$DIMSHO
+ 70
+1
+  9
+$DIMPOST
+  1
+
+  9
+$DIMAPOST
+  1
+
+  9
+$DIMALT
+ 70
+0
+  9
+$DIMALTD
+ 70
+3
+  9
+$DIMALTF
+ 40
+0.03937007874
+  9
+$DIMLFAC
+ 40
+100.0
+  9
+$DIMTOFL
+ 70
+1
+  9
+$DIMTVP
+ 40
+0.0
+  9
+$DIMTIX
+ 70
+0
+  9
+$DIMSOXD
+ 70
+0
+  9
+$DIMSAH
+ 70
+0
+  9
+$DIMBLK1
+  1
+
+  9
+$DIMBLK2
+  1
+
+  9
+$DIMSTYLE
+  2
+EZDXF
+  9
+$DIMCLRD
+ 70
+0
+  9
+$DIMCLRE
+ 70
+0
+  9
+$DIMCLRT
+ 70
+0
+  9
+$DIMTFAC
+ 40
+0.5
+  9
+$DIMGAP
+ 40
+0.1
+  9
+$DIMJUST
+ 70
+0
+  9
+$DIMSD1
+ 70
+0
+  9
+$DIMSD2
+ 70
+0
+  9
+$DIMTOLJ
+ 70
+0
+  9
+$DIMTZIN
+ 70
+8
+  9
+$DIMALTZ
+ 70
+0
+  9
+$DIMALTTZ
+ 70
+0
+  9
+$DIMUPT
+ 70
+1
+  9
+$DIMDEC
+ 70
+2
+  9
+$DIMTDEC
+ 70
+2
+  9
+$DIMALTU
+ 70
+2
+  9
+$DIMALTTD
+ 70
+3
+  9
+$DIMTXSTY
+  7
+OpenSansCondensed-Light
+  9
+$DIMAUNIT
+ 70
+0
+  9
+$DIMADEC
+ 70
+2
+  9
+$DIMALTRND
+ 40
+0.0
+  9
+$DIMAZIN
+ 70
+3
+  9
+$DIMDSEP
+ 70
+46
+  9
+$DIMATFIT
+ 70
+3
+  9
+$DIMFRAC
+ 70
+0
+  9
+$DIMLDRBLK
+  1
+
+  9
+$DIMLUNIT
+ 70
+2
+  9
+$DIMLWD
+ 70
+-2
+  9
+$DIMLWE
+ 70
+-2
+  9
+$DIMTMOVE
+ 70
+2
+  9
+$DIMFXL
+ 40
+1.0
+  9
+$DIMFXLON
+ 70
+0
+  9
+$DIMJOGANG
+ 40
+0.785398163397
+  9
+$DIMTFILL
+ 70
+0
+  9
+$DIMTFILLCLR
+ 70
+0
+  9
+$DIMARCSYM
+ 70
+0
+  9
+$DIMLTYPE
+  6
+
+  9
+$DIMLTEX1
+  6
+
+  9
+$DIMLTEX2
+  6
+
+  9
+$DIMTXTDIRECTION
+ 70
+0
+  9
+$LUNITS
+ 70
+2
+  9
+$LUPREC
+ 70
+4
+  9
+$SKETCHINC
+ 40
+1.0
+  9
+$FILLETRAD
+ 40
+10.0
+  9
+$AUNITS
+ 70
+0
+  9
+$AUPREC
+ 70
+2
+  9
+$MENU
+  1
+.
+  9
+$ELEVATION
+ 40
+0.0
+  9
+$PELEVATION
+ 40
+0.0
+  9
+$THICKNESS
+ 40
+0.0
+  9
+$LIMCHECK
+ 70
+0
+  9
+$CHAMFERA
+ 40
+0.0
+  9
+$CHAMFERB
+ 40
+0.0
+  9
+$CHAMFERC
+ 40
+0.0
+  9
+$CHAMFERD
+ 40
+0.0
+  9
+$SKPOLY
+ 70
+0
+  9
+$TDCREATE
+ 40
+2461333.9111574073
+  9
+$TDUCREATE
+ 40
+2458532.153996898
+  9
+$TDUPDATE
+ 40
+2461333.9111574073
+  9
+$TDUUPDATE
+ 40
+2458532.1544311
+  9
+$TDINDWG
+ 40
+0.0
+  9
+$TDUSRTIMER
+ 40
+0.0
+  9
+$USRTIMER
+ 70
+1
+  9
+$ANGBASE
+ 50
+0.0
+  9
+$ANGDIR
+ 70
+0
+  9
+$PDMODE
+ 70
+0
+  9
+$PDSIZE
+ 40
+0.0
+  9
+$PLINEWID
+ 40
+0.0
+  9
+$SPLFRAME
+ 70
+0
+  9
+$SPLINETYPE
+ 70
+6
+  9
+$SPLINESEGS
+ 70
+8
+  9
+$HANDSEED
+  5
+213
+  9
+$SURFTAB1
+ 70
+6
+  9
+$SURFTAB2
+ 70
+6
+  9
+$SURFTYPE
+ 70
+6
+  9
+$SURFU
+ 70
+6
+  9
+$SURFV
+ 70
+6
+  9
+$UCSBASE
+  2
+
+  9
+$UCSNAME
+  2
+
+  9
+$UCSORG
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$UCSXDIR
+ 10
+1.0
+ 20
+0.0
+ 30
+0.0
+  9
+$UCSYDIR
+ 10
+0.0
+ 20
+1.0
+ 30
+0.0
+  9
+$UCSORTHOREF
+  2
+
+  9
+$UCSORTHOVIEW
+ 70
+0
+  9
+$UCSORGTOP
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$UCSORGBOTTOM
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$UCSORGLEFT
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$UCSORGRIGHT
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$UCSORGFRONT
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$UCSORGBACK
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$PUCSBASE
+  2
+
+  9
+$PUCSNAME
+  2
+
+  9
+$PUCSORG
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$PUCSXDIR
+ 10
+1.0
+ 20
+0.0
+ 30
+0.0
+  9
+$PUCSYDIR
+ 10
+0.0
+ 20
+1.0
+ 30
+0.0
+  9
+$PUCSORTHOREF
+  2
+
+  9
+$PUCSORTHOVIEW
+ 70
+0
+  9
+$PUCSORGTOP
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$PUCSORGBOTTOM
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$PUCSORGLEFT
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$PUCSORGRIGHT
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$PUCSORGFRONT
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$PUCSORGBACK
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$USERI1
+ 70
+0
+  9
+$USERI2
+ 70
+0
+  9
+$USERI3
+ 70
+0
+  9
+$USERI4
+ 70
+0
+  9
+$USERI5
+ 70
+0
+  9
+$USERR1
+ 40
+0.0
+  9
+$USERR2
+ 40
+0.0
+  9
+$USERR3
+ 40
+0.0
+  9
+$USERR4
+ 40
+0.0
+  9
+$USERR5
+ 40
+0.0
+  9
+$WORLDVIEW
+ 70
+1
+  9
+$SHADEDGE
+ 70
+3
+  9
+$SHADEDIF
+ 70
+70
+  9
+$TILEMODE
+ 70
+1
+  9
+$MAXACTVP
+ 70
+64
+  9
+$PINSBASE
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$PLIMCHECK
+ 70
+0
+  9
+$PEXTMIN
+ 10
+1e+20
+ 20
+1e+20
+ 30
+1e+20
+  9
+$PEXTMAX
+ 10
+-1e+20
+ 20
+-1e+20
+ 30
+-1e+20
+  9
+$PLIMMIN
+ 10
+0.0
+ 20
+0.0
+  9
+$PLIMMAX
+ 10
+420.0
+ 20
+297.0
+  9
+$UNITMODE
+ 70
+0
+  9
+$VISRETAIN
+ 70
+1
+  9
+$PLINEGEN
+ 70
+0
+  9
+$PSLTSCALE
+ 70
+1
+  9
+$TREEDEPTH
+ 70
+3020
+  9
+$CMLSTYLE
+  2
+Standard
+  9
+$CMLJUST
+ 70
+0
+  9
+$CMLSCALE
+ 40
+20.0
+  9
+$PROXYGRAPHICS
+ 70
+1
+  9
+$MEASUREMENT
+ 70
+1
+  9
+$CELWEIGHT
+370
+-1
+  9
+$ENDCAPS
+280
+0
+  9
+$JOINSTYLE
+280
+0
+  9
+$LWDISPLAY
+290
+0
+  9
+$INSUNITS
+ 70
+4
+  9
+$HYPERLINKBASE
+  1
+
+  9
+$STYLESHEET
+  1
+
+  9
+$XEDIT
+290
+1
+  9
+$CEPSNTYPE
+380
+0
+  9
+$PSTYLEMODE
+290
+1
+  9
+$FINGERPRINTGUID
+  2
+{B3FC8CD7-9E1F-4F8A-B183-A88A52A9EEEE}
+  9
+$VERSIONGUID
+  2
+{99112A16-BBF9-4B00-A8F0-9A94903E6E06}
+  9
+$EXTNAMES
+290
+1
+  9
+$PSVPSCALE
+ 40
+0.0
+  9
+$OLESTARTUP
+290
+0
+  9
+$SORTENTS
+280
+127
+  9
+$INDEXCTL
+280
+0
+  9
+$HIDETEXT
+280
+1
+  9
+$XCLIPFRAME
+280
+1
+  9
+$HALOGAP
+280
+0
+  9
+$OBSCOLOR
+ 70
+257
+  9
+$OBSLTYPE
+280
+0
+  9
+$INTERSECTIONDISPLAY
+280
+0
+  9
+$INTERSECTIONCOLOR
+ 70
+257
+  9
+$DIMASSOC
+280
+2
+  9
+$PROJECTNAME
+  1
+
+  9
+$CAMERADISPLAY
+290
+0
+  9
+$LENSLENGTH
+ 40
+50.0
+  9
+$CAMERAHEIGHT
+ 40
+0.0
+  9
+$STEPSPERSEC
+ 40
+24.0
+  9
+$STEPSIZE
+ 40
+100.0
+  9
+$3DDWFPREC
+ 40
+2.0
+  9
+$PSOLWIDTH
+ 40
+0.005
+  9
+$PSOLHEIGHT
+ 40
+0.08
+  9
+$LOFTANG1
+ 40
+1.570796326795
+  9
+$LOFTANG2
+ 40
+1.570796326795
+  9
+$LOFTMAG1
+ 40
+0.0
+  9
+$LOFTMAG2
+ 40
+0.0
+  9
+$LOFTPARAM
+ 70
+7
+  9
+$LOFTNORMALS
+280
+1
+  9
+$LATITUDE
+ 40
+37.795
+  9
+$LONGITUDE
+ 40
+-122.394
+  9
+$NORTHDIRECTION
+ 40
+0.0
+  9
+$TIMEZONE
+ 70
+-8000
+  9
+$LIGHTGLYPHDISPLAY
+280
+1
+  9
+$TILEMODELIGHTSYNCH
+280
+1
+  9
+$CMATERIAL
+347
+20
+  9
+$SOLIDHIST
+280
+0
+  9
+$SHOWHIST
+280
+1
+  9
+$DWFFRAME
+280
+2
+  9
+$DGNFRAME
+280
+2
+  9
+$REALWORLDSCALE
+290
+1
+  9
+$INTERFERECOLOR
+ 62
+256
+  9
+$CSHADOW
+280
+0
+  9
+$SHADOWPLANELOCATION
+ 40
+0.0
+  0
+ENDSEC
+  0
+SECTION
+  2
+CLASSES
+  0
+CLASS
+  1
+ACDBDICTIONARYWDFLT
+  2
+AcDbDictionaryWithDefault
+  3
+ObjectDBX Classes
+ 90
+0
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+SUN
+  2
+AcDbSun
+  3
+SCENEOE
+ 90
+1153
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+VISUALSTYLE
+  2
+AcDbVisualStyle
+  3
+ObjectDBX Classes
+ 90
+4095
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+MATERIAL
+  2
+AcDbMaterial
+  3
+ObjectDBX Classes
+ 90
+1153
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+SCALE
+  2
+AcDbScale
+  3
+ObjectDBX Classes
+ 90
+1153
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+TABLESTYLE
+  2
+AcDbTableStyle
+  3
+ObjectDBX Classes
+ 90
+4095
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+MLEADERSTYLE
+  2
+AcDbMLeaderStyle
+  3
+ACDB_MLEADERSTYLE_CLASS
+ 90
+4095
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+DICTIONARYVAR
+  2
+AcDbDictionaryVar
+  3
+ObjectDBX Classes
+ 90
+0
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+CELLSTYLEMAP
+  2
+AcDbCellStyleMap
+  3
+ObjectDBX Classes
+ 90
+1152
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+MENTALRAYRENDERSETTINGS
+  2
+AcDbMentalRayRenderSettings
+  3
+SCENEOE
+ 90
+1024
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+ACDBDETAILVIEWSTYLE
+  2
+AcDbDetailViewStyle
+  3
+ObjectDBX Classes
+ 90
+1025
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+ACDBSECTIONVIEWSTYLE
+  2
+AcDbSectionViewStyle
+  3
+ObjectDBX Classes
+ 90
+1025
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+RASTERVARIABLES
+  2
+AcDbRasterVariables
+  3
+ISM
+ 90
+0
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+ACDBPLACEHOLDER
+  2
+AcDbPlaceHolder
+  3
+ObjectDBX Classes
+ 90
+0
+ 91
+0
+280
+0
+281
+0
+  0
+CLASS
+  1
+LAYOUT
+  2
+AcDbLayout
+  3
+ObjectDBX Classes
+ 90
+0
+ 91
+0
+280
+0
+281
+0
+  0
+ENDSEC
+  0
+SECTION
+  2
+TABLES
+  0
+TABLE
+  2
+VPORT
+  5
+8
+330
+0
+100
+AcDbSymbolTable
+ 70
+1
+  0
+VPORT
+  5
+23
+330
+8
+100
+AcDbSymbolTableRecord
+100
+AcDbViewportTableRecord
+  2
+*Active
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 11
+1.0
+ 21
+1.0
+ 12
+0.0
+ 22
+0.0
+ 13
+0.0
+ 23
+0.0
+ 14
+0.5
+ 24
+0.5
+ 15
+0.5
+ 25
+0.5
+ 16
+0.0
+ 26
+0.0
+ 36
+1.0
+ 17
+0.0
+ 27
+0.0
+ 37
+0.0
+ 40
+1000.0
+ 41
+1.34
+ 42
+50.0
+ 43
+0.0
+ 44
+0.0
+ 50
+0.0
+ 51
+0.0
+ 71
+0
+ 72
+1000
+ 73
+1
+ 74
+3
+ 75
+0
+ 76
+0
+ 77
+0
+ 78
+0
+281
+0
+ 65
+0
+146
+0.0
+  0
+ENDTAB
+  0
+TABLE
+  2
+LTYPE
+  5
+2
+330
+0
+100
+AcDbSymbolTable
+ 70
+21
+  0
+LTYPE
+  5
+24
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+ByBlock
+ 70
+0
+  3
+
+ 72
+65
+ 73
+0
+ 40
+0.0
+  0
+LTYPE
+  5
+25
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+ByLayer
+ 70
+0
+  3
+
+ 72
+65
+ 73
+0
+ 40
+0.0
+  0
+LTYPE
+  5
+26
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+Continuous
+ 70
+0
+  3
+
+ 72
+65
+ 73
+0
+ 40
+0.0
+  0
+LTYPE
+  5
+2F
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+CENTER
+ 70
+0
+  3
+Center ____ _ ____ _ ____ _ ____ _ ____ _ ____
+ 72
+65
+ 73
+4
+ 40
+5.08
+ 49
+3.175
+ 74
+0
+ 49
+-0.635
+ 74
+0
+ 49
+0.635
+ 74
+0
+ 49
+-0.635
+ 74
+0
+  0
+LTYPE
+  5
+30
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+CENTERX2
+ 70
+0
+  3
+Center (2x) ________  __  ________  __  ________
+ 72
+65
+ 73
+4
+ 40
+8.89
+ 49
+6.35
+ 74
+0
+ 49
+-0.635
+ 74
+0
+ 49
+1.27
+ 74
+0
+ 49
+-0.635
+ 74
+0
+  0
+LTYPE
+  5
+31
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+CENTER2
+ 70
+0
+  3
+Center (.5x) ____ _ ____ _ ____ _ ____ _ ____
+ 72
+65
+ 73
+4
+ 40
+2.54
+ 49
+1.587
+ 74
+0
+ 49
+-0.318
+ 74
+0
+ 49
+0.318
+ 74
+0
+ 49
+-0.318
+ 74
+0
+  0
+LTYPE
+  5
+32
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+DASHED
+ 70
+0
+  3
+Dashed __ __ __ __ __ __ __ __ __ __ __ __ __ _
+ 72
+65
+ 73
+2
+ 40
+1.524
+ 49
+1.27
+ 74
+0
+ 49
+-0.254
+ 74
+0
+  0
+LTYPE
+  5
+33
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+DASHEDX2
+ 70
+0
+  3
+Dashed (2x) ____  ____  ____  ____  ____  ____
+ 72
+65
+ 73
+2
+ 40
+3.048
+ 49
+2.54
+ 74
+0
+ 49
+-0.508
+ 74
+0
+  0
+LTYPE
+  5
+34
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+DASHED2
+ 70
+0
+  3
+Dashed (.5x) _ _ _ _ _ _ _ _ _ _ _ _ _ _
+ 72
+65
+ 73
+2
+ 40
+0.762
+ 49
+0.635
+ 74
+0
+ 49
+-0.127
+ 74
+0
+  0
+LTYPE
+  5
+35
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+PHANTOM
+ 70
+0
+  3
+Phantom ______  __  __  ______  __  __  ______
+ 72
+65
+ 73
+6
+ 40
+6.35
+ 49
+3.175
+ 74
+0
+ 49
+-0.635
+ 74
+0
+ 49
+0.635
+ 74
+0
+ 49
+-0.635
+ 74
+0
+ 49
+0.635
+ 74
+0
+ 49
+-0.635
+ 74
+0
+  0
+LTYPE
+  5
+36
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+PHANTOMX2
+ 70
+0
+  3
+Phantom (2x)____________    ____    ____    ____________
+ 72
+65
+ 73
+6
+ 40
+10.795
+ 49
+6.35
+ 74
+0
+ 49
+-0.635
+ 74
+0
+ 49
+1.27
+ 74
+0
+ 49
+-0.635
+ 74
+0
+ 49
+1.27
+ 74
+0
+ 49
+-0.635
+ 74
+0
+  0
+LTYPE
+  5
+37
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+PHANTOM2
+ 70
+0
+  3
+Phantom (.5x) ___ _ _ ___ _ _ ___ _ _ ___ _ _ ___
+ 72
+65
+ 73
+6
+ 40
+3.175
+ 49
+1.587
+ 74
+0
+ 49
+-0.318
+ 74
+0
+ 49
+0.318
+ 74
+0
+ 49
+-0.318
+ 74
+0
+ 49
+0.318
+ 74
+0
+ 49
+-0.318
+ 74
+0
+  0
+LTYPE
+  5
+38
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+DASHDOT
+ 70
+0
+  3
+Dash dot __ . __ . __ . __ . __ . __ . __ . __
+ 72
+65
+ 73
+4
+ 40
+3.556
+ 49
+2.54
+ 74
+0
+ 49
+-0.508
+ 74
+0
+ 49
+0.0
+ 74
+0
+ 49
+-0.508
+ 74
+0
+  0
+LTYPE
+  5
+39
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+DASHDOTX2
+ 70
+0
+  3
+Dash dot (2x) ____  .  ____  .  ____  .  ____
+ 72
+65
+ 73
+4
+ 40
+6.096
+ 49
+5.08
+ 74
+0
+ 49
+-0.508
+ 74
+0
+ 49
+0.0
+ 74
+0
+ 49
+-0.508
+ 74
+0
+  0
+LTYPE
+  5
+3A
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+DASHDOT2
+ 70
+0
+  3
+Dash dot (.5x) _ . _ . _ . _ . _ . _ . _ . _
+ 72
+65
+ 73
+4
+ 40
+1.778
+ 49
+1.27
+ 74
+0
+ 49
+-0.254
+ 74
+0
+ 49
+0.0
+ 74
+0
+ 49
+-0.254
+ 74
+0
+  0
+LTYPE
+  5
+3B
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+DOT
+ 70
+0
+  3
+Dot .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .
+ 72
+65
+ 73
+2
+ 40
+0.508
+ 49
+0.0
+ 74
+0
+ 49
+-0.508
+ 74
+0
+  0
+LTYPE
+  5
+3C
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+DOTX2
+ 70
+0
+  3
+Dot (2x) .    .    .    .    .    .    .    . 
+ 72
+65
+ 73
+2
+ 40
+1.016
+ 49
+0.0
+ 74
+0
+ 49
+-1.016
+ 74
+0
+  0
+LTYPE
+  5
+3D
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+DOT2
+ 70
+0
+  3
+Dot (.5) . . . . . . . . . . . . . . . . . . . 
+ 72
+65
+ 73
+2
+ 40
+0.254
+ 49
+0.0
+ 74
+0
+ 49
+-0.254
+ 74
+0
+  0
+LTYPE
+  5
+3E
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+DIVIDE
+ 70
+0
+  3
+Divide __ . . __ . . __ . . __ . . __ . . __
+ 72
+65
+ 73
+6
+ 40
+4.064
+ 49
+2.54
+ 74
+0
+ 49
+-0.508
+ 74
+0
+ 49
+0.0
+ 74
+0
+ 49
+-0.508
+ 74
+0
+ 49
+0.0
+ 74
+0
+ 49
+-0.508
+ 74
+0
+  0
+LTYPE
+  5
+3F
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+DIVIDEX2
+ 70
+0
+  3
+Divide (2x) ____  . .  ____  . .  ____  . .  ____
+ 72
+65
+ 73
+6
+ 40
+6.604
+ 49
+5.08
+ 74
+0
+ 49
+-0.508
+ 74
+0
+ 49
+0.0
+ 74
+0
+ 49
+-0.508
+ 74
+0
+ 49
+0.0
+ 74
+0
+ 49
+-0.508
+ 74
+0
+  0
+LTYPE
+  5
+40
+330
+2
+100
+AcDbSymbolTableRecord
+100
+AcDbLinetypeTableRecord
+  2
+DIVIDE2
+ 70
+0
+  3
+Divide(.5x) _ . _ . _ . _ . _ . _ . _ . _
+ 72
+65
+ 73
+6
+ 40
+2.032
+ 49
+1.27
+ 74
+0
+ 49
+-0.254
+ 74
+0
+ 49
+0.0
+ 74
+0
+ 49
+-0.254
+ 74
+0
+ 49
+0.0
+ 74
+0
+ 49
+-0.254
+ 74
+0
+  0
+ENDTAB
+  0
+TABLE
+  2
+LAYER
+  5
+1
+330
+0
+100
+AcDbSymbolTable
+ 70
+12
+  0
+LAYER
+  5
+27
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+0
+ 70
+0
+ 62
+7
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+28
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+Defpoints
+ 70
+0
+ 62
+7
+  6
+Continuous
+290
+0
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+8A
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+AKS
+ 70
+0
+ 62
+8
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+8B
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+DUVAR
+ 70
+0
+ 62
+7
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+8C
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+TARAMA
+ 70
+0
+ 62
+8
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+8D
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+KAPI
+ 70
+0
+ 62
+3
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+8E
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+PENCERE
+ 70
+0
+ 62
+4
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+8F
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+MOBILYA
+ 70
+0
+ 62
+6
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+90
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+ISLAK_HACIM
+ 70
+0
+ 62
+5
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+91
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+OLCU
+ 70
+0
+ 62
+2
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+92
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+YAZI
+ 70
+0
+ 62
+7
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+LAYER
+  5
+93
+330
+1
+100
+AcDbSymbolTableRecord
+100
+AcDbLayerTableRecord
+  2
+ZEMIN
+ 70
+0
+ 62
+9
+  6
+Continuous
+370
+-3
+390
+13
+347
+21
+  0
+ENDTAB
+  0
+TABLE
+  2
+STYLE
+  5
+5
+330
+0
+100
+AcDbSymbolTable
+ 70
+26
+  0
+STYLE
+  5
+29
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+Standard
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+txt
+  4
+
+  0
+STYLE
+  5
+41
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+OpenSans-Light
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+OpenSans-Light.ttf
+  4
+
+  0
+STYLE
+  5
+42
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+OpenSans-Light-Italic
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+OpenSans-LightItalic.ttf
+  4
+
+  0
+STYLE
+  5
+43
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+OpenSans
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+OpenSans-Regular.ttf
+  4
+
+  0
+STYLE
+  5
+44
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+OpenSans-Italic
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+OpenSans-Italic.ttf
+  4
+
+  0
+STYLE
+  5
+45
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+OpenSans-SemiBold
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+OpenSans-SemiBold.ttf
+  4
+
+  0
+STYLE
+  5
+46
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+OpenSans-SemiBoldItalic
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+OpenSans-SemiBoldItalic.ttf
+  4
+
+  0
+STYLE
+  5
+47
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+OpenSans-Bold
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+OpenSans-Bold.ttf
+  4
+
+  0
+STYLE
+  5
+48
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+OpenSans-BoldItalic
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+OpenSans-BoldItalic.ttf
+  4
+
+  0
+STYLE
+  5
+49
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+OpenSans-ExtraBold
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+OpenSans-ExtraBold.ttf
+  4
+
+  0
+STYLE
+  5
+4A
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+OpenSans-ExtraBoldItalic
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+OpenSans-ExtraBoldItalic.ttf
+  4
+
+  0
+STYLE
+  5
+4B
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+OpenSansCondensed-Bold
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+OpenSansCondensed-Bold.ttf
+  4
+
+  0
+STYLE
+  5
+4C
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+OpenSansCondensed-Light
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+OpenSansCondensed-Light.ttf
+  4
+
+  0
+STYLE
+  5
+4D
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+OpenSansCondensed-Italic
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+OpenSansCondensed-LightItalic.ttf
+  4
+
+  0
+STYLE
+  5
+4E
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+LiberationSans
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+LiberationSans-Regular.ttf
+  4
+
+  0
+STYLE
+  5
+4F
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+LiberationSans-Bold
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+LiberationSans-Bold.ttf
+  4
+
+  0
+STYLE
+  5
+50
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+LiberationSans-BoldItalic
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+LiberationSans-BoldItalic.ttf
+  4
+
+  0
+STYLE
+  5
+51
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+LiberationSans-Italic
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+LiberationSans-Italic.ttf
+  4
+
+  0
+STYLE
+  5
+52
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+LiberationSerif
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+LiberationSerif-Regular.ttf
+  4
+
+  0
+STYLE
+  5
+53
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+LiberationSerif-Bold
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+LiberationSerif-Bold.ttf
+  4
+
+  0
+STYLE
+  5
+54
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+LiberationSerif-BoldItalic
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+LiberationSerif-BoldItalic.ttf
+  4
+
+  0
+STYLE
+  5
+55
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+LiberationSerif-Italic
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+LiberationSerif-Italic.ttf
+  4
+
+  0
+STYLE
+  5
+56
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+LiberationMono
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+LiberationMono-Regular.ttf
+  4
+
+  0
+STYLE
+  5
+57
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+LiberationMono-Bold
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+LiberationMono-Bold.ttf
+  4
+
+  0
+STYLE
+  5
+58
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+LiberationMono-BoldItalic
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+LiberationMono-BoldItalic.ttf
+  4
+
+  0
+STYLE
+  5
+59
+330
+5
+100
+AcDbSymbolTableRecord
+100
+AcDbTextStyleTableRecord
+  2
+LiberationMono-Italic
+ 70
+0
+ 40
+0.0
+ 41
+1.0
+ 50
+0.0
+ 71
+0
+ 42
+2.5
+  3
+LiberationMono-Italic.ttf
+  4
+
+  0
+ENDTAB
+  0
+TABLE
+  2
+VIEW
+  5
+7
+330
+0
+100
+AcDbSymbolTable
+ 70
+0
+  0
+ENDTAB
+  0
+TABLE
+  2
+UCS
+  5
+6
+330
+0
+100
+AcDbSymbolTable
+ 70
+0
+  0
+ENDTAB
+  0
+TABLE
+  2
+APPID
+  5
+3
+330
+0
+100
+AcDbSymbolTable
+ 70
+3
+  0
+APPID
+  5
+2A
+330
+3
+100
+AcDbSymbolTableRecord
+100
+AcDbRegAppTableRecord
+  2
+ACAD
+ 70
+0
+  0
+APPID
+  5
+210
+330
+3
+100
+AcDbSymbolTableRecord
+100
+AcDbRegAppTableRecord
+  2
+HATCHBACKGROUNDCOLOR
+ 70
+0
+  0
+APPID
+  5
+211
+330
+3
+100
+AcDbSymbolTableRecord
+100
+AcDbRegAppTableRecord
+  2
+EZDXF
+ 70
+0
+  0
+ENDTAB
+  0
+TABLE
+  2
+DIMSTYLE
+  5
+4
+330
+0
+100
+AcDbSymbolTable
+ 70
+12
+100
+AcDbDimStyleTable
+  0
+DIMSTYLE
+105
+2B
+330
+4
+100
+AcDbSymbolTableRecord
+100
+AcDbDimStyleTableRecord
+  2
+Standard
+ 70
+0
+ 40
+1.0
+ 41
+2.5
+ 42
+0.625
+ 43
+3.75
+ 44
+1.25
+ 45
+0.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+2.5
+140
+2.5
+141
+2.5
+142
+0.0
+143
+0.03937007874
+144
+1.0
+145
+0.0
+146
+1.0
+147
+0.625
+148
+0.0
+ 69
+0
+ 70
+0
+ 71
+0
+ 72
+0
+ 73
+0
+ 74
+0
+ 75
+0
+ 76
+0
+ 77
+1
+ 78
+8
+ 79
+3
+170
+0
+171
+3
+172
+1
+173
+0
+174
+0
+175
+0
+176
+0
+177
+0
+178
+0
+179
+2
+271
+2
+272
+2
+273
+2
+274
+3
+275
+0
+276
+0
+277
+2
+278
+44
+279
+0
+280
+0
+281
+0
+282
+0
+283
+0
+284
+8
+285
+0
+286
+0
+288
+0
+289
+3
+290
+0
+371
+-2
+372
+-2
+  0
+DIMSTYLE
+105
+73
+330
+4
+100
+AcDbSymbolTableRecord
+100
+AcDbDimStyleTableRecord
+  2
+EZDXF
+ 70
+0
+ 40
+1.0
+ 41
+0.175
+ 42
+0.125
+ 43
+3.75
+ 44
+0.375
+ 45
+0.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+2.5
+140
+0.25
+141
+2.5
+142
+0.0
+143
+0.03937007874
+144
+100.0
+145
+0.0
+146
+0.5
+147
+0.1
+148
+0.0
+ 69
+0
+ 70
+0
+ 71
+0
+ 72
+0
+ 73
+0
+ 74
+0
+ 75
+0
+ 76
+0
+ 77
+1
+ 78
+12
+ 79
+3
+170
+0
+171
+3
+172
+1
+173
+0
+174
+0
+175
+0
+176
+0
+177
+0
+178
+0
+179
+2
+271
+2
+272
+2
+273
+2
+274
+3
+275
+0
+276
+0
+277
+2
+278
+46
+279
+2
+280
+0
+281
+0
+282
+0
+283
+0
+284
+8
+285
+0
+286
+0
+288
+1
+289
+3
+290
+0
+340
+4C
+342
+74
+371
+-2
+372
+-2
+  0
+DIMSTYLE
+105
+7C
+330
+4
+100
+AcDbSymbolTableRecord
+100
+AcDbDimStyleTableRecord
+  2
+EZ_M_100_H25_CM
+ 70
+0
+ 40
+1.0
+ 41
+0.25
+ 42
+0.125
+ 43
+3.75
+ 44
+0.375
+ 45
+0.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+2.5
+140
+0.25
+141
+2.5
+142
+0.125
+143
+0.03937007874
+144
+100.0
+145
+0.0
+146
+0.5
+147
+0.1
+148
+0.0
+ 69
+0
+ 70
+0
+ 71
+0
+ 72
+0
+ 73
+0
+ 74
+0
+ 75
+0
+ 76
+0
+ 77
+1
+ 78
+12
+ 79
+3
+170
+0
+171
+3
+172
+1
+173
+0
+174
+0
+175
+0
+176
+0
+177
+0
+178
+0
+179
+2
+271
+2
+272
+2
+273
+2
+274
+3
+275
+0
+276
+0
+277
+2
+278
+46
+279
+2
+280
+0
+281
+0
+282
+0
+283
+0
+284
+8
+285
+0
+286
+0
+288
+1
+289
+3
+290
+0
+340
+4C
+371
+-2
+372
+-2
+  0
+DIMSTYLE
+105
+7D
+330
+4
+100
+AcDbSymbolTableRecord
+100
+AcDbDimStyleTableRecord
+  2
+EZ_M_50_H25_CM
+ 70
+0
+ 40
+1.0
+ 41
+0.125
+ 42
+0.0625
+ 43
+3.75
+ 44
+0.1875
+ 45
+0.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+2.5
+140
+0.125
+141
+2.5
+142
+0.0625
+143
+0.03937007874
+144
+100.0
+145
+0.0
+146
+0.5
+147
+0.05
+148
+0.0
+ 69
+0
+ 70
+0
+ 71
+0
+ 72
+0
+ 73
+0
+ 74
+0
+ 75
+0
+ 76
+0
+ 77
+1
+ 78
+12
+ 79
+3
+170
+0
+171
+3
+172
+1
+173
+0
+174
+0
+175
+0
+176
+0
+177
+0
+178
+0
+179
+2
+271
+2
+272
+2
+273
+2
+274
+3
+275
+0
+276
+0
+277
+2
+278
+46
+279
+2
+280
+0
+281
+0
+282
+0
+283
+0
+284
+8
+285
+0
+286
+0
+288
+1
+289
+3
+290
+0
+340
+4C
+371
+-2
+372
+-2
+  0
+DIMSTYLE
+105
+7E
+330
+4
+100
+AcDbSymbolTableRecord
+100
+AcDbDimStyleTableRecord
+  2
+EZ_M_25_H25_CM
+ 70
+0
+ 40
+1.0
+ 41
+0.0625
+ 42
+0.03125
+ 43
+3.75
+ 44
+0.09375
+ 45
+0.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+2.5
+140
+0.0625
+141
+2.5
+142
+0.03125
+143
+0.03937007874
+144
+100.0
+145
+0.0
+146
+0.5
+147
+0.025
+148
+0.0
+ 69
+0
+ 70
+0
+ 71
+0
+ 72
+0
+ 73
+0
+ 74
+0
+ 75
+0
+ 76
+0
+ 77
+1
+ 78
+12
+ 79
+3
+170
+0
+171
+3
+172
+1
+173
+0
+174
+0
+175
+0
+176
+0
+177
+0
+178
+0
+179
+2
+271
+2
+272
+2
+273
+2
+274
+3
+275
+0
+276
+0
+277
+2
+278
+46
+279
+2
+280
+0
+281
+0
+282
+0
+283
+0
+284
+8
+285
+0
+286
+0
+288
+1
+289
+3
+290
+0
+340
+4C
+371
+-2
+372
+-2
+  0
+DIMSTYLE
+105
+7F
+330
+4
+100
+AcDbSymbolTableRecord
+100
+AcDbDimStyleTableRecord
+  2
+EZ_M_20_H25_CM
+ 70
+0
+ 40
+1.0
+ 41
+0.05
+ 42
+0.025
+ 43
+3.75
+ 44
+0.07500000000000001
+ 45
+0.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+2.5
+140
+0.05
+141
+2.5
+142
+0.025
+143
+0.03937007874
+144
+100.0
+145
+0.0
+146
+0.5
+147
+0.020000000000000004
+148
+0.0
+ 69
+0
+ 70
+0
+ 71
+0
+ 72
+0
+ 73
+0
+ 74
+0
+ 75
+0
+ 76
+0
+ 77
+1
+ 78
+12
+ 79
+3
+170
+0
+171
+3
+172
+1
+173
+0
+174
+0
+175
+0
+176
+0
+177
+0
+178
+0
+179
+2
+271
+2
+272
+2
+273
+2
+274
+3
+275
+0
+276
+0
+277
+2
+278
+46
+279
+2
+280
+0
+281
+0
+282
+0
+283
+0
+284
+8
+285
+0
+286
+0
+288
+1
+289
+3
+290
+0
+340
+4C
+371
+-2
+372
+-2
+  0
+DIMSTYLE
+105
+80
+330
+4
+100
+AcDbSymbolTableRecord
+100
+AcDbDimStyleTableRecord
+  2
+EZ_M_10_H25_CM
+ 70
+0
+ 40
+1.0
+ 41
+0.025
+ 42
+0.0125
+ 43
+3.75
+ 44
+0.037500000000000006
+ 45
+0.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+2.5
+140
+0.025
+141
+2.5
+142
+0.0125
+143
+0.03937007874
+144
+100.0
+145
+0.0
+146
+0.5
+147
+0.010000000000000002
+148
+0.0
+ 69
+0
+ 70
+0
+ 71
+0
+ 72
+0
+ 73
+0
+ 74
+0
+ 75
+0
+ 76
+0
+ 77
+1
+ 78
+12
+ 79
+3
+170
+0
+171
+3
+172
+1
+173
+0
+174
+0
+175
+0
+176
+0
+177
+0
+178
+0
+179
+2
+271
+2
+272
+2
+273
+2
+274
+3
+275
+0
+276
+0
+277
+2
+278
+46
+279
+2
+280
+0
+281
+0
+282
+0
+283
+0
+284
+8
+285
+0
+286
+0
+288
+1
+289
+3
+290
+0
+340
+4C
+371
+-2
+372
+-2
+  0
+DIMSTYLE
+105
+81
+330
+4
+100
+AcDbSymbolTableRecord
+100
+AcDbDimStyleTableRecord
+  2
+EZ_M_5_H25_CM
+ 70
+0
+ 40
+1.0
+ 41
+0.0125
+ 42
+0.00625
+ 43
+3.75
+ 44
+0.018750000000000003
+ 45
+0.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+2.5
+140
+0.0125
+141
+2.5
+142
+0.00625
+143
+0.03937007874
+144
+100.0
+145
+0.0
+146
+0.5
+147
+0.005000000000000001
+148
+0.0
+ 69
+0
+ 70
+0
+ 71
+0
+ 72
+0
+ 73
+0
+ 74
+0
+ 75
+0
+ 76
+0
+ 77
+1
+ 78
+12
+ 79
+3
+170
+0
+171
+3
+172
+1
+173
+0
+174
+0
+175
+0
+176
+0
+177
+0
+178
+0
+179
+2
+271
+2
+272
+2
+273
+2
+274
+3
+275
+0
+276
+0
+277
+2
+278
+46
+279
+2
+280
+0
+281
+0
+282
+0
+283
+0
+284
+8
+285
+0
+286
+0
+288
+1
+289
+3
+290
+0
+340
+4C
+371
+-2
+372
+-2
+  0
+DIMSTYLE
+105
+82
+330
+4
+100
+AcDbSymbolTableRecord
+100
+AcDbDimStyleTableRecord
+  2
+EZ_M_1_H25_CM
+ 70
+0
+ 40
+1.0
+ 41
+0.0025
+ 42
+0.00125
+ 43
+3.75
+ 44
+0.00375
+ 45
+0.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+2.5
+140
+0.0025
+141
+2.5
+142
+0.00125
+143
+0.03937007874
+144
+100.0
+145
+0.0
+146
+0.5
+147
+0.001
+148
+0.0
+ 69
+0
+ 70
+0
+ 71
+0
+ 72
+0
+ 73
+0
+ 74
+0
+ 75
+0
+ 76
+0
+ 77
+1
+ 78
+12
+ 79
+3
+170
+0
+171
+3
+172
+1
+173
+0
+174
+0
+175
+0
+176
+0
+177
+0
+178
+0
+179
+2
+271
+2
+272
+2
+273
+2
+274
+3
+275
+0
+276
+0
+277
+2
+278
+46
+279
+2
+280
+0
+281
+0
+282
+0
+283
+0
+284
+8
+285
+0
+286
+0
+288
+1
+289
+3
+290
+0
+340
+4C
+371
+-2
+372
+-2
+  0
+DIMSTYLE
+105
+83
+330
+4
+100
+AcDbSymbolTableRecord
+100
+AcDbDimStyleTableRecord
+  2
+EZ_RADIUS
+ 70
+0
+ 40
+1.0
+ 41
+0.25
+ 42
+0.125
+ 43
+3.75
+ 44
+0.375
+ 45
+0.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+2.5
+140
+0.25
+141
+0.0
+142
+0.0
+143
+0.03937007874
+144
+100.0
+145
+0.0
+146
+0.5
+147
+0.1
+148
+0.0
+ 69
+0
+ 70
+0
+ 71
+0
+ 72
+0
+ 73
+0
+ 74
+0
+ 75
+0
+ 76
+0
+ 77
+1
+ 78
+12
+ 79
+3
+170
+0
+171
+3
+172
+0
+173
+0
+174
+0
+175
+0
+176
+0
+177
+0
+178
+0
+179
+2
+271
+2
+272
+2
+273
+2
+274
+3
+275
+0
+276
+0
+277
+2
+278
+46
+279
+1
+280
+0
+281
+0
+282
+0
+283
+0
+284
+8
+285
+0
+286
+0
+288
+1
+289
+3
+290
+0
+340
+4C
+342
+84
+371
+-2
+372
+-2
+  0
+DIMSTYLE
+105
+88
+330
+4
+100
+AcDbSymbolTableRecord
+100
+AcDbDimStyleTableRecord
+  2
+EZ_RADIUS_INSIDE
+ 70
+0
+ 40
+1.0
+ 41
+0.25
+ 42
+0.125
+ 43
+3.75
+ 44
+0.375
+ 45
+0.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+2.5
+140
+0.25
+141
+0.0
+142
+0.0
+143
+0.03937007874
+144
+100.0
+145
+0.0
+146
+0.5
+147
+0.1
+148
+0.0
+ 69
+0
+ 70
+0
+ 71
+0
+ 72
+0
+ 73
+0
+ 74
+0
+ 75
+0
+ 76
+0
+ 77
+0
+ 78
+12
+ 79
+3
+170
+0
+171
+3
+172
+0
+173
+0
+174
+1
+175
+0
+176
+0
+177
+0
+178
+0
+179
+2
+271
+2
+272
+2
+273
+2
+274
+3
+275
+0
+276
+0
+277
+2
+278
+46
+279
+0
+280
+0
+281
+0
+282
+0
+283
+0
+284
+8
+285
+0
+286
+0
+288
+1
+289
+0
+290
+0
+340
+4C
+342
+84
+371
+-2
+372
+-2
+  0
+DIMSTYLE
+105
+89
+330
+4
+100
+AcDbSymbolTableRecord
+100
+AcDbDimStyleTableRecord
+  2
+EZ_CURVED
+ 70
+0
+ 40
+1.0
+ 41
+0.25
+ 42
+0.125
+ 43
+3.75
+ 44
+0.375
+ 45
+0.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+2.5
+140
+0.25
+141
+2.5
+142
+0.0
+143
+0.03937007874
+144
+100.0
+145
+0.0
+146
+0.5
+147
+0.1
+148
+0.0
+ 69
+0
+ 70
+0
+ 71
+0
+ 72
+0
+ 73
+0
+ 74
+0
+ 75
+0
+ 76
+0
+ 77
+1
+ 78
+12
+ 79
+2
+ 90
+2
+170
+0
+171
+3
+172
+1
+173
+0
+174
+0
+175
+0
+176
+0
+177
+0
+178
+0
+179
+2
+271
+2
+272
+2
+273
+2
+274
+3
+275
+0
+276
+0
+277
+2
+278
+46
+279
+2
+280
+0
+281
+0
+282
+0
+283
+0
+284
+8
+285
+0
+286
+0
+288
+1
+289
+3
+290
+0
+340
+4C
+371
+-2
+372
+-2
+  0
+ENDTAB
+  0
+TABLE
+  2
+BLOCK_RECORD
+  5
+9
+330
+0
+100
+AcDbSymbolTable
+ 70
+27
+  0
+BLOCK_RECORD
+  5
+17
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*Model_Space
+340
+1A
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+1B
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*Paper_Space
+340
+1E
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+74
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+_ARCHTICK
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+78
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+_CLOSEDFILLED
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+84
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+_CLOSEDBLANK
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+CF
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+YATAK_CIFT
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+D8
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+YATAK_TEK
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+DE
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+KANEPE
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+E4
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+YEMEK_MASASI
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+EE
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+DOLAP
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+F7
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+TEZGAH
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+102
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+WC
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+107
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+LAVABO
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+10D
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+DUS
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+14C
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*D1
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+15B
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*D2
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+16A
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*D3
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+179
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*D4
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+188
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*D5
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+197
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*D6
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+1A6
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*D7
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+1B5
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*D8
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+1C4
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*D9
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+1D3
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*D10
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+1E2
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*D11
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+1F1
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*D12
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+BLOCK_RECORD
+  5
+200
+330
+9
+100
+AcDbSymbolTableRecord
+100
+AcDbBlockTableRecord
+  2
+*D13
+340
+0
+ 70
+0
+280
+1
+281
+0
+  0
+ENDTAB
+  0
+ENDSEC
+  0
+SECTION
+  2
+BLOCKS
+  0
+BLOCK
+  5
+18
+330
+17
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*Model_Space
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*Model_Space
+  1
+
+  0
+ENDBLK
+  5
+19
+330
+17
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+1C
+330
+1B
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*Paper_Space
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*Paper_Space
+  1
+
+  0
+ENDBLK
+  5
+1D
+330
+1B
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+75
+330
+74
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+_ARCHTICK
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+_ARCHTICK
+  1
+
+  0
+LWPOLYLINE
+  5
+77
+330
+74
+100
+AcDbEntity
+  8
+0
+  6
+BYBLOCK
+ 62
+0
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 43
+0.15
+ 10
+-0.5
+ 20
+-0.5
+ 10
+0.5
+ 20
+0.5
+  0
+ENDBLK
+  5
+76
+330
+74
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+79
+330
+78
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+_CLOSEDFILLED
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+_CLOSEDFILLED
+  1
+
+  0
+SOLID
+  5
+7B
+330
+78
+100
+AcDbEntity
+  8
+0
+  6
+BYBLOCK
+ 62
+0
+100
+AcDbTrace
+ 10
+-1.0
+ 20
+0.16439898372402537
+ 30
+0.0
+ 11
+0.0
+ 21
+0.0
+ 31
+0.0
+ 12
+-1.0
+ 22
+-0.16439898372402537
+ 32
+0.0
+ 13
+-1.0
+ 23
+-0.16439898372402537
+ 33
+0.0
+  0
+ENDBLK
+  5
+7A
+330
+78
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+85
+330
+84
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+_CLOSEDBLANK
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+_CLOSEDBLANK
+  1
+
+  0
+LWPOLYLINE
+  5
+87
+330
+84
+100
+AcDbEntity
+  8
+0
+  6
+BYBLOCK
+ 62
+0
+100
+AcDbPolyline
+ 90
+3
+ 70
+1
+ 10
+-1.0
+ 20
+0.16439898372402537
+ 10
+0.0
+ 20
+0.0
+ 10
+-1.0
+ 20
+-0.16439898372402537
+  0
+ENDBLK
+  5
+86
+330
+84
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+D0
+330
+CF
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+YATAK_CIFT
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+YATAK_CIFT
+  1
+
+  0
+LWPOLYLINE
+  5
+D2
+330
+CF
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+1600.0
+ 20
+0.0
+ 10
+1600.0
+ 20
+2000.0
+ 10
+0.0
+ 20
+2000.0
+  0
+LWPOLYLINE
+  5
+D3
+330
+CF
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+2
+ 70
+0
+ 10
+0.0
+ 20
+1550.0
+ 10
+1600.0
+ 20
+1550.0
+  0
+LWPOLYLINE
+  5
+D4
+330
+CF
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+120.0
+ 20
+1620.0
+ 10
+740.0
+ 20
+1620.0
+ 10
+740.0
+ 20
+1920.0
+ 10
+120.0
+ 20
+1920.0
+  0
+LWPOLYLINE
+  5
+D5
+330
+CF
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+860.0
+ 20
+1620.0
+ 10
+1480.0
+ 20
+1620.0
+ 10
+1480.0
+ 20
+1920.0
+ 10
+860.0
+ 20
+1920.0
+  0
+LINE
+  5
+D6
+330
+CF
+100
+AcDbEntity
+  8
+0
+100
+AcDbLine
+ 10
+0.0
+ 20
+1550.0
+ 30
+0.0
+ 11
+500.0
+ 21
+1150.0
+ 31
+0.0
+  0
+LINE
+  5
+D7
+330
+CF
+100
+AcDbEntity
+  8
+0
+100
+AcDbLine
+ 10
+500.0
+ 20
+1150.0
+ 30
+0.0
+ 11
+1600.0
+ 21
+1150.0
+ 31
+0.0
+  0
+ENDBLK
+  5
+D1
+330
+CF
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+D9
+330
+D8
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+YATAK_TEK
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+YATAK_TEK
+  1
+
+  0
+LWPOLYLINE
+  5
+DB
+330
+D8
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+1000.0
+ 20
+0.0
+ 10
+1000.0
+ 20
+2000.0
+ 10
+0.0
+ 20
+2000.0
+  0
+LWPOLYLINE
+  5
+DC
+330
+D8
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+150.0
+ 20
+1620.0
+ 10
+850.0
+ 20
+1620.0
+ 10
+850.0
+ 20
+1920.0
+ 10
+150.0
+ 20
+1920.0
+  0
+LINE
+  5
+DD
+330
+D8
+100
+AcDbEntity
+  8
+0
+100
+AcDbLine
+ 10
+0.0
+ 20
+1500.0
+ 30
+0.0
+ 11
+1000.0
+ 21
+1500.0
+ 31
+0.0
+  0
+ENDBLK
+  5
+DA
+330
+D8
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+DF
+330
+DE
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+KANEPE
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+KANEPE
+  1
+
+  0
+LWPOLYLINE
+  5
+E1
+330
+DE
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+2400.0
+ 20
+0.0
+ 10
+2400.0
+ 20
+950.0
+ 10
+0.0
+ 20
+950.0
+  0
+LWPOLYLINE
+  5
+E2
+330
+DE
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+200.0
+ 20
+0.0
+ 10
+2200.0
+ 20
+0.0
+ 10
+2200.0
+ 20
+700.0
+ 10
+200.0
+ 20
+700.0
+  0
+LINE
+  5
+E3
+330
+DE
+100
+AcDbEntity
+  8
+0
+100
+AcDbLine
+ 10
+1200.0
+ 20
+0.0
+ 30
+0.0
+ 11
+1200.0
+ 21
+700.0
+ 31
+0.0
+  0
+ENDBLK
+  5
+E0
+330
+DE
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+E5
+330
+E4
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+YEMEK_MASASI
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+YEMEK_MASASI
+  1
+
+  0
+LWPOLYLINE
+  5
+E7
+330
+E4
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+1800.0
+ 20
+0.0
+ 10
+1800.0
+ 20
+900.0
+ 10
+0.0
+ 20
+900.0
+  0
+LWPOLYLINE
+  5
+E8
+330
+E4
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+250.0
+ 20
+-500.0
+ 10
+650.0
+ 20
+-500.0
+ 10
+650.0
+ 20
+-100.0
+ 10
+250.0
+ 20
+-100.0
+  0
+LWPOLYLINE
+  5
+E9
+330
+E4
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+250.0
+ 20
+1000.0
+ 10
+650.0
+ 20
+1000.0
+ 10
+650.0
+ 20
+1400.0
+ 10
+250.0
+ 20
+1400.0
+  0
+LWPOLYLINE
+  5
+EA
+330
+E4
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1150.0
+ 20
+-500.0
+ 10
+1550.0
+ 20
+-500.0
+ 10
+1550.0
+ 20
+-100.0
+ 10
+1150.0
+ 20
+-100.0
+  0
+LWPOLYLINE
+  5
+EB
+330
+E4
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1150.0
+ 20
+1000.0
+ 10
+1550.0
+ 20
+1000.0
+ 10
+1550.0
+ 20
+1400.0
+ 10
+1150.0
+ 20
+1400.0
+  0
+LWPOLYLINE
+  5
+EC
+330
+E4
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+-500.0
+ 20
+250.0
+ 10
+-100.0
+ 20
+250.0
+ 10
+-100.0
+ 20
+650.0
+ 10
+-500.0
+ 20
+650.0
+  0
+LWPOLYLINE
+  5
+ED
+330
+E4
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1900.0
+ 20
+250.0
+ 10
+2300.0
+ 20
+250.0
+ 10
+2300.0
+ 20
+650.0
+ 10
+1900.0
+ 20
+650.0
+  0
+ENDBLK
+  5
+E6
+330
+E4
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+EF
+330
+EE
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+DOLAP
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+DOLAP
+  1
+
+  0
+LWPOLYLINE
+  5
+F1
+330
+EE
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+2400.0
+ 20
+0.0
+ 10
+2400.0
+ 20
+600.0
+ 10
+0.0
+ 20
+600.0
+  0
+LINE
+  5
+F2
+330
+EE
+100
+AcDbEntity
+  8
+0
+100
+AcDbLine
+ 10
+600.0
+ 20
+0.0
+ 30
+0.0
+ 11
+600.0
+ 21
+600.0
+ 31
+0.0
+  0
+LINE
+  5
+F3
+330
+EE
+100
+AcDbEntity
+  8
+0
+100
+AcDbLine
+ 10
+1200.0
+ 20
+0.0
+ 30
+0.0
+ 11
+1200.0
+ 21
+600.0
+ 31
+0.0
+  0
+LINE
+  5
+F4
+330
+EE
+100
+AcDbEntity
+  8
+0
+100
+AcDbLine
+ 10
+1800.0
+ 20
+0.0
+ 30
+0.0
+ 11
+1800.0
+ 21
+600.0
+ 31
+0.0
+  0
+LINE
+  5
+F5
+330
+EE
+100
+AcDbEntity
+  8
+0
+100
+AcDbLine
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+ 11
+2400.0
+ 21
+600.0
+ 31
+0.0
+  0
+LINE
+  5
+F6
+330
+EE
+100
+AcDbEntity
+  8
+0
+100
+AcDbLine
+ 10
+0.0
+ 20
+600.0
+ 30
+0.0
+ 11
+2400.0
+ 21
+0.0
+ 31
+0.0
+  0
+ENDBLK
+  5
+F0
+330
+EE
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+F8
+330
+F7
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+TEZGAH
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+TEZGAH
+  1
+
+  0
+LWPOLYLINE
+  5
+FA
+330
+F7
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+3900.0
+ 20
+0.0
+ 10
+3900.0
+ 20
+600.0
+ 10
+0.0
+ 20
+600.0
+  0
+LWPOLYLINE
+  5
+FB
+330
+F7
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+400.0
+ 20
+80.0
+ 10
+1200.0
+ 20
+80.0
+ 10
+1200.0
+ 20
+520.0
+ 10
+400.0
+ 20
+520.0
+  0
+CIRCLE
+  5
+FC
+330
+F7
+100
+AcDbEntity
+  8
+0
+100
+AcDbCircle
+ 10
+800.0
+ 20
+300.0
+ 30
+0.0
+ 40
+40.0
+  0
+CIRCLE
+  5
+FD
+330
+F7
+100
+AcDbEntity
+  8
+0
+100
+AcDbCircle
+ 10
+2350.0
+ 20
+180.0
+ 30
+0.0
+ 40
+110.0
+  0
+CIRCLE
+  5
+FE
+330
+F7
+100
+AcDbEntity
+  8
+0
+100
+AcDbCircle
+ 10
+2650.0
+ 20
+180.0
+ 30
+0.0
+ 40
+110.0
+  0
+CIRCLE
+  5
+FF
+330
+F7
+100
+AcDbEntity
+  8
+0
+100
+AcDbCircle
+ 10
+2350.0
+ 20
+430.0
+ 30
+0.0
+ 40
+110.0
+  0
+CIRCLE
+  5
+100
+330
+F7
+100
+AcDbEntity
+  8
+0
+100
+AcDbCircle
+ 10
+2650.0
+ 20
+430.0
+ 30
+0.0
+ 40
+110.0
+  0
+LWPOLYLINE
+  5
+101
+330
+F7
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+2150.0
+ 20
+30.0
+ 10
+2850.0
+ 20
+30.0
+ 10
+2850.0
+ 20
+570.0
+ 10
+2150.0
+ 20
+570.0
+  0
+ENDBLK
+  5
+F9
+330
+F7
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+103
+330
+102
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+WC
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+WC
+  1
+
+  0
+LWPOLYLINE
+  5
+105
+330
+102
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+380.0
+ 20
+0.0
+ 10
+380.0
+ 20
+180.0
+ 10
+0.0
+ 20
+180.0
+  0
+ELLIPSE
+  5
+106
+330
+102
+100
+AcDbEntity
+  8
+0
+100
+AcDbEllipse
+ 10
+190.0
+ 20
+450.0
+ 30
+0.0
+ 11
+0.0
+ 21
+270.0
+ 31
+0.0
+ 40
+0.68
+ 41
+0.0
+ 42
+6.283185307179586
+  0
+ENDBLK
+  5
+104
+330
+102
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+108
+330
+107
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+LAVABO
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+LAVABO
+  1
+
+  0
+LWPOLYLINE
+  5
+10A
+330
+107
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+600.0
+ 20
+0.0
+ 10
+600.0
+ 20
+450.0
+ 10
+0.0
+ 20
+450.0
+  0
+ELLIPSE
+  5
+10B
+330
+107
+100
+AcDbEntity
+  8
+0
+100
+AcDbEllipse
+ 10
+300.0
+ 20
+240.0
+ 30
+0.0
+ 11
+210.0
+ 21
+0.0
+ 31
+0.0
+ 40
+0.7
+ 41
+0.0
+ 42
+6.283185307179586
+  0
+CIRCLE
+  5
+10C
+330
+107
+100
+AcDbEntity
+  8
+0
+100
+AcDbCircle
+ 10
+300.0
+ 20
+380.0
+ 30
+0.0
+ 40
+25.0
+  0
+ENDBLK
+  5
+109
+330
+107
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+10E
+330
+10D
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+DUS
+ 70
+0
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+DUS
+  1
+
+  0
+LWPOLYLINE
+  5
+110
+330
+10D
+100
+AcDbEntity
+  8
+0
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 10
+900.0
+ 20
+0.0
+ 10
+900.0
+ 20
+900.0
+ 10
+0.0
+ 20
+900.0
+  0
+LINE
+  5
+111
+330
+10D
+100
+AcDbEntity
+  8
+0
+100
+AcDbLine
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+ 11
+900.0
+ 21
+900.0
+ 31
+0.0
+  0
+LINE
+  5
+112
+330
+10D
+100
+AcDbEntity
+  8
+0
+100
+AcDbLine
+ 10
+0.0
+ 20
+900.0
+ 30
+0.0
+ 11
+900.0
+ 21
+0.0
+ 31
+0.0
+  0
+CIRCLE
+  5
+113
+330
+10D
+100
+AcDbEntity
+  8
+0
+100
+AcDbCircle
+ 10
+450.0
+ 20
+450.0
+ 30
+0.0
+ 40
+50.0
+  0
+ENDBLK
+  5
+10F
+330
+10D
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+14D
+330
+14C
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*D1
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*D1
+  1
+
+  0
+LINE
+  5
+14F
+330
+14C
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-250.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+-250.0
+ 21
+10320.0
+ 31
+0.0
+  0
+LINE
+  5
+150
+330
+14C
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+1200.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+1200.0
+ 21
+10320.0
+ 31
+0.0
+  0
+INSERT
+  5
+151
+330
+14C
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+-250.0
+ 20
+10200.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+180.0
+  0
+INSERT
+  5
+153
+330
+14C
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+1200.0
+ 20
+10200.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+  0
+LINE
+  5
+155
+330
+14C
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-250.0
+ 20
+10200.0
+ 30
+0.0
+ 11
+1200.0
+ 21
+10200.0
+ 31
+0.0
+  0
+MTEXT
+  5
+156
+330
+14C
+100
+AcDbEntity
+  8
+OLCU
+ 62
+7
+100
+AcDbMText
+ 10
+475.0
+ 20
+10360.0
+ 30
+0.0
+ 40
+200.0
+ 71
+5
+  1
+1450
+  7
+OpenSansCondensed-Light
+  0
+POINT
+  5
+157
+330
+14C
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-250.0
+ 20
+10200.0
+ 30
+0.0
+  0
+POINT
+  5
+158
+330
+14C
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-250.0
+ 20
+9250.0
+ 30
+0.0
+  0
+POINT
+  5
+159
+330
+14C
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+1200.0
+ 20
+9250.0
+ 30
+0.0
+  0
+ENDBLK
+  5
+14E
+330
+14C
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+15C
+330
+15B
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*D2
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*D2
+  1
+
+  0
+LINE
+  5
+15E
+330
+15B
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+1200.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+1200.0
+ 21
+10320.0
+ 31
+0.0
+  0
+LINE
+  5
+15F
+330
+15B
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+4600.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+4600.0
+ 21
+10320.0
+ 31
+0.0
+  0
+INSERT
+  5
+160
+330
+15B
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+1200.0
+ 20
+10200.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+180.0
+  0
+INSERT
+  5
+162
+330
+15B
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+4600.0
+ 20
+10200.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+  0
+LINE
+  5
+164
+330
+15B
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+1200.0
+ 20
+10200.0
+ 30
+0.0
+ 11
+4600.0
+ 21
+10200.0
+ 31
+0.0
+  0
+MTEXT
+  5
+165
+330
+15B
+100
+AcDbEntity
+  8
+OLCU
+ 62
+7
+100
+AcDbMText
+ 10
+2900.0
+ 20
+10360.0
+ 30
+0.0
+ 40
+200.0
+ 71
+5
+  1
+3400
+  7
+OpenSansCondensed-Light
+  0
+POINT
+  5
+166
+330
+15B
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+1200.0
+ 20
+10200.0
+ 30
+0.0
+  0
+POINT
+  5
+167
+330
+15B
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+1200.0
+ 20
+9250.0
+ 30
+0.0
+  0
+POINT
+  5
+168
+330
+15B
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+4600.0
+ 20
+9250.0
+ 30
+0.0
+  0
+ENDBLK
+  5
+15D
+330
+15B
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+16B
+330
+16A
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*D3
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*D3
+  1
+
+  0
+LINE
+  5
+16D
+330
+16A
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+4600.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+4600.0
+ 21
+10320.0
+ 31
+0.0
+  0
+LINE
+  5
+16E
+330
+16A
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+6500.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+6500.0
+ 21
+10320.0
+ 31
+0.0
+  0
+INSERT
+  5
+16F
+330
+16A
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+4600.0
+ 20
+10200.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+180.0
+  0
+INSERT
+  5
+171
+330
+16A
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+6500.0
+ 20
+10200.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+  0
+LINE
+  5
+173
+330
+16A
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+4600.0
+ 20
+10200.0
+ 30
+0.0
+ 11
+6500.0
+ 21
+10200.0
+ 31
+0.0
+  0
+MTEXT
+  5
+174
+330
+16A
+100
+AcDbEntity
+  8
+OLCU
+ 62
+7
+100
+AcDbMText
+ 10
+5550.0
+ 20
+10360.0
+ 30
+0.0
+ 40
+200.0
+ 71
+5
+  1
+1900
+  7
+OpenSansCondensed-Light
+  0
+POINT
+  5
+175
+330
+16A
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+4600.0
+ 20
+10200.0
+ 30
+0.0
+  0
+POINT
+  5
+176
+330
+16A
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+4600.0
+ 20
+9250.0
+ 30
+0.0
+  0
+POINT
+  5
+177
+330
+16A
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+6500.0
+ 20
+9250.0
+ 30
+0.0
+  0
+ENDBLK
+  5
+16C
+330
+16A
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+17A
+330
+179
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*D4
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*D4
+  1
+
+  0
+LINE
+  5
+17C
+330
+179
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+6500.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+6500.0
+ 21
+10320.0
+ 31
+0.0
+  0
+LINE
+  5
+17D
+330
+179
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+8000.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+8000.0
+ 21
+10320.0
+ 31
+0.0
+  0
+INSERT
+  5
+17E
+330
+179
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+6500.0
+ 20
+10200.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+180.0
+  0
+INSERT
+  5
+180
+330
+179
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+8000.0
+ 20
+10200.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+  0
+LINE
+  5
+182
+330
+179
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+6500.0
+ 20
+10200.0
+ 30
+0.0
+ 11
+8000.0
+ 21
+10200.0
+ 31
+0.0
+  0
+MTEXT
+  5
+183
+330
+179
+100
+AcDbEntity
+  8
+OLCU
+ 62
+7
+100
+AcDbMText
+ 10
+7250.0
+ 20
+10360.0
+ 30
+0.0
+ 40
+200.0
+ 71
+5
+  1
+1500
+  7
+OpenSansCondensed-Light
+  0
+POINT
+  5
+184
+330
+179
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+6500.0
+ 20
+10200.0
+ 30
+0.0
+  0
+POINT
+  5
+185
+330
+179
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+6500.0
+ 20
+9250.0
+ 30
+0.0
+  0
+POINT
+  5
+186
+330
+179
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+8000.0
+ 20
+9250.0
+ 30
+0.0
+  0
+ENDBLK
+  5
+17B
+330
+179
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+189
+330
+188
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*D5
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*D5
+  1
+
+  0
+LINE
+  5
+18B
+330
+188
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+8000.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+8000.0
+ 21
+10320.0
+ 31
+0.0
+  0
+LINE
+  5
+18C
+330
+188
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+10600.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+10600.0
+ 21
+10320.0
+ 31
+0.0
+  0
+INSERT
+  5
+18D
+330
+188
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+8000.0
+ 20
+10200.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+180.0
+  0
+INSERT
+  5
+18F
+330
+188
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+10600.0
+ 20
+10200.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+  0
+LINE
+  5
+191
+330
+188
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+8000.0
+ 20
+10200.0
+ 30
+0.0
+ 11
+10600.0
+ 21
+10200.0
+ 31
+0.0
+  0
+MTEXT
+  5
+192
+330
+188
+100
+AcDbEntity
+  8
+OLCU
+ 62
+7
+100
+AcDbMText
+ 10
+9300.0
+ 20
+10360.0
+ 30
+0.0
+ 40
+200.0
+ 71
+5
+  1
+2600
+  7
+OpenSansCondensed-Light
+  0
+POINT
+  5
+193
+330
+188
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+8000.0
+ 20
+10200.0
+ 30
+0.0
+  0
+POINT
+  5
+194
+330
+188
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+8000.0
+ 20
+9250.0
+ 30
+0.0
+  0
+POINT
+  5
+195
+330
+188
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+10600.0
+ 20
+9250.0
+ 30
+0.0
+  0
+ENDBLK
+  5
+18A
+330
+188
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+198
+330
+197
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*D6
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*D6
+  1
+
+  0
+LINE
+  5
+19A
+330
+197
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+10600.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+10600.0
+ 21
+10320.0
+ 31
+0.0
+  0
+LINE
+  5
+19B
+330
+197
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+12250.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+12250.0
+ 21
+10320.0
+ 31
+0.0
+  0
+INSERT
+  5
+19C
+330
+197
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+10600.0
+ 20
+10200.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+180.0
+  0
+INSERT
+  5
+19E
+330
+197
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+12250.0
+ 20
+10200.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+  0
+LINE
+  5
+1A0
+330
+197
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+10600.0
+ 20
+10200.0
+ 30
+0.0
+ 11
+12250.0
+ 21
+10200.0
+ 31
+0.0
+  0
+MTEXT
+  5
+1A1
+330
+197
+100
+AcDbEntity
+  8
+OLCU
+ 62
+7
+100
+AcDbMText
+ 10
+11425.0
+ 20
+10360.0
+ 30
+0.0
+ 40
+200.0
+ 71
+5
+  1
+1650
+  7
+OpenSansCondensed-Light
+  0
+POINT
+  5
+1A2
+330
+197
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+10600.0
+ 20
+10200.0
+ 30
+0.0
+  0
+POINT
+  5
+1A3
+330
+197
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+10600.0
+ 20
+9250.0
+ 30
+0.0
+  0
+POINT
+  5
+1A4
+330
+197
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+12250.0
+ 20
+9250.0
+ 30
+0.0
+  0
+ENDBLK
+  5
+199
+330
+197
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+1A7
+330
+1A6
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*D7
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*D7
+  1
+
+  0
+LINE
+  5
+1A9
+330
+1A6
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-250.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+-250.0
+ 21
+11020.0
+ 31
+0.0
+  0
+LINE
+  5
+1AA
+330
+1A6
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+12250.0
+ 20
+9400.0
+ 30
+0.0
+ 11
+12250.0
+ 21
+11020.0
+ 31
+0.0
+  0
+INSERT
+  5
+1AB
+330
+1A6
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+-250.0
+ 20
+10900.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+180.0
+  0
+INSERT
+  5
+1AD
+330
+1A6
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+12250.0
+ 20
+10900.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+  0
+LINE
+  5
+1AF
+330
+1A6
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-250.0
+ 20
+10900.0
+ 30
+0.0
+ 11
+12250.0
+ 21
+10900.0
+ 31
+0.0
+  0
+MTEXT
+  5
+1B0
+330
+1A6
+100
+AcDbEntity
+  8
+OLCU
+ 62
+7
+100
+AcDbMText
+ 10
+6000.0
+ 20
+11060.0
+ 30
+0.0
+ 40
+200.0
+ 71
+5
+  1
+12500
+  7
+OpenSansCondensed-Light
+  0
+POINT
+  5
+1B1
+330
+1A6
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-250.0
+ 20
+10900.0
+ 30
+0.0
+  0
+POINT
+  5
+1B2
+330
+1A6
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-250.0
+ 20
+9250.0
+ 30
+0.0
+  0
+POINT
+  5
+1B3
+330
+1A6
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+12250.0
+ 20
+9250.0
+ 30
+0.0
+  0
+ENDBLK
+  5
+1A8
+330
+1A6
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+1B6
+330
+1B5
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*D8
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*D8
+  1
+
+  0
+LINE
+  5
+1B8
+330
+1B5
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-400.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+-1720.0
+ 21
+-250.0
+ 31
+0.0
+  0
+LINE
+  5
+1B9
+330
+1B5
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-400.0
+ 20
+3800.0
+ 30
+0.0
+ 11
+-1720.0
+ 21
+3800.0
+ 31
+0.0
+  0
+INSERT
+  5
+1BA
+330
+1B5
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+-1600.0
+ 20
+-250.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+270.0
+  0
+INSERT
+  5
+1BC
+330
+1B5
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+-1600.0
+ 20
+3800.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+90.0
+  0
+LINE
+  5
+1BE
+330
+1B5
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-1600.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+-1600.0
+ 21
+3800.0
+ 31
+0.0
+  0
+MTEXT
+  5
+1BF
+330
+1B5
+100
+AcDbEntity
+  8
+OLCU
+ 62
+7
+100
+AcDbMText
+ 10
+-1760.0
+ 20
+1775.0
+ 30
+0.0
+ 40
+200.0
+ 71
+5
+  1
+4050
+  7
+OpenSansCondensed-Light
+ 50
+90.0
+  0
+POINT
+  5
+1C0
+330
+1B5
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-1600.0
+ 20
+-250.0
+ 30
+0.0
+  0
+POINT
+  5
+1C1
+330
+1B5
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-250.0
+ 20
+-250.0
+ 30
+0.0
+  0
+POINT
+  5
+1C2
+330
+1B5
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-250.0
+ 20
+3800.0
+ 30
+0.0
+  0
+ENDBLK
+  5
+1B7
+330
+1B5
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+1C5
+330
+1C4
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*D9
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*D9
+  1
+
+  0
+LINE
+  5
+1C7
+330
+1C4
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-400.0
+ 20
+3800.0
+ 30
+0.0
+ 11
+-1720.0
+ 21
+3800.0
+ 31
+0.0
+  0
+LINE
+  5
+1C8
+330
+1C4
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-400.0
+ 20
+9250.0
+ 30
+0.0
+ 11
+-1720.0
+ 21
+9250.0
+ 31
+0.0
+  0
+INSERT
+  5
+1C9
+330
+1C4
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+-1600.0
+ 20
+3800.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+270.0
+  0
+INSERT
+  5
+1CB
+330
+1C4
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+-1600.0
+ 20
+9250.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+90.0
+  0
+LINE
+  5
+1CD
+330
+1C4
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-1600.0
+ 20
+3800.0
+ 30
+0.0
+ 11
+-1600.0
+ 21
+9250.0
+ 31
+0.0
+  0
+MTEXT
+  5
+1CE
+330
+1C4
+100
+AcDbEntity
+  8
+OLCU
+ 62
+7
+100
+AcDbMText
+ 10
+-1760.0
+ 20
+6525.0
+ 30
+0.0
+ 40
+200.0
+ 71
+5
+  1
+5450
+  7
+OpenSansCondensed-Light
+ 50
+90.0
+  0
+POINT
+  5
+1CF
+330
+1C4
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-1600.0
+ 20
+3800.0
+ 30
+0.0
+  0
+POINT
+  5
+1D0
+330
+1C4
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-250.0
+ 20
+3800.0
+ 30
+0.0
+  0
+POINT
+  5
+1D1
+330
+1C4
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-250.0
+ 20
+9250.0
+ 30
+0.0
+  0
+ENDBLK
+  5
+1C6
+330
+1C4
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+1D4
+330
+1D3
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*D10
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*D10
+  1
+
+  0
+LINE
+  5
+1D6
+330
+1D3
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-400.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+-2420.0
+ 21
+-250.0
+ 31
+0.0
+  0
+LINE
+  5
+1D7
+330
+1D3
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-400.0
+ 20
+9250.0
+ 30
+0.0
+ 11
+-2420.0
+ 21
+9250.0
+ 31
+0.0
+  0
+INSERT
+  5
+1D8
+330
+1D3
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+-2300.0
+ 20
+-250.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+270.0
+  0
+INSERT
+  5
+1DA
+330
+1D3
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+-2300.0
+ 20
+9250.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+90.0
+  0
+LINE
+  5
+1DC
+330
+1D3
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-2300.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+-2300.0
+ 21
+9250.0
+ 31
+0.0
+  0
+MTEXT
+  5
+1DD
+330
+1D3
+100
+AcDbEntity
+  8
+OLCU
+ 62
+7
+100
+AcDbMText
+ 10
+-2460.0
+ 20
+4500.0
+ 30
+0.0
+ 40
+200.0
+ 71
+5
+  1
+9500
+  7
+OpenSansCondensed-Light
+ 50
+90.0
+  0
+POINT
+  5
+1DE
+330
+1D3
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-2300.0
+ 20
+-250.0
+ 30
+0.0
+  0
+POINT
+  5
+1DF
+330
+1D3
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-250.0
+ 20
+-250.0
+ 30
+0.0
+  0
+POINT
+  5
+1E0
+330
+1D3
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-250.0
+ 20
+9250.0
+ 30
+0.0
+  0
+ENDBLK
+  5
+1D5
+330
+1D3
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+1E3
+330
+1E2
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*D11
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*D11
+  1
+
+  0
+LINE
+  5
+1E5
+330
+1E2
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-250.0
+ 20
+-400.0
+ 30
+0.0
+ 11
+-250.0
+ 21
+-1520.0
+ 31
+0.0
+  0
+LINE
+  5
+1E6
+330
+1E2
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+4000.0
+ 20
+-400.0
+ 30
+0.0
+ 11
+4000.0
+ 21
+-1520.0
+ 31
+0.0
+  0
+INSERT
+  5
+1E7
+330
+1E2
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+-250.0
+ 20
+-1400.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+180.0
+  0
+INSERT
+  5
+1E9
+330
+1E2
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+4000.0
+ 20
+-1400.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+  0
+LINE
+  5
+1EB
+330
+1E2
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+-250.0
+ 20
+-1400.0
+ 30
+0.0
+ 11
+4000.0
+ 21
+-1400.0
+ 31
+0.0
+  0
+MTEXT
+  5
+1EC
+330
+1E2
+100
+AcDbEntity
+  8
+OLCU
+ 62
+7
+100
+AcDbMText
+ 10
+1875.0
+ 20
+-1240.0
+ 30
+0.0
+ 40
+200.0
+ 71
+5
+  1
+4250
+  7
+OpenSansCondensed-Light
+  0
+POINT
+  5
+1ED
+330
+1E2
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-250.0
+ 20
+-1400.0
+ 30
+0.0
+  0
+POINT
+  5
+1EE
+330
+1E2
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+-250.0
+ 20
+-250.0
+ 30
+0.0
+  0
+POINT
+  5
+1EF
+330
+1E2
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+4000.0
+ 20
+-250.0
+ 30
+0.0
+  0
+ENDBLK
+  5
+1E4
+330
+1E2
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+1F2
+330
+1F1
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*D12
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*D12
+  1
+
+  0
+LINE
+  5
+1F4
+330
+1F1
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+4000.0
+ 20
+-400.0
+ 30
+0.0
+ 11
+4000.0
+ 21
+-1520.0
+ 31
+0.0
+  0
+LINE
+  5
+1F5
+330
+1F1
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+6500.0
+ 20
+-400.0
+ 30
+0.0
+ 11
+6500.0
+ 21
+-1520.0
+ 31
+0.0
+  0
+INSERT
+  5
+1F6
+330
+1F1
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+4000.0
+ 20
+-1400.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+180.0
+  0
+INSERT
+  5
+1F8
+330
+1F1
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+6500.0
+ 20
+-1400.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+  0
+LINE
+  5
+1FA
+330
+1F1
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+4000.0
+ 20
+-1400.0
+ 30
+0.0
+ 11
+6500.0
+ 21
+-1400.0
+ 31
+0.0
+  0
+MTEXT
+  5
+1FB
+330
+1F1
+100
+AcDbEntity
+  8
+OLCU
+ 62
+7
+100
+AcDbMText
+ 10
+5250.0
+ 20
+-1240.0
+ 30
+0.0
+ 40
+200.0
+ 71
+5
+  1
+2500
+  7
+OpenSansCondensed-Light
+  0
+POINT
+  5
+1FC
+330
+1F1
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+4000.0
+ 20
+-1400.0
+ 30
+0.0
+  0
+POINT
+  5
+1FD
+330
+1F1
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+4000.0
+ 20
+-250.0
+ 30
+0.0
+  0
+POINT
+  5
+1FE
+330
+1F1
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+6500.0
+ 20
+-250.0
+ 30
+0.0
+  0
+ENDBLK
+  5
+1F3
+330
+1F1
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+BLOCK
+  5
+201
+330
+200
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockBegin
+  2
+*D13
+ 70
+1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  3
+*D13
+  1
+
+  0
+LINE
+  5
+203
+330
+200
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+6500.0
+ 20
+-400.0
+ 30
+0.0
+ 11
+6500.0
+ 21
+-1520.0
+ 31
+0.0
+  0
+LINE
+  5
+204
+330
+200
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+12250.0
+ 20
+-400.0
+ 30
+0.0
+ 11
+12250.0
+ 21
+-1520.0
+ 31
+0.0
+  0
+INSERT
+  5
+205
+330
+200
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+6500.0
+ 20
+-1400.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+ 50
+180.0
+  0
+INSERT
+  5
+207
+330
+200
+100
+AcDbEntity
+  8
+OLCU
+ 62
+2
+100
+AcDbBlockReference
+  2
+_ARCHTICK
+ 10
+12250.0
+ 20
+-1400.0
+ 30
+0.0
+ 41
+160.0
+ 42
+160.0
+  0
+LINE
+  5
+209
+330
+200
+100
+AcDbEntity
+  8
+0
+ 62
+2
+100
+AcDbLine
+ 10
+6500.0
+ 20
+-1400.0
+ 30
+0.0
+ 11
+12250.0
+ 21
+-1400.0
+ 31
+0.0
+  0
+MTEXT
+  5
+20A
+330
+200
+100
+AcDbEntity
+  8
+OLCU
+ 62
+7
+100
+AcDbMText
+ 10
+9375.0
+ 20
+-1240.0
+ 30
+0.0
+ 40
+200.0
+ 71
+5
+  1
+5750
+  7
+OpenSansCondensed-Light
+  0
+POINT
+  5
+20B
+330
+200
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+6500.0
+ 20
+-1400.0
+ 30
+0.0
+  0
+POINT
+  5
+20C
+330
+200
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+6500.0
+ 20
+-250.0
+ 30
+0.0
+  0
+POINT
+  5
+20D
+330
+200
+100
+AcDbEntity
+  8
+Defpoints
+100
+AcDbPoint
+ 10
+12250.0
+ 20
+-250.0
+ 30
+0.0
+  0
+ENDBLK
+  5
+202
+330
+200
+100
+AcDbEntity
+  8
+0
+100
+AcDbBlockEnd
+  0
+ENDSEC
+  0
+SECTION
+  2
+ENTITIES
+  0
+LWPOLYLINE
+  5
+94
+330
+17
+100
+AcDbEntity
+  8
+DUVAR
+370
+50
+100
+AcDbPolyline
+ 90
+12
+ 70
+1
+ 10
+-250.0
+ 20
+5400.0
+ 10
+0.0
+ 20
+5400.0
+ 10
+0.0
+ 20
+3850.0
+ 10
+4050.0
+ 20
+3850.0
+ 10
+4050.0
+ 20
+3600.0
+ 10
+3950.0
+ 20
+3600.0
+ 10
+3950.0
+ 20
+3750.0
+ 10
+0.0
+ 20
+3750.0
+ 10
+0.0
+ 20
+0.0
+ 10
+900.0
+ 20
+0.0
+ 10
+900.0
+ 20
+-250.0
+ 10
+-250.0
+ 20
+-250.0
+  0
+HATCH
+  5
+95
+330
+17
+100
+AcDbEntity
+  8
+TARAMA
+ 62
+7
+100
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+ANSI31
+ 70
+0
+ 71
+0
+ 91
+1
+ 92
+3
+ 72
+0
+ 73
+1
+ 93
+12
+ 10
+-250.0
+ 20
+5400.0
+ 10
+0.0
+ 20
+5400.0
+ 10
+0.0
+ 20
+3850.0
+ 10
+4050.0
+ 20
+3850.0
+ 10
+4050.0
+ 20
+3600.0
+ 10
+3950.0
+ 20
+3600.0
+ 10
+3950.0
+ 20
+3750.0
+ 10
+0.0
+ 20
+3750.0
+ 10
+0.0
+ 20
+0.0
+ 10
+900.0
+ 20
+0.0
+ 10
+900.0
+ 20
+-250.0
+ 10
+-250.0
+ 20
+-250.0
+ 97
+0
+ 75
+1
+ 76
+1
+ 52
+0.0
+ 41
+12.0
+ 77
+0
+ 78
+1
+ 53
+45.0
+ 43
+0.0
+ 44
+0.0
+ 45
+-26.9407683636
+ 46
+26.9407683636
+ 79
+0
+ 98
+0
+  0
+LWPOLYLINE
+  5
+96
+330
+17
+100
+AcDbEntity
+  8
+DUVAR
+370
+50
+100
+AcDbPolyline
+ 90
+6
+ 70
+1
+ 10
+-250.0
+ 20
+9250.0
+ 10
+1200.0
+ 20
+9250.0
+ 10
+1200.0
+ 20
+9000.0
+ 10
+0.0
+ 20
+9000.0
+ 10
+0.0
+ 20
+7600.0
+ 10
+-250.0
+ 20
+7600.0
+  0
+HATCH
+  5
+97
+330
+17
+100
+AcDbEntity
+  8
+TARAMA
+ 62
+7
+100
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+ANSI31
+ 70
+0
+ 71
+0
+ 91
+1
+ 92
+3
+ 72
+0
+ 73
+1
+ 93
+6
+ 10
+-250.0
+ 20
+9250.0
+ 10
+1200.0
+ 20
+9250.0
+ 10
+1200.0
+ 20
+9000.0
+ 10
+0.0
+ 20
+9000.0
+ 10
+0.0
+ 20
+7600.0
+ 10
+-250.0
+ 20
+7600.0
+ 97
+0
+ 75
+1
+ 76
+1
+ 52
+0.0
+ 41
+12.0
+ 77
+0
+ 78
+1
+ 53
+45.0
+ 43
+0.0
+ 44
+0.0
+ 45
+-26.9407683636
+ 46
+26.9407683636
+ 79
+0
+ 98
+0
+  0
+LWPOLYLINE
+  5
+98
+330
+17
+100
+AcDbEntity
+  8
+DUVAR
+370
+50
+100
+AcDbPolyline
+ 90
+12
+ 70
+1
+ 10
+8000.0
+ 20
+9250.0
+ 10
+8000.0
+ 20
+9000.0
+ 10
+6550.0
+ 20
+9000.0
+ 10
+6550.0
+ 20
+5600.0
+ 10
+9300.0
+ 20
+5600.0
+ 10
+9300.0
+ 20
+5500.0
+ 10
+6550.0
+ 20
+5500.0
+ 10
+6550.0
+ 20
+5300.0
+ 10
+6450.0
+ 20
+5300.0
+ 10
+6450.0
+ 20
+9000.0
+ 10
+4600.0
+ 20
+9000.0
+ 10
+4600.0
+ 20
+9250.0
+  0
+HATCH
+  5
+99
+330
+17
+100
+AcDbEntity
+  8
+TARAMA
+ 62
+7
+100
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+ANSI31
+ 70
+0
+ 71
+0
+ 91
+1
+ 92
+3
+ 72
+0
+ 73
+1
+ 93
+12
+ 10
+8000.0
+ 20
+9250.0
+ 10
+8000.0
+ 20
+9000.0
+ 10
+6550.0
+ 20
+9000.0
+ 10
+6550.0
+ 20
+5600.0
+ 10
+9300.0
+ 20
+5600.0
+ 10
+9300.0
+ 20
+5500.0
+ 10
+6550.0
+ 20
+5500.0
+ 10
+6550.0
+ 20
+5300.0
+ 10
+6450.0
+ 20
+5300.0
+ 10
+6450.0
+ 20
+9000.0
+ 10
+4600.0
+ 20
+9000.0
+ 10
+4600.0
+ 20
+9250.0
+ 97
+0
+ 75
+1
+ 76
+1
+ 52
+0.0
+ 41
+12.0
+ 77
+0
+ 78
+1
+ 53
+45.0
+ 43
+0.0
+ 44
+0.0
+ 45
+-26.9407683636
+ 46
+26.9407683636
+ 79
+0
+ 98
+0
+  0
+LWPOLYLINE
+  5
+9A
+330
+17
+100
+AcDbEntity
+  8
+DUVAR
+370
+50
+100
+AcDbPolyline
+ 90
+10
+ 70
+1
+ 10
+12250.0
+ 20
+9250.0
+ 10
+12250.0
+ 20
+5100.0
+ 10
+12000.0
+ 20
+5100.0
+ 10
+12000.0
+ 20
+5500.0
+ 10
+11000.0
+ 20
+5500.0
+ 10
+11000.0
+ 20
+5600.0
+ 10
+12000.0
+ 20
+5600.0
+ 10
+12000.0
+ 20
+9000.0
+ 10
+10600.0
+ 20
+9000.0
+ 10
+10600.0
+ 20
+9250.0
+  0
+HATCH
+  5
+9B
+330
+17
+100
+AcDbEntity
+  8
+TARAMA
+ 62
+7
+100
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+ANSI31
+ 70
+0
+ 71
+0
+ 91
+1
+ 92
+3
+ 72
+0
+ 73
+1
+ 93
+10
+ 10
+12250.0
+ 20
+9250.0
+ 10
+12250.0
+ 20
+5100.0
+ 10
+12000.0
+ 20
+5100.0
+ 10
+12000.0
+ 20
+5500.0
+ 10
+11000.0
+ 20
+5500.0
+ 10
+11000.0
+ 20
+5600.0
+ 10
+12000.0
+ 20
+5600.0
+ 10
+12000.0
+ 20
+9000.0
+ 10
+10600.0
+ 20
+9000.0
+ 10
+10600.0
+ 20
+9250.0
+ 97
+0
+ 75
+1
+ 76
+1
+ 52
+0.0
+ 41
+12.0
+ 77
+0
+ 78
+1
+ 53
+45.0
+ 43
+0.0
+ 44
+0.0
+ 45
+-26.9407683636
+ 46
+26.9407683636
+ 79
+0
+ 98
+0
+  0
+LWPOLYLINE
+  5
+9C
+330
+17
+100
+AcDbEntity
+  8
+DUVAR
+370
+50
+100
+AcDbPolyline
+ 90
+10
+ 70
+1
+ 10
+12250.0
+ 20
+-250.0
+ 10
+10600.0
+ 20
+-250.0
+ 10
+10600.0
+ 20
+0.0
+ 10
+12000.0
+ 20
+0.0
+ 10
+12000.0
+ 20
+3600.0
+ 10
+8000.0
+ 20
+3600.0
+ 10
+8000.0
+ 20
+3700.0
+ 10
+12000.0
+ 20
+3700.0
+ 10
+12000.0
+ 20
+4100.0
+ 10
+12250.0
+ 20
+4100.0
+  0
+HATCH
+  5
+9D
+330
+17
+100
+AcDbEntity
+  8
+TARAMA
+ 62
+7
+100
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+ANSI31
+ 70
+0
+ 71
+0
+ 91
+1
+ 92
+3
+ 72
+0
+ 73
+1
+ 93
+10
+ 10
+12250.0
+ 20
+-250.0
+ 10
+10600.0
+ 20
+-250.0
+ 10
+10600.0
+ 20
+0.0
+ 10
+12000.0
+ 20
+0.0
+ 10
+12000.0
+ 20
+3600.0
+ 10
+8000.0
+ 20
+3600.0
+ 10
+8000.0
+ 20
+3700.0
+ 10
+12000.0
+ 20
+3700.0
+ 10
+12000.0
+ 20
+4100.0
+ 10
+12250.0
+ 20
+4100.0
+ 97
+0
+ 75
+1
+ 76
+1
+ 52
+0.0
+ 41
+12.0
+ 77
+0
+ 78
+1
+ 53
+45.0
+ 43
+0.0
+ 44
+0.0
+ 45
+-26.9407683636
+ 46
+26.9407683636
+ 79
+0
+ 98
+0
+  0
+LWPOLYLINE
+  5
+9E
+330
+17
+100
+AcDbEntity
+  8
+DUVAR
+370
+50
+100
+AcDbPolyline
+ 90
+17
+ 70
+1
+ 10
+5700.0
+ 20
+-250.0
+ 10
+5700.0
+ 20
+0.0
+ 10
+6450.0
+ 20
+0.0
+ 10
+6450.0
+ 20
+2150.0
+ 10
+5450.0
+ 20
+2150.0
+ 10
+5450.0
+ 20
+2250.0
+ 10
+6450.0
+ 20
+2250.0
+ 10
+6450.0
+ 20
+3850.0
+ 10
+6450.0
+ 20
+4000.0
+ 10
+6550.0
+ 20
+4000.0
+ 10
+6550.0
+ 20
+3700.0
+ 10
+7100.0
+ 20
+3700.0
+ 10
+7100.0
+ 20
+3600.0
+ 10
+6550.0
+ 20
+3600.0
+ 10
+6550.0
+ 20
+0.0
+ 10
+8000.0
+ 20
+0.0
+ 10
+8000.0
+ 20
+-250.0
+  0
+HATCH
+  5
+9F
+330
+17
+100
+AcDbEntity
+  8
+TARAMA
+ 62
+7
+100
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+ANSI31
+ 70
+0
+ 71
+0
+ 91
+1
+ 92
+3
+ 72
+0
+ 73
+1
+ 93
+17
+ 10
+5700.0
+ 20
+-250.0
+ 10
+5700.0
+ 20
+0.0
+ 10
+6450.0
+ 20
+0.0
+ 10
+6450.0
+ 20
+2150.0
+ 10
+5450.0
+ 20
+2150.0
+ 10
+5450.0
+ 20
+2250.0
+ 10
+6450.0
+ 20
+2250.0
+ 10
+6450.0
+ 20
+3850.0
+ 10
+6450.0
+ 20
+4000.0
+ 10
+6550.0
+ 20
+4000.0
+ 10
+6550.0
+ 20
+3700.0
+ 10
+7100.0
+ 20
+3700.0
+ 10
+7100.0
+ 20
+3600.0
+ 10
+6550.0
+ 20
+3600.0
+ 10
+6550.0
+ 20
+0.0
+ 10
+8000.0
+ 20
+0.0
+ 10
+8000.0
+ 20
+-250.0
+ 97
+0
+ 75
+1
+ 76
+1
+ 52
+0.0
+ 41
+12.0
+ 77
+0
+ 78
+1
+ 53
+45.0
+ 43
+0.0
+ 44
+0.0
+ 45
+-26.9407683636
+ 46
+26.9407683636
+ 79
+0
+ 98
+0
+  0
+LWPOLYLINE
+  5
+A0
+330
+17
+100
+AcDbEntity
+  8
+DUVAR
+370
+50
+100
+AcDbPolyline
+ 90
+12
+ 70
+1
+ 10
+3100.0
+ 20
+-250.0
+ 10
+3100.0
+ 20
+0.0
+ 10
+3950.0
+ 20
+0.0
+ 10
+3950.0
+ 20
+2700.0
+ 10
+4050.0
+ 20
+2700.0
+ 10
+4050.0
+ 20
+2250.0
+ 10
+4650.0
+ 20
+2250.0
+ 10
+4650.0
+ 20
+2150.0
+ 10
+4050.0
+ 20
+2150.0
+ 10
+4050.0
+ 20
+0.0
+ 10
+4900.0
+ 20
+0.0
+ 10
+4900.0
+ 20
+-250.0
+  0
+HATCH
+  5
+A1
+330
+17
+100
+AcDbEntity
+  8
+TARAMA
+ 62
+7
+100
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+ANSI31
+ 70
+0
+ 71
+0
+ 91
+1
+ 92
+3
+ 72
+0
+ 73
+1
+ 93
+12
+ 10
+3100.0
+ 20
+-250.0
+ 10
+3100.0
+ 20
+0.0
+ 10
+3950.0
+ 20
+0.0
+ 10
+3950.0
+ 20
+2700.0
+ 10
+4050.0
+ 20
+2700.0
+ 10
+4050.0
+ 20
+2250.0
+ 10
+4650.0
+ 20
+2250.0
+ 10
+4650.0
+ 20
+2150.0
+ 10
+4050.0
+ 20
+2150.0
+ 10
+4050.0
+ 20
+0.0
+ 10
+4900.0
+ 20
+0.0
+ 10
+4900.0
+ 20
+-250.0
+ 97
+0
+ 75
+1
+ 76
+1
+ 52
+0.0
+ 41
+12.0
+ 77
+0
+ 78
+1
+ 53
+45.0
+ 43
+0.0
+ 44
+0.0
+ 45
+-26.9407683636
+ 46
+26.9407683636
+ 79
+0
+ 98
+0
+  0
+HATCH
+  5
+A2
+330
+17
+100
+AcDbEntity
+  8
+ZEMIN
+ 62
+7
+100
+AcDbHatch
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+210
+0.0
+220
+0.0
+230
+1.0
+  2
+NET
+ 70
+0
+ 71
+0
+ 91
+1
+ 92
+3
+ 72
+0
+ 73
+1
+ 93
+4
+ 10
+4050.0
+ 20
+0.0
+ 10
+6450.0
+ 20
+0.0
+ 10
+6450.0
+ 20
+2150.0
+ 10
+4050.0
+ 20
+2150.0
+ 97
+0
+ 75
+1
+ 76
+1
+ 52
+0.0
+ 41
+30.0
+ 77
+0
+ 78
+2
+ 53
+0.0
+ 43
+0.0
+ 44
+0.0
+ 45
+0.0
+ 46
+95.25
+ 79
+0
+ 53
+90.0
+ 43
+0.0
+ 44
+0.0
+ 45
+-95.25
+ 46
+0.0
+ 79
+0
+ 98
+0
+  0
+LINE
+  5
+A3
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+1200.0
+ 20
+9000.0
+ 30
+0.0
+ 11
+4600.0
+ 21
+9000.0
+ 31
+0.0
+  0
+LINE
+  5
+A4
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+1200.0
+ 20
+9250.0
+ 30
+0.0
+ 11
+4600.0
+ 21
+9250.0
+ 31
+0.0
+  0
+LINE
+  5
+A5
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+1200.0
+ 20
+9105.0
+ 30
+0.0
+ 11
+4600.0
+ 21
+9105.0
+ 31
+0.0
+  0
+LINE
+  5
+A6
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+1200.0
+ 20
+9145.0
+ 30
+0.0
+ 11
+4600.0
+ 21
+9145.0
+ 31
+0.0
+  0
+LINE
+  5
+A7
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+1200.0
+ 20
+9000.0
+ 30
+0.0
+ 11
+1200.0
+ 21
+9250.0
+ 31
+0.0
+  0
+LINE
+  5
+A8
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+4600.0
+ 20
+9000.0
+ 30
+0.0
+ 11
+4600.0
+ 21
+9250.0
+ 31
+0.0
+  0
+LINE
+  5
+A9
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+-250.0
+ 20
+5400.0
+ 30
+0.0
+ 11
+-250.0
+ 21
+7600.0
+ 31
+0.0
+  0
+LINE
+  5
+AA
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+0.0
+ 20
+5400.0
+ 30
+0.0
+ 11
+0.0
+ 21
+7600.0
+ 31
+0.0
+  0
+LINE
+  5
+AB
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+-145.0
+ 20
+5400.0
+ 30
+0.0
+ 11
+-145.0
+ 21
+7600.0
+ 31
+0.0
+  0
+LINE
+  5
+AC
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+-105.0
+ 20
+5400.0
+ 30
+0.0
+ 11
+-105.0
+ 21
+7600.0
+ 31
+0.0
+  0
+LINE
+  5
+AD
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+-250.0
+ 20
+5400.0
+ 30
+0.0
+ 11
+0.0
+ 21
+5400.0
+ 31
+0.0
+  0
+LINE
+  5
+AE
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+-250.0
+ 20
+7600.0
+ 30
+0.0
+ 11
+0.0
+ 21
+7600.0
+ 31
+0.0
+  0
+LINE
+  5
+AF
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+8000.0
+ 20
+9000.0
+ 30
+0.0
+ 11
+10600.0
+ 21
+9000.0
+ 31
+0.0
+  0
+LINE
+  5
+B0
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+8000.0
+ 20
+9250.0
+ 30
+0.0
+ 11
+10600.0
+ 21
+9250.0
+ 31
+0.0
+  0
+LINE
+  5
+B1
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+8000.0
+ 20
+9105.0
+ 30
+0.0
+ 11
+10600.0
+ 21
+9105.0
+ 31
+0.0
+  0
+LINE
+  5
+B2
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+8000.0
+ 20
+9145.0
+ 30
+0.0
+ 11
+10600.0
+ 21
+9145.0
+ 31
+0.0
+  0
+LINE
+  5
+B3
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+8000.0
+ 20
+9000.0
+ 30
+0.0
+ 11
+8000.0
+ 21
+9250.0
+ 31
+0.0
+  0
+LINE
+  5
+B4
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+10600.0
+ 20
+9000.0
+ 30
+0.0
+ 11
+10600.0
+ 21
+9250.0
+ 31
+0.0
+  0
+LINE
+  5
+B5
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+8000.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+10600.0
+ 21
+-250.0
+ 31
+0.0
+  0
+LINE
+  5
+B6
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+8000.0
+ 20
+0.0
+ 30
+0.0
+ 11
+10600.0
+ 21
+0.0
+ 31
+0.0
+  0
+LINE
+  5
+B7
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+8000.0
+ 20
+-145.0
+ 30
+0.0
+ 11
+10600.0
+ 21
+-145.0
+ 31
+0.0
+  0
+LINE
+  5
+B8
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+8000.0
+ 20
+-105.0
+ 30
+0.0
+ 11
+10600.0
+ 21
+-105.0
+ 31
+0.0
+  0
+LINE
+  5
+B9
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+8000.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+8000.0
+ 21
+0.0
+ 31
+0.0
+  0
+LINE
+  5
+BA
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+10600.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+10600.0
+ 21
+0.0
+ 31
+0.0
+  0
+LINE
+  5
+BB
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+900.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+3100.0
+ 21
+-250.0
+ 31
+0.0
+  0
+LINE
+  5
+BC
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+900.0
+ 20
+0.0
+ 30
+0.0
+ 11
+3100.0
+ 21
+0.0
+ 31
+0.0
+  0
+LINE
+  5
+BD
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+900.0
+ 20
+-145.0
+ 30
+0.0
+ 11
+3100.0
+ 21
+-145.0
+ 31
+0.0
+  0
+LINE
+  5
+BE
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+900.0
+ 20
+-105.0
+ 30
+0.0
+ 11
+3100.0
+ 21
+-105.0
+ 31
+0.0
+  0
+LINE
+  5
+BF
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+900.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+900.0
+ 21
+0.0
+ 31
+0.0
+  0
+LINE
+  5
+C0
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+3100.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+3100.0
+ 21
+0.0
+ 31
+0.0
+  0
+LINE
+  5
+C1
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+4900.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+5700.0
+ 21
+-250.0
+ 31
+0.0
+  0
+LINE
+  5
+C2
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+4900.0
+ 20
+0.0
+ 30
+0.0
+ 11
+5700.0
+ 21
+0.0
+ 31
+0.0
+  0
+LINE
+  5
+C3
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+4900.0
+ 20
+-145.0
+ 30
+0.0
+ 11
+5700.0
+ 21
+-145.0
+ 31
+0.0
+  0
+LINE
+  5
+C4
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+4900.0
+ 20
+-105.0
+ 30
+0.0
+ 11
+5700.0
+ 21
+-105.0
+ 31
+0.0
+  0
+LINE
+  5
+C5
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+4900.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+4900.0
+ 21
+0.0
+ 31
+0.0
+  0
+LINE
+  5
+C6
+330
+17
+100
+AcDbEntity
+  8
+PENCERE
+100
+AcDbLine
+ 10
+5700.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+5700.0
+ 21
+0.0
+ 31
+0.0
+  0
+LINE
+  5
+C7
+330
+17
+100
+AcDbEntity
+  8
+KAPI
+370
+35
+100
+AcDbLine
+ 10
+12000.0
+ 20
+4100.0
+ 30
+0.0
+ 11
+11000.0
+ 21
+4100.0
+ 31
+0.0
+  0
+ARC
+  5
+C8
+330
+17
+100
+AcDbEntity
+  8
+KAPI
+100
+AcDbCircle
+ 10
+12000.0
+ 20
+4100.0
+ 30
+0.0
+ 40
+1000.0
+100
+AcDbArc
+ 50
+90.0
+ 51
+180.0
+  0
+LINE
+  5
+C9
+330
+17
+100
+AcDbEntity
+  8
+KAPI
+370
+35
+100
+AcDbLine
+ 10
+4050.0
+ 20
+2700.0
+ 30
+0.0
+ 11
+3150.0
+ 21
+2700.0
+ 31
+0.0
+  0
+ARC
+  5
+CA
+330
+17
+100
+AcDbEntity
+  8
+KAPI
+100
+AcDbCircle
+ 10
+4050.0
+ 20
+2700.0
+ 30
+0.0
+ 40
+900.0
+100
+AcDbArc
+ 50
+90.0
+ 51
+180.0
+  0
+LINE
+  5
+CB
+330
+17
+100
+AcDbEntity
+  8
+KAPI
+370
+35
+100
+AcDbLine
+ 10
+4650.0
+ 20
+2250.0
+ 30
+0.0
+ 11
+4650.0
+ 21
+1450.0
+ 31
+0.0
+  0
+ARC
+  5
+CC
+330
+17
+100
+AcDbEntity
+  8
+KAPI
+100
+AcDbCircle
+ 10
+4650.0
+ 20
+2250.0
+ 30
+0.0
+ 40
+800.0
+100
+AcDbArc
+ 50
+-90.0
+ 51
+0.0
+  0
+LINE
+  5
+CD
+330
+17
+100
+AcDbEntity
+  8
+KAPI
+370
+35
+100
+AcDbLine
+ 10
+7100.0
+ 20
+3700.0
+ 30
+0.0
+ 11
+7100.0
+ 21
+2800.0
+ 31
+0.0
+  0
+ARC
+  5
+CE
+330
+17
+100
+AcDbEntity
+  8
+KAPI
+100
+AcDbCircle
+ 10
+7100.0
+ 20
+3700.0
+ 30
+0.0
+ 40
+900.0
+100
+AcDbArc
+ 50
+-90.0
+ 51
+0.0
+  0
+INSERT
+  5
+114
+330
+17
+100
+AcDbEntity
+  8
+MOBILYA
+100
+AcDbBlockReference
+  2
+YATAK_CIFT
+ 10
+10100.0
+ 20
+300.0
+ 30
+0.0
+ 50
+90.0
+  0
+INSERT
+  5
+116
+330
+17
+100
+AcDbEntity
+  8
+MOBILYA
+100
+AcDbBlockReference
+  2
+DOLAP
+ 10
+9300.0
+ 20
+3000.0
+ 30
+0.0
+  0
+INSERT
+  5
+118
+330
+17
+100
+AcDbEntity
+  8
+MOBILYA
+100
+AcDbBlockReference
+  2
+YATAK_TEK
+ 10
+300.0
+ 20
+250.0
+ 30
+0.0
+  0
+INSERT
+  5
+11A
+330
+17
+100
+AcDbEntity
+  8
+MOBILYA
+100
+AcDbBlockReference
+  2
+DOLAP
+ 10
+3350.0
+ 20
+600.0
+ 30
+0.0
+ 50
+90.0
+  0
+INSERT
+  5
+11C
+330
+17
+100
+AcDbEntity
+  8
+MOBILYA
+100
+AcDbBlockReference
+  2
+KANEPE
+ 10
+600.0
+ 20
+8000.0
+ 30
+0.0
+  0
+INSERT
+  5
+11E
+330
+17
+100
+AcDbEntity
+  8
+MOBILYA
+100
+AcDbBlockReference
+  2
+YEMEK_MASASI
+ 10
+3700.0
+ 20
+5200.0
+ 30
+0.0
+  0
+INSERT
+  5
+120
+330
+17
+100
+AcDbEntity
+  8
+MOBILYA
+100
+AcDbBlockReference
+  2
+TEZGAH
+ 10
+8000.0
+ 20
+8400.0
+ 30
+0.0
+  0
+INSERT
+  5
+122
+330
+17
+100
+AcDbEntity
+  8
+ISLAK_HACIM
+100
+AcDbBlockReference
+  2
+WC
+ 10
+6400.0
+ 20
+1300.0
+ 30
+0.0
+ 50
+90.0
+  0
+INSERT
+  5
+124
+330
+17
+100
+AcDbEntity
+  8
+ISLAK_HACIM
+100
+AcDbBlockReference
+  2
+LAVABO
+ 10
+4100.0
+ 20
+1500.0
+ 30
+0.0
+  0
+INSERT
+  5
+126
+330
+17
+100
+AcDbEntity
+  8
+ISLAK_HACIM
+100
+AcDbBlockReference
+  2
+DUS
+ 10
+4100.0
+ 20
+50.0
+ 30
+0.0
+  0
+LWPOLYLINE
+  5
+128
+330
+17
+100
+AcDbEntity
+  8
+MOBILYA
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+1000.0
+ 20
+3900.0
+ 10
+3400.0
+ 20
+3900.0
+ 10
+3400.0
+ 20
+4350.0
+ 10
+1000.0
+ 20
+4350.0
+  0
+LWPOLYLINE
+  5
+129
+330
+17
+100
+AcDbEntity
+  8
+MOBILYA
+ 62
+9
+100
+AcDbPolyline
+ 90
+4
+ 70
+1
+ 10
+900.0
+ 20
+5500.0
+ 10
+3100.0
+ 20
+5500.0
+ 10
+3100.0
+ 20
+7600.0
+ 10
+900.0
+ 20
+7600.0
+  0
+TEXT
+  5
+12A
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+100
+AcDbText
+ 10
+1750.0
+ 20
+3110.0
+ 30
+0.0
+ 40
+220.0
+  1
+YATAK ODASI 2
+  7
+OpenSans
+ 72
+1
+ 11
+1750.0
+ 21
+3110.0
+ 31
+0.0
+100
+AcDbText
+ 73
+1
+  0
+TEXT
+  5
+12B
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+ 62
+8
+100
+AcDbText
+ 10
+1750.0
+ 20
+2990.0
+ 30
+0.0
+ 40
+170.0
+  1
+14,81 m²
+ 72
+1
+ 11
+1750.0
+ 21
+2990.0
+ 31
+0.0
+100
+AcDbText
+ 73
+3
+  0
+TEXT
+  5
+12C
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+100
+AcDbText
+ 10
+5400.0
+ 20
+1060.0
+ 30
+0.0
+ 40
+220.0
+  1
+BANYO
+  7
+OpenSans
+ 72
+1
+ 11
+5400.0
+ 21
+1060.0
+ 31
+0.0
+100
+AcDbText
+ 73
+1
+  0
+TEXT
+  5
+12D
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+ 62
+8
+100
+AcDbText
+ 10
+5400.0
+ 20
+940.0
+ 30
+0.0
+ 40
+170.0
+  1
+5,16 m²
+ 72
+1
+ 11
+5400.0
+ 21
+940.0
+ 31
+0.0
+100
+AcDbText
+ 73
+3
+  0
+TEXT
+  5
+12E
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+100
+AcDbText
+ 10
+2000.0
+ 20
+6660.0
+ 30
+0.0
+ 40
+220.0
+  1
+SALON
+  7
+OpenSans
+ 72
+1
+ 11
+2000.0
+ 21
+6660.0
+ 31
+0.0
+100
+AcDbText
+ 73
+1
+  0
+TEXT
+  5
+12F
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+ 62
+8
+100
+AcDbText
+ 10
+2000.0
+ 20
+6540.0
+ 30
+0.0
+ 40
+170.0
+  1
+37,06 m²
+ 72
+1
+ 11
+2000.0
+ 21
+6540.0
+ 31
+0.0
+100
+AcDbText
+ 73
+3
+  0
+TEXT
+  5
+130
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+100
+AcDbText
+ 10
+8200.0
+ 20
+4660.0
+ 30
+0.0
+ 40
+220.0
+  1
+HOL
+  7
+OpenSans
+ 72
+1
+ 11
+8200.0
+ 21
+4660.0
+ 31
+0.0
+100
+AcDbText
+ 73
+1
+  0
+TEXT
+  5
+131
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+ 62
+8
+100
+AcDbText
+ 10
+8200.0
+ 20
+4540.0
+ 30
+0.0
+ 40
+170.0
+  1
+9,81 m²
+ 72
+1
+ 11
+8200.0
+ 21
+4540.0
+ 31
+0.0
+100
+AcDbText
+ 73
+3
+  0
+TEXT
+  5
+132
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+100
+AcDbText
+ 10
+9275.0
+ 20
+7360.0
+ 30
+0.0
+ 40
+220.0
+  1
+MUTFAK
+  7
+OpenSans
+ 72
+1
+ 11
+9275.0
+ 21
+7360.0
+ 31
+0.0
+100
+AcDbText
+ 73
+1
+  0
+TEXT
+  5
+133
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+ 62
+8
+100
+AcDbText
+ 10
+9275.0
+ 20
+7240.0
+ 30
+0.0
+ 40
+170.0
+  1
+18,53 m²
+ 72
+1
+ 11
+9275.0
+ 21
+7240.0
+ 31
+0.0
+100
+AcDbText
+ 73
+3
+  0
+TEXT
+  5
+134
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+100
+AcDbText
+ 10
+8350.0
+ 20
+2560.0
+ 30
+0.0
+ 40
+220.0
+  1
+YATAK ODASI 1
+  7
+OpenSans
+ 72
+1
+ 11
+8350.0
+ 21
+2560.0
+ 31
+0.0
+100
+AcDbText
+ 73
+1
+  0
+TEXT
+  5
+135
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+ 62
+8
+100
+AcDbText
+ 10
+8350.0
+ 20
+2440.0
+ 30
+0.0
+ 40
+170.0
+  1
+19,62 m²
+ 72
+1
+ 11
+8350.0
+ 21
+2440.0
+ 31
+0.0
+100
+AcDbText
+ 73
+3
+  0
+LINE
+  5
+136
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbLine
+ 10
+-125.0
+ 20
+-2600.0
+ 30
+0.0
+ 11
+-125.0
+ 21
+11400.0
+ 31
+0.0
+  0
+CIRCLE
+  5
+137
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbCircle
+ 10
+-125.0
+ 20
+11800.0
+ 30
+0.0
+ 40
+400.0
+  0
+TEXT
+  5
+138
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbText
+ 10
+-125.0
+ 20
+11800.0
+ 30
+0.0
+ 40
+350.0
+  1
+1
+ 72
+1
+ 11
+-125.0
+ 21
+11800.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+LINE
+  5
+139
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbLine
+ 10
+4000.0
+ 20
+-2600.0
+ 30
+0.0
+ 11
+4000.0
+ 21
+11400.0
+ 31
+0.0
+  0
+CIRCLE
+  5
+13A
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbCircle
+ 10
+4000.0
+ 20
+11800.0
+ 30
+0.0
+ 40
+400.0
+  0
+TEXT
+  5
+13B
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbText
+ 10
+4000.0
+ 20
+11800.0
+ 30
+0.0
+ 40
+350.0
+  1
+2
+ 72
+1
+ 11
+4000.0
+ 21
+11800.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+LINE
+  5
+13C
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbLine
+ 10
+6500.0
+ 20
+-2600.0
+ 30
+0.0
+ 11
+6500.0
+ 21
+11400.0
+ 31
+0.0
+  0
+CIRCLE
+  5
+13D
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbCircle
+ 10
+6500.0
+ 20
+11800.0
+ 30
+0.0
+ 40
+400.0
+  0
+TEXT
+  5
+13E
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbText
+ 10
+6500.0
+ 20
+11800.0
+ 30
+0.0
+ 40
+350.0
+  1
+3
+ 72
+1
+ 11
+6500.0
+ 21
+11800.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+LINE
+  5
+13F
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbLine
+ 10
+12125.0
+ 20
+-2600.0
+ 30
+0.0
+ 11
+12125.0
+ 21
+11400.0
+ 31
+0.0
+  0
+CIRCLE
+  5
+140
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbCircle
+ 10
+12125.0
+ 20
+11800.0
+ 30
+0.0
+ 40
+400.0
+  0
+TEXT
+  5
+141
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbText
+ 10
+12125.0
+ 20
+11800.0
+ 30
+0.0
+ 40
+350.0
+  1
+4
+ 72
+1
+ 11
+12125.0
+ 21
+11800.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+LINE
+  5
+142
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbLine
+ 10
+-2800.0
+ 20
+-125.0
+ 30
+0.0
+ 11
+14600.0
+ 21
+-125.0
+ 31
+0.0
+  0
+CIRCLE
+  5
+143
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbCircle
+ 10
+-3200.0
+ 20
+-125.0
+ 30
+0.0
+ 40
+400.0
+  0
+TEXT
+  5
+144
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbText
+ 10
+-3200.0
+ 20
+-125.0
+ 30
+0.0
+ 40
+350.0
+  1
+A
+ 72
+1
+ 11
+-3200.0
+ 21
+-125.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+LINE
+  5
+145
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbLine
+ 10
+-2800.0
+ 20
+3800.0
+ 30
+0.0
+ 11
+14600.0
+ 21
+3800.0
+ 31
+0.0
+  0
+CIRCLE
+  5
+146
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbCircle
+ 10
+-3200.0
+ 20
+3800.0
+ 30
+0.0
+ 40
+400.0
+  0
+TEXT
+  5
+147
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbText
+ 10
+-3200.0
+ 20
+3800.0
+ 30
+0.0
+ 40
+350.0
+  1
+B
+ 72
+1
+ 11
+-3200.0
+ 21
+3800.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+LINE
+  5
+148
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbLine
+ 10
+-2800.0
+ 20
+9125.0
+ 30
+0.0
+ 11
+14600.0
+ 21
+9125.0
+ 31
+0.0
+  0
+CIRCLE
+  5
+149
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbCircle
+ 10
+-3200.0
+ 20
+9125.0
+ 30
+0.0
+ 40
+400.0
+  0
+TEXT
+  5
+14A
+330
+17
+100
+AcDbEntity
+  8
+AKS
+100
+AcDbText
+ 10
+-3200.0
+ 20
+9125.0
+ 30
+0.0
+ 40
+350.0
+  1
+C
+ 72
+1
+ 11
+-3200.0
+ 21
+9125.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+DIMENSION
+  5
+14B
+330
+17
+100
+AcDbEntity
+  8
+OLCU
+100
+AcDbDimension
+280
+0
+  2
+*D1
+  3
+EZDXF
+ 10
+-250.0
+ 20
+10200.0
+ 30
+0.0
+ 11
+475.0
+ 21
+10360.0
+ 31
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+-250.0
+ 23
+9250.0
+ 33
+0.0
+ 14
+1200.0
+ 24
+9250.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+1001
+ACAD
+1000
+DSTYLE
+1002
+{
+1070
+144
+1040
+1.0
+1070
+140
+1040
+200.0
+1070
+41
+1040
+160.0
+1070
+44
+1040
+120.0
+1070
+42
+1040
+150.0
+1070
+271
+1070
+0
+1070
+147
+1040
+60.0
+1070
+176
+1070
+2
+1070
+177
+1070
+2
+1070
+178
+1070
+7
+1070
+77
+1070
+1
+1070
+342
+1005
+74
+1002
+}
+  0
+DIMENSION
+  5
+15A
+330
+17
+100
+AcDbEntity
+  8
+OLCU
+100
+AcDbDimension
+280
+0
+  2
+*D2
+  3
+EZDXF
+ 10
+1200.0
+ 20
+10200.0
+ 30
+0.0
+ 11
+2900.0
+ 21
+10360.0
+ 31
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+1200.0
+ 23
+9250.0
+ 33
+0.0
+ 14
+4600.0
+ 24
+9250.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+1001
+ACAD
+1000
+DSTYLE
+1002
+{
+1070
+144
+1040
+1.0
+1070
+140
+1040
+200.0
+1070
+41
+1040
+160.0
+1070
+44
+1040
+120.0
+1070
+42
+1040
+150.0
+1070
+271
+1070
+0
+1070
+147
+1040
+60.0
+1070
+176
+1070
+2
+1070
+177
+1070
+2
+1070
+178
+1070
+7
+1070
+77
+1070
+1
+1070
+342
+1005
+74
+1002
+}
+  0
+DIMENSION
+  5
+169
+330
+17
+100
+AcDbEntity
+  8
+OLCU
+100
+AcDbDimension
+280
+0
+  2
+*D3
+  3
+EZDXF
+ 10
+4600.0
+ 20
+10200.0
+ 30
+0.0
+ 11
+5550.0
+ 21
+10360.0
+ 31
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+4600.0
+ 23
+9250.0
+ 33
+0.0
+ 14
+6500.0
+ 24
+9250.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+1001
+ACAD
+1000
+DSTYLE
+1002
+{
+1070
+144
+1040
+1.0
+1070
+140
+1040
+200.0
+1070
+41
+1040
+160.0
+1070
+44
+1040
+120.0
+1070
+42
+1040
+150.0
+1070
+271
+1070
+0
+1070
+147
+1040
+60.0
+1070
+176
+1070
+2
+1070
+177
+1070
+2
+1070
+178
+1070
+7
+1070
+77
+1070
+1
+1070
+342
+1005
+74
+1002
+}
+  0
+DIMENSION
+  5
+178
+330
+17
+100
+AcDbEntity
+  8
+OLCU
+100
+AcDbDimension
+280
+0
+  2
+*D4
+  3
+EZDXF
+ 10
+6500.0
+ 20
+10200.0
+ 30
+0.0
+ 11
+7250.0
+ 21
+10360.0
+ 31
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+6500.0
+ 23
+9250.0
+ 33
+0.0
+ 14
+8000.0
+ 24
+9250.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+1001
+ACAD
+1000
+DSTYLE
+1002
+{
+1070
+144
+1040
+1.0
+1070
+140
+1040
+200.0
+1070
+41
+1040
+160.0
+1070
+44
+1040
+120.0
+1070
+42
+1040
+150.0
+1070
+271
+1070
+0
+1070
+147
+1040
+60.0
+1070
+176
+1070
+2
+1070
+177
+1070
+2
+1070
+178
+1070
+7
+1070
+77
+1070
+1
+1070
+342
+1005
+74
+1002
+}
+  0
+DIMENSION
+  5
+187
+330
+17
+100
+AcDbEntity
+  8
+OLCU
+100
+AcDbDimension
+280
+0
+  2
+*D5
+  3
+EZDXF
+ 10
+8000.0
+ 20
+10200.0
+ 30
+0.0
+ 11
+9300.0
+ 21
+10360.0
+ 31
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+8000.0
+ 23
+9250.0
+ 33
+0.0
+ 14
+10600.0
+ 24
+9250.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+1001
+ACAD
+1000
+DSTYLE
+1002
+{
+1070
+144
+1040
+1.0
+1070
+140
+1040
+200.0
+1070
+41
+1040
+160.0
+1070
+44
+1040
+120.0
+1070
+42
+1040
+150.0
+1070
+271
+1070
+0
+1070
+147
+1040
+60.0
+1070
+176
+1070
+2
+1070
+177
+1070
+2
+1070
+178
+1070
+7
+1070
+77
+1070
+1
+1070
+342
+1005
+74
+1002
+}
+  0
+DIMENSION
+  5
+196
+330
+17
+100
+AcDbEntity
+  8
+OLCU
+100
+AcDbDimension
+280
+0
+  2
+*D6
+  3
+EZDXF
+ 10
+10600.0
+ 20
+10200.0
+ 30
+0.0
+ 11
+11425.0
+ 21
+10360.0
+ 31
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+10600.0
+ 23
+9250.0
+ 33
+0.0
+ 14
+12250.0
+ 24
+9250.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+1001
+ACAD
+1000
+DSTYLE
+1002
+{
+1070
+144
+1040
+1.0
+1070
+140
+1040
+200.0
+1070
+41
+1040
+160.0
+1070
+44
+1040
+120.0
+1070
+42
+1040
+150.0
+1070
+271
+1070
+0
+1070
+147
+1040
+60.0
+1070
+176
+1070
+2
+1070
+177
+1070
+2
+1070
+178
+1070
+7
+1070
+77
+1070
+1
+1070
+342
+1005
+74
+1002
+}
+  0
+DIMENSION
+  5
+1A5
+330
+17
+100
+AcDbEntity
+  8
+OLCU
+100
+AcDbDimension
+280
+0
+  2
+*D7
+  3
+EZDXF
+ 10
+-250.0
+ 20
+10900.0
+ 30
+0.0
+ 11
+6000.0
+ 21
+11060.0
+ 31
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+-250.0
+ 23
+9250.0
+ 33
+0.0
+ 14
+12250.0
+ 24
+9250.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+1001
+ACAD
+1000
+DSTYLE
+1002
+{
+1070
+144
+1040
+1.0
+1070
+140
+1040
+200.0
+1070
+41
+1040
+160.0
+1070
+44
+1040
+120.0
+1070
+42
+1040
+150.0
+1070
+271
+1070
+0
+1070
+147
+1040
+60.0
+1070
+176
+1070
+2
+1070
+177
+1070
+2
+1070
+178
+1070
+7
+1070
+77
+1070
+1
+1070
+342
+1005
+74
+1002
+}
+  0
+DIMENSION
+  5
+1B4
+330
+17
+100
+AcDbEntity
+  8
+OLCU
+100
+AcDbDimension
+280
+0
+  2
+*D8
+  3
+EZDXF
+ 10
+-1600.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+-1760.0
+ 21
+1775.0
+ 31
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+-250.0
+ 23
+-250.0
+ 33
+0.0
+ 14
+-250.0
+ 24
+3800.0
+ 34
+0.0
+ 50
+90.0
+100
+AcDbRotatedDimension
+1001
+ACAD
+1000
+DSTYLE
+1002
+{
+1070
+144
+1040
+1.0
+1070
+140
+1040
+200.0
+1070
+41
+1040
+160.0
+1070
+44
+1040
+120.0
+1070
+42
+1040
+150.0
+1070
+271
+1070
+0
+1070
+147
+1040
+60.0
+1070
+176
+1070
+2
+1070
+177
+1070
+2
+1070
+178
+1070
+7
+1070
+77
+1070
+1
+1070
+342
+1005
+74
+1002
+}
+  0
+DIMENSION
+  5
+1C3
+330
+17
+100
+AcDbEntity
+  8
+OLCU
+100
+AcDbDimension
+280
+0
+  2
+*D9
+  3
+EZDXF
+ 10
+-1600.0
+ 20
+3800.0
+ 30
+0.0
+ 11
+-1760.0
+ 21
+6525.0
+ 31
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+-250.0
+ 23
+3800.0
+ 33
+0.0
+ 14
+-250.0
+ 24
+9250.0
+ 34
+0.0
+ 50
+90.0
+100
+AcDbRotatedDimension
+1001
+ACAD
+1000
+DSTYLE
+1002
+{
+1070
+144
+1040
+1.0
+1070
+140
+1040
+200.0
+1070
+41
+1040
+160.0
+1070
+44
+1040
+120.0
+1070
+42
+1040
+150.0
+1070
+271
+1070
+0
+1070
+147
+1040
+60.0
+1070
+176
+1070
+2
+1070
+177
+1070
+2
+1070
+178
+1070
+7
+1070
+77
+1070
+1
+1070
+342
+1005
+74
+1002
+}
+  0
+DIMENSION
+  5
+1D2
+330
+17
+100
+AcDbEntity
+  8
+OLCU
+100
+AcDbDimension
+280
+0
+  2
+*D10
+  3
+EZDXF
+ 10
+-2300.0
+ 20
+-250.0
+ 30
+0.0
+ 11
+-2460.0
+ 21
+4500.0
+ 31
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+-250.0
+ 23
+-250.0
+ 33
+0.0
+ 14
+-250.0
+ 24
+9250.0
+ 34
+0.0
+ 50
+90.0
+100
+AcDbRotatedDimension
+1001
+ACAD
+1000
+DSTYLE
+1002
+{
+1070
+144
+1040
+1.0
+1070
+140
+1040
+200.0
+1070
+41
+1040
+160.0
+1070
+44
+1040
+120.0
+1070
+42
+1040
+150.0
+1070
+271
+1070
+0
+1070
+147
+1040
+60.0
+1070
+176
+1070
+2
+1070
+177
+1070
+2
+1070
+178
+1070
+7
+1070
+77
+1070
+1
+1070
+342
+1005
+74
+1002
+}
+  0
+DIMENSION
+  5
+1E1
+330
+17
+100
+AcDbEntity
+  8
+OLCU
+100
+AcDbDimension
+280
+0
+  2
+*D11
+  3
+EZDXF
+ 10
+-250.0
+ 20
+-1400.0
+ 30
+0.0
+ 11
+1875.0
+ 21
+-1240.0
+ 31
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+-250.0
+ 23
+-250.0
+ 33
+0.0
+ 14
+4000.0
+ 24
+-250.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+1001
+ACAD
+1000
+DSTYLE
+1002
+{
+1070
+144
+1040
+1.0
+1070
+140
+1040
+200.0
+1070
+41
+1040
+160.0
+1070
+44
+1040
+120.0
+1070
+42
+1040
+150.0
+1070
+271
+1070
+0
+1070
+147
+1040
+60.0
+1070
+176
+1070
+2
+1070
+177
+1070
+2
+1070
+178
+1070
+7
+1070
+77
+1070
+1
+1070
+342
+1005
+74
+1002
+}
+  0
+DIMENSION
+  5
+1F0
+330
+17
+100
+AcDbEntity
+  8
+OLCU
+100
+AcDbDimension
+280
+0
+  2
+*D12
+  3
+EZDXF
+ 10
+4000.0
+ 20
+-1400.0
+ 30
+0.0
+ 11
+5250.0
+ 21
+-1240.0
+ 31
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+4000.0
+ 23
+-250.0
+ 33
+0.0
+ 14
+6500.0
+ 24
+-250.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+1001
+ACAD
+1000
+DSTYLE
+1002
+{
+1070
+144
+1040
+1.0
+1070
+140
+1040
+200.0
+1070
+41
+1040
+160.0
+1070
+44
+1040
+120.0
+1070
+42
+1040
+150.0
+1070
+271
+1070
+0
+1070
+147
+1040
+60.0
+1070
+176
+1070
+2
+1070
+177
+1070
+2
+1070
+178
+1070
+7
+1070
+77
+1070
+1
+1070
+342
+1005
+74
+1002
+}
+  0
+DIMENSION
+  5
+1FF
+330
+17
+100
+AcDbEntity
+  8
+OLCU
+100
+AcDbDimension
+280
+0
+  2
+*D13
+  3
+EZDXF
+ 10
+6500.0
+ 20
+-1400.0
+ 30
+0.0
+ 11
+9375.0
+ 21
+-1240.0
+ 31
+0.0
+ 70
+32
+ 71
+5
+  1
+<>
+100
+AcDbAlignedDimension
+ 13
+6500.0
+ 23
+-250.0
+ 33
+0.0
+ 14
+12250.0
+ 24
+-250.0
+ 34
+0.0
+ 50
+0.0
+100
+AcDbRotatedDimension
+1001
+ACAD
+1000
+DSTYLE
+1002
+{
+1070
+144
+1040
+1.0
+1070
+140
+1040
+200.0
+1070
+41
+1040
+160.0
+1070
+44
+1040
+120.0
+1070
+42
+1040
+150.0
+1070
+271
+1070
+0
+1070
+147
+1040
+60.0
+1070
+176
+1070
+2
+1070
+177
+1070
+2
+1070
+178
+1070
+7
+1070
+77
+1070
+1
+1070
+342
+1005
+74
+1002
+}
+  0
+TEXT
+  5
+20E
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+100
+AcDbText
+ 10
+6000.0
+ 20
+-3400.0
+ 30
+0.0
+ 40
+380.0
+  1
+ÖRNEK DAİRE PLANI  ·  2+1  ·  NET 105 m²
+ 72
+1
+ 11
+6000.0
+ 21
+-3400.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+TEXT
+  5
+20F
+330
+17
+100
+AcDbEntity
+  8
+YAZI
+ 62
+8
+100
+AcDbText
+ 10
+6000.0
+ 20
+-3950.0
+ 30
+0.0
+ 40
+220.0
+  1
+ÖLÇEK 1/50  ·  BİRİM: mm
+ 72
+1
+ 11
+6000.0
+ 21
+-3950.0
+ 31
+0.0
+100
+AcDbText
+ 73
+2
+  0
+ENDSEC
+  0
+SECTION
+  2
+OBJECTS
+  0
+DICTIONARY
+  5
+A
+330
+0
+100
+AcDbDictionary
+281
+1
+  3
+ACAD_COLOR
+350
+B
+  3
+ACAD_GROUP
+350
+C
+  3
+ACAD_LAYOUT
+350
+D
+  3
+ACAD_MATERIAL
+350
+E
+  3
+ACAD_MLEADERSTYLE
+350
+F
+  3
+ACAD_MLINESTYLE
+350
+10
+  3
+ACAD_PLOTSETTINGS
+350
+11
+  3
+ACAD_PLOTSTYLENAME
+350
+12
+  3
+ACAD_SCALELIST
+350
+14
+  3
+ACAD_TABLESTYLE
+350
+15
+  3
+ACAD_VISUALSTYLE
+350
+16
+  3
+EZDXF_META
+350
+2D
+  0
+DICTIONARY
+  5
+B
+330
+A
+100
+AcDbDictionary
+281
+1
+  0
+DICTIONARY
+  5
+C
+330
+A
+100
+AcDbDictionary
+281
+1
+  0
+DICTIONARY
+  5
+D
+330
+A
+100
+AcDbDictionary
+281
+1
+  3
+Model
+350
+1A
+  3
+Layout1
+350
+1E
+  0
+DICTIONARY
+  5
+E
+330
+A
+100
+AcDbDictionary
+281
+1
+  3
+ByBlock
+350
+1F
+  3
+ByLayer
+350
+20
+  3
+Global
+350
+21
+  0
+DICTIONARY
+  5
+F
+330
+A
+100
+AcDbDictionary
+281
+1
+  3
+Standard
+350
+2C
+  0
+DICTIONARY
+  5
+10
+330
+A
+100
+AcDbDictionary
+281
+1
+  3
+Standard
+350
+22
+  0
+DICTIONARY
+  5
+11
+330
+A
+100
+AcDbDictionary
+281
+1
+  0
+ACDBDICTIONARYWDFLT
+  5
+12
+330
+A
+100
+AcDbDictionary
+281
+1
+  3
+Normal
+350
+13
+100
+AcDbDictionaryWithDefault
+340
+13
+  0
+ACDBPLACEHOLDER
+  5
+13
+330
+12
+  0
+DICTIONARY
+  5
+14
+330
+A
+100
+AcDbDictionary
+281
+1
+  0
+DICTIONARY
+  5
+15
+330
+A
+100
+AcDbDictionary
+281
+1
+  0
+DICTIONARY
+  5
+16
+330
+A
+100
+AcDbDictionary
+281
+1
+  3
+2dWireframe
+350
+5A
+  3
+Basic
+350
+5B
+  3
+Brighten
+350
+5C
+  3
+ColorChange
+350
+5D
+  3
+Conceptual
+350
+5E
+  3
+Dim
+350
+5F
+  3
+EdgeColorOff
+350
+60
+  3
+Facepattern
+350
+61
+  3
+Flat
+350
+62
+  3
+FlatWithEdges
+350
+63
+  3
+Gouraud
+350
+64
+  3
+GouraudWithEdges
+350
+65
+  3
+Hidden
+350
+66
+  3
+JitterOff
+350
+67
+  3
+Linepattern
+350
+68
+  3
+Modeling
+350
+69
+  3
+OverhangOff
+350
+6A
+  3
+Realistic
+350
+6B
+  3
+Shaded
+350
+6C
+  3
+Shaded with edges
+350
+6D
+  3
+Shades of Gray
+350
+6E
+  3
+Sketchy
+350
+6F
+  3
+Thicken
+350
+70
+  3
+Wireframe
+350
+71
+  3
+X-Ray
+350
+72
+  0
+LAYOUT
+  5
+1A
+330
+D
+100
+AcDbPlotSettings
+  1
+
+  4
+A3
+  6
+
+ 40
+7.5
+ 41
+20.0
+ 42
+7.5
+ 43
+20.0
+ 44
+420.0
+ 45
+297.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+0.0
+140
+0.0
+141
+0.0
+142
+1.0
+143
+1.0
+ 70
+1024
+ 72
+1
+ 73
+0
+ 74
+5
+  7
+
+ 75
+16
+ 76
+0
+ 77
+2
+ 78
+300
+147
+1.0
+148
+0.0
+149
+0.0
+100
+AcDbLayout
+  1
+Model
+ 70
+1
+ 71
+0
+ 10
+0.0
+ 20
+0.0
+ 11
+420.0
+ 21
+297.0
+ 12
+0.0
+ 22
+0.0
+ 32
+0.0
+ 14
+1e+20
+ 24
+1e+20
+ 34
+1e+20
+ 15
+-1e+20
+ 25
+-1e+20
+ 35
+-1e+20
+146
+0.0
+ 13
+0.0
+ 23
+0.0
+ 33
+0.0
+ 16
+1.0
+ 26
+0.0
+ 36
+0.0
+ 17
+0.0
+ 27
+1.0
+ 37
+0.0
+ 76
+1
+330
+17
+  0
+LAYOUT
+  5
+1E
+330
+D
+100
+AcDbPlotSettings
+  1
+
+  4
+A3
+  6
+
+ 40
+7.5
+ 41
+20.0
+ 42
+7.5
+ 43
+20.0
+ 44
+420.0
+ 45
+297.0
+ 46
+0.0
+ 47
+0.0
+ 48
+0.0
+ 49
+0.0
+140
+0.0
+141
+0.0
+142
+1.0
+143
+1.0
+ 70
+0
+ 72
+1
+ 73
+0
+ 74
+5
+  7
+
+ 75
+16
+ 76
+0
+ 77
+2
+ 78
+300
+147
+1.0
+148
+0.0
+149
+0.0
+100
+AcDbLayout
+  1
+Layout1
+ 70
+1
+ 71
+1
+ 10
+0.0
+ 20
+0.0
+ 11
+420.0
+ 21
+297.0
+ 12
+0.0
+ 22
+0.0
+ 32
+0.0
+ 14
+1e+20
+ 24
+1e+20
+ 34
+1e+20
+ 15
+-1e+20
+ 25
+-1e+20
+ 35
+-1e+20
+146
+0.0
+ 13
+0.0
+ 23
+0.0
+ 33
+0.0
+ 16
+1.0
+ 26
+0.0
+ 36
+0.0
+ 17
+0.0
+ 27
+1.0
+ 37
+0.0
+ 76
+1
+330
+1B
+  0
+MATERIAL
+  5
+1F
+102
+{ACAD_REACTORS
+330
+E
+102
+}
+330
+E
+100
+AcDbMaterial
+  1
+ByBlock
+  2
+
+ 70
+0
+ 40
+1.0
+ 71
+1
+ 41
+1.0
+ 91
+-1023410177
+ 42
+1.0
+ 72
+1
+  3
+
+ 73
+1
+ 74
+1
+ 75
+1
+ 44
+0.5
+ 73
+0
+ 45
+1.0
+ 46
+1.0
+ 77
+1
+  4
+
+ 78
+1
+ 79
+1
+170
+1
+ 48
+1.0
+171
+1
+  6
+
+172
+1
+173
+1
+174
+1
+140
+1.0
+141
+1.0
+175
+1
+  7
+
+176
+1
+177
+1
+178
+1
+143
+1.0
+179
+1
+  8
+
+270
+1
+271
+1
+272
+1
+145
+1.0
+146
+1.0
+273
+1
+  9
+
+274
+1
+275
+1
+276
+1
+ 42
+1.0
+ 72
+1
+  3
+
+ 73
+1
+ 74
+1
+ 75
+1
+ 94
+63
+  0
+MATERIAL
+  5
+20
+102
+{ACAD_REACTORS
+330
+E
+102
+}
+330
+E
+100
+AcDbMaterial
+  1
+ByLayer
+  2
+
+ 70
+0
+ 40
+1.0
+ 71
+1
+ 41
+1.0
+ 91
+-1023410177
+ 42
+1.0
+ 72
+1
+  3
+
+ 73
+1
+ 74
+1
+ 75
+1
+ 44
+0.5
+ 73
+0
+ 45
+1.0
+ 46
+1.0
+ 77
+1
+  4
+
+ 78
+1
+ 79
+1
+170
+1
+ 48
+1.0
+171
+1
+  6
+
+172
+1
+173
+1
+174
+1
+140
+1.0
+141
+1.0
+175
+1
+  7
+
+176
+1
+177
+1
+178
+1
+143
+1.0
+179
+1
+  8
+
+270
+1
+271
+1
+272
+1
+145
+1.0
+146
+1.0
+273
+1
+  9
+
+274
+1
+275
+1
+276
+1
+ 42
+1.0
+ 72
+1
+  3
+
+ 73
+1
+ 74
+1
+ 75
+1
+ 94
+63
+  0
+MATERIAL
+  5
+21
+102
+{ACAD_REACTORS
+330
+E
+102
+}
+330
+E
+100
+AcDbMaterial
+  1
+Global
+  2
+
+ 70
+0
+ 40
+1.0
+ 71
+1
+ 41
+1.0
+ 91
+-1023410177
+ 42
+1.0
+ 72
+1
+  3
+
+ 73
+1
+ 74
+1
+ 75
+1
+ 44
+0.5
+ 73
+0
+ 45
+1.0
+ 46
+1.0
+ 77
+1
+  4
+
+ 78
+1
+ 79
+1
+170
+1
+ 48
+1.0
+171
+1
+  6
+
+172
+1
+173
+1
+174
+1
+140
+1.0
+141
+1.0
+175
+1
+  7
+
+176
+1
+177
+1
+178
+1
+143
+1.0
+179
+1
+  8
+
+270
+1
+271
+1
+272
+1
+145
+1.0
+146
+1.0
+273
+1
+  9
+
+274
+1
+275
+1
+276
+1
+ 42
+1.0
+ 72
+1
+  3
+
+ 73
+1
+ 74
+1
+ 75
+1
+ 94
+63
+  0
+MLINESTYLE
+  5
+22
+102
+{ACAD_REACTORS
+330
+10
+102
+}
+330
+10
+100
+AcDbMlineStyle
+  2
+Standard
+ 70
+0
+  3
+
+ 62
+256
+ 51
+90.0
+ 52
+90.0
+ 71
+2
+ 49
+0.5
+ 62
+256
+  6
+BYLAYER
+ 49
+-0.5
+ 62
+256
+  6
+BYLAYER
+  0
+MLEADERSTYLE
+  5
+2C
+102
+{ACAD_REACTORS
+330
+F
+102
+}
+330
+F
+100
+AcDbMLeaderStyle
+179
+2
+170
+2
+171
+1
+172
+0
+ 90
+2
+ 40
+0.0
+ 41
+0.0
+173
+1
+ 91
+-1056964608
+ 92
+-2
+290
+1
+ 42
+2.0
+291
+1
+ 43
+8.0
+  3
+Standard
+ 44
+4.0
+300
+
+342
+29
+174
+1
+175
+1
+176
+0
+178
+1
+ 93
+-1056964608
+ 45
+4.0
+292
+0
+297
+0
+ 46
+4.0
+ 94
+-1056964608
+ 47
+1.0
+ 49
+1.0
+140
+1.0
+294
+1
+141
+0.0
+177
+0
+142
+1.0
+295
+0
+296
+0
+143
+3.75
+271
+0
+272
+9
+273
+9
+  0
+DICTIONARY
+  5
+2D
+330
+A
+100
+AcDbDictionary
+280
+1
+281
+1
+  3
+CREATED_BY_EZDXF
+350
+2E
+  3
+WRITTEN_BY_EZDXF
+350
+212
+  0
+DICTIONARYVAR
+  5
+2E
+330
+2D
+100
+DictionaryVariables
+280
+0
+  1
+1.4.5 @ 2026-10-19T18:52:04.214432+00:00
+  0
+VISUALSTYLE
+  5
+5A
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+2dWireframe
+ 70
+4
+ 90
+0
+ 40
+0.6
+ 62
+7
+290
+0
+291
+0
+  0
+VISUALSTYLE
+  5
+5B
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Basic
+ 70
+7
+ 90
+1
+ 40
+0.6
+ 62
+7
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+5C
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Brighten
+ 70
+12
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+5D
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+ColorChange
+ 70
+16
+ 90
+2
+ 40
+0.6
+ 62
+8
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+5E
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Conceptual
+ 70
+9
+ 90
+3
+ 40
+0.6
+ 62
+7
+290
+0
+291
+0
+  0
+VISUALSTYLE
+  5
+5F
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Dim
+ 70
+11
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+60
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+EdgeColorOff
+ 70
+22
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+61
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Facepattern
+ 70
+15
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+62
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Flat
+ 70
+0
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+63
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+FlatWithEdges
+ 70
+1
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+64
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Gouraud
+ 70
+2
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+65
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+GouraudWithEdges
+ 70
+3
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+66
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Hidden
+ 70
+6
+ 90
+1
+ 40
+0.6
+ 62
+7
+290
+0
+291
+0
+  0
+VISUALSTYLE
+  5
+67
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+JitterOff
+ 70
+20
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+68
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Linepattern
+ 70
+14
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+69
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Modeling
+ 70
+10
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+0
+  0
+VISUALSTYLE
+  5
+6A
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+OverhangOff
+ 70
+21
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+6B
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Realistic
+ 70
+8
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+0
+  0
+VISUALSTYLE
+  5
+6C
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Shaded
+ 70
+27
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+0
+  0
+VISUALSTYLE
+  5
+6D
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Shaded with edges
+ 70
+26
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+0
+  0
+VISUALSTYLE
+  5
+6E
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Shades of Gray
+ 70
+23
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+0
+  0
+VISUALSTYLE
+  5
+6F
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Sketchy
+ 70
+24
+ 90
+1
+ 40
+0.6
+ 62
+7
+290
+0
+291
+0
+  0
+VISUALSTYLE
+  5
+70
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Thicken
+ 70
+13
+ 90
+2
+ 40
+0.6
+ 62
+7
+290
+0
+291
+1
+  0
+VISUALSTYLE
+  5
+71
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+Wireframe
+ 70
+5
+ 90
+0
+ 40
+0.6
+ 62
+7
+290
+0
+291
+0
+  0
+VISUALSTYLE
+  5
+72
+102
+{ACAD_REACTORS
+330
+16
+102
+}
+330
+16
+100
+AcDbVisualStyle
+  2
+X-Ray
+ 70
+25
+ 90
+2
+ 40
+0.5
+ 62
+7
+290
+0
+291
+0
+  0
+DICTIONARYVAR
+  5
+212
+330
+2D
+100
+DictionaryVariables
+280
+0
+  1
+1.4.5 @ 2026-10-19T18:52:04.244512+00:00
+  0
+ENDSEC
+  0
+EOF
+</script>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const TAU = Math.PI * 2;
+
+/* ================= ACI colour table ================= */
+const ACI = (() => {
+  const t = new Array(256);
+  const fixed = { 1: [255, 0, 0], 2: [255, 255, 0], 3: [0, 255, 0], 4: [0, 255, 255], 5: [0, 0, 255], 6: [255, 0, 255], 7: [255, 255, 255], 8: [128, 128, 128], 9: [192, 192, 192] };
+  const hsv = (h, s, v) => {
+    const f = (n) => { const k = (n + h / 60) % 6; return v - v * s * Math.max(0, Math.min(k, 4 - k, 1)); };
+    return [Math.round(f(5)), Math.round(f(3)), Math.round(f(1))];
+  };
+  const V = [255, 204, 153, 127, 76];
+  for (let i = 0; i < 256; i++) {
+    if (fixed[i]) t[i] = fixed[i];
+    else if (i >= 10 && i <= 249) { const hue = (Math.floor(i / 10) - 1) * 15, sub = i % 10; t[i] = hsv(hue, sub % 2 ? 0.5 : 1, V[sub >> 1]); }
+    else if (i >= 250) { const g = [51, 91, 132, 173, 214, 255][i - 250]; t[i] = [g, g, g]; }
+    else t[i] = [255, 255, 255];
+  }
+  return t;
+})();
+
+/* ================= text helpers ================= */
+function cleanCommon(s) {
+  return s.replace(/\\U\+([0-9A-Fa-f]{4})/g, (m, h) => String.fromCharCode(parseInt(h, 16)))
+    .replace(/%%[cC]/g, 'Ø').replace(/%%[dD]/g, '°').replace(/%%[pP]/g, '±').replace(/%%%/g, '%').replace(/%%[uUoOkK]/g, '');
+}
+function cleanMText(s) {
+  s = cleanCommon(s)
+    .replace(/\\\\/g, '\u0000').replace(/\\\{/g, '\u0001').replace(/\\\}/g, '\u0002')
+    .replace(/\\P/g, '\n').replace(/\\~/g, ' ')
+    .replace(/\\S([^;]*?)[\^\/#]([^;]*?);/g, '$1/$2')
+    .replace(/\\[ACcFfHhQqTtWwp][^;\\]*;/g, '')
+    .replace(/\\[LlOoKkNX]/g, '')
+    .replace(/[{}]/g, '')
+    .replace(/\u0000/g, '\\').replace(/\u0001/g, '{').replace(/\u0002/g, '}');
+  return s;
+}
+
+/* ================= DXF parser ================= */
+const CP = { ANSI_1250: 'windows-1250', ANSI_1251: 'windows-1251', ANSI_1252: 'windows-1252', ANSI_1253: 'windows-1253', ANSI_1254: 'windows-1254', ANSI_1255: 'windows-1255', ANSI_1256: 'windows-1256', ANSI_1257: 'windows-1257', ANSI_1258: 'windows-1258', ANSI_874: 'windows-874', ANSI_932: 'shift_jis', ANSI_936: 'gbk', ANSI_949: 'euc-kr', ANSI_950: 'big5' };
+function decodeDxf(bytes) {
+  const head = new TextDecoder('latin1').decode(bytes.subarray(0, Math.min(bytes.length, 250000)));
+  if (head.startsWith('AutoCAD Binary DXF')) throw new Error('Bu bir ikili (binary) DXF. Lütfen dosyayı ASCII DXF olarak kaydedin.');
+  const ver = (/\$ACADVER\s*\r?\n\s*1\s*\r?\n\s*(AC\d+)/.exec(head) || [])[1] || '';
+  const cp = ((/\$DWGCODEPAGE\s*\r?\n\s*3\s*\r?\n\s*(\S+)/.exec(head) || [])[1] || '').toUpperCase();
+  if (ver && ver >= 'AC1021') return { text: new TextDecoder('utf-8').decode(bytes), ver };
+  if (ver) { try { return { text: new TextDecoder(CP[cp] || 'windows-1254').decode(bytes), ver }; } catch (e) { /* fallthrough */ } }
+  try { return { text: new TextDecoder('utf-8', { fatal: true }).decode(bytes), ver }; }
+  catch (e) { return { text: new TextDecoder('windows-1254').decode(bytes), ver }; }
+}
+
+function parseDxf(bytes) {
+  const { text, ver } = decodeDxf(bytes);
+  const lines = text.split(/\r\n|\r|\n/);
+  const n = Math.floor(lines.length / 2);
+  const C = new Int32Array(n), V = new Array(n);
+  let m = 0;
+  for (let i = 0; i + 1 < lines.length; i += 2) {
+    const c = parseInt(lines[i], 10);
+    if (Number.isNaN(c)) { i--; continue; }
+    C[m] = c; V[m] = lines[i + 1]; m++;
+  }
+  const model = { units: 0, ver, layers: [], blocks: {}, ents: [], skipped: {} };
+  let i = 0;
+  const f = (k) => parseFloat(V[k]) || 0;
+  const recsUntil = (endName) => {
+    // returns raw records [{type, s, e}] (index ranges, exclusive of the 0 code)
+    const out = [];
+    while (i < m) {
+      if (C[i] === 0) {
+        const t = V[i].trim();
+        if (t === endName || t === 'ENDSEC') break;
+        const s = i + 1; i++;
+        while (i < m && C[i] !== 0) i++;
+        out.push({ type: t, s, e: i });
+      } else i++;
+    }
+    return out;
+  };
+  while (i < m) {
+    if (C[i] === 0 && V[i].trim() === 'SECTION') {
+      i++;
+      const name = (C[i] === 2) ? V[i].trim() : ''; i++;
+      if (name === 'HEADER') {
+        while (i < m && !(C[i] === 0 && V[i].trim() === 'ENDSEC')) {
+          if (C[i] === 9 && V[i].trim() === '$INSUNITS' && C[i + 1] === 70) model.units = parseInt(V[i + 1], 10) || 0;
+          i++;
+        }
+      } else if (name === 'TABLES') {
+        while (i < m && !(C[i] === 0 && V[i].trim() === 'ENDSEC')) {
+          if (C[i] === 0 && V[i].trim() === 'LAYER') {
+            const s = ++i; while (i < m && C[i] !== 0) i++;
+            const L = { name: '0', c: 7, off: false };
+            for (let k = s; k < i; k++) {
+              if (C[k] === 2) L.name = V[k].trim();
+              else if (C[k] === 62) { const c = parseInt(V[k], 10); L.c = Math.abs(c) || 7; if (c < 0) L.off = true; }
+              else if (C[k] === 70) { if (parseInt(V[k], 10) & 1) L.off = true; }
+              else if (C[k] === 420) L.rgb = parseInt(V[k], 10) & 0xffffff;
+            }
+            model.layers.push(L);
+          } else i++;
+        }
+      } else if (name === 'BLOCKS') {
+        while (i < m && !(C[i] === 0 && V[i].trim() === 'ENDSEC')) {
+          if (C[i] === 0 && V[i].trim() === 'BLOCK') {
+            const s = ++i; while (i < m && C[i] !== 0) i++;
+            let bn = '', bx = 0, by = 0;
+            for (let k = s; k < i; k++) { if (C[k] === 2) bn = V[k].trim(); else if (C[k] === 10) bx = f(k); else if (C[k] === 20) by = f(k); }
+            const recs = recsUntil('ENDBLK');
+            if (C[i] === 0 && V[i].trim() === 'ENDBLK') { i++; while (i < m && C[i] !== 0) i++; }
+            if (/^\*paper_space/i.test(bn)) continue;
+            model.blocks[bn] = { bx, by, ents: buildEnts(recs, C, V, model.skipped, true) };
+          } else i++;
+        }
+      } else if (name === 'ENTITIES') {
+        const recs = recsUntil('ENDSEC');
+        model.ents = buildEnts(recs, C, V, model.skipped, false);
+      } else {
+        while (i < m && !(C[i] === 0 && V[i].trim() === 'ENDSEC')) i++;
+      }
+    } else i++;
+  }
+  return model;
+}
+
+function buildEnts(recs, C, V, skipped, inBlock) {
+  const out = [];
+  const f = (k) => parseFloat(V[k]) || 0;
+  for (let r = 0; r < recs.length; r++) {
+    const R = recs[r];
+    const g = (code, def) => { for (let k = R.s; k < R.e; k++) if (C[k] === code) return V[k]; return def; };
+    const gf = (code, def = 0) => { const v = g(code); return v === undefined ? def : (parseFloat(v) || 0); };
+    if (gf(67) === 1 && !inBlock) { continue; }
+    if (gf(60) === 1) continue;
+    const base = { l: (g(8, '0') || '0').trim(), c: g(62) !== undefined ? parseInt(g(62), 10) : 256 };
+    const tc = g(420); if (tc !== undefined) { base.c = -1; base.rgb = parseInt(tc, 10) & 0xffffff; }
+    if (gf(230, 1) < -0.5) base.neg = 1;
+    let e = null;
+    try {
+      switch (R.type) {
+        case 'LINE': e = { k: 'L', a: [gf(10), gf(20), gf(11), gf(21)] }; break;
+        case 'LWPOLYLINE': {
+          const p = [];
+          for (let k = R.s; k < R.e; k++) {
+            if (C[k] === 10) p.push(f(k), 0, 0);
+            else if (C[k] === 20 && p.length) p[p.length - 2] = f(k);
+            else if (C[k] === 42 && p.length) p[p.length - 1] = f(k);
+          }
+          e = { k: 'P', p, cl: (gf(70) & 1) ? 1 : 0 }; break;
+        }
+        case 'POLYLINE': {
+          const fl = gf(70) | 0, vs = [];
+          while (r + 1 < recs.length && recs[r + 1].type === 'VERTEX') {
+            r++; const VR = recs[r]; const v = { x: 0, y: 0, b: 0, f: 0 };
+            for (let k = VR.s; k < VR.e; k++) { if (C[k] === 10) v.x = f(k); else if (C[k] === 20) v.y = f(k); else if (C[k] === 42) v.b = f(k); else if (C[k] === 70) v.f = parseInt(V[k], 10) | 0; }
+            vs.push(v);
+          }
+          if (r + 1 < recs.length && recs[r + 1].type === 'SEQEND') r++;
+          if (fl & (16 | 64)) break;
+          let use = vs.some(v => v.f & 8) ? vs.filter(v => v.f & 8) : vs.filter(v => !(v.f & 16));
+          const p = []; for (const v of use) p.push(v.x, v.y, (fl & 8) ? 0 : v.b);
+          e = { k: 'P', p, cl: (fl & 1) ? 1 : 0 }; break;
+        }
+        case 'ARC': e = { k: 'A', x: gf(10), y: gf(20), r: gf(40), s: gf(50) * Math.PI / 180, e: gf(51) * Math.PI / 180 }; break;
+        case 'CIRCLE': e = { k: 'C', x: gf(10), y: gf(20), r: gf(40) }; break;
+        case 'ELLIPSE': e = { k: 'E', x: gf(10), y: gf(20), mx: gf(11), my: gf(21), ra: gf(40, 1), s: gf(41, 0), e: gf(42, TAU) }; break;
+        case 'SPLINE': {
+          const kn = [], w = [], cp = [], fp = [];
+          for (let k = R.s; k < R.e; k++) {
+            switch (C[k]) {
+              case 40: kn.push(f(k)); break; case 41: w.push(f(k)); break;
+              case 10: cp.push(f(k), 0); break; case 20: cp[cp.length - 1] = f(k); break;
+              case 11: fp.push(f(k), 0); break; case 21: fp[fp.length - 1] = f(k); break;
+            }
+          }
+          e = { k: 'SP', deg: gf(71, 3) | 0, cp, kn, w: w.length ? w : null, fp, cl: (gf(70) & 1) ? 1 : 0 }; break;
+        }
+        case 'TEXT': case 'ATTRIB': {
+          if (R.type === 'ATTRIB' && (gf(70) & 1)) break;
+          const ha = gf(72) | 0, va = (R.type === 'TEXT' ? gf(73) : gf(74)) | 0;
+          let x = gf(10), y = gf(20), h2 = ha;
+          if (ha === 3 || ha === 5) h2 = 0;
+          else if ((ha || va) && g(11) !== undefined) { x = gf(11); y = gf(21); }
+          e = { k: 'T', x, y, h: gf(40, 1), r: gf(50) * Math.PI / 180, s: g(1, ''), ha: h2, va: ha === 4 ? 2 : va, ws: gf(41, 1) || 1, m: 0, attr: R.type === 'ATTRIB' }; break;
+        }
+        case 'MTEXT': {
+          let s = ''; for (let k = R.s; k < R.e; k++) if (C[k] === 3) s += V[k];
+          s += g(1, '');
+          let r0 = gf(50) * Math.PI / 180;
+          if (g(11) !== undefined) r0 = Math.atan2(gf(21), gf(11));
+          e = { k: 'T', x: gf(10), y: gf(20), h: gf(40, 1), r: r0, s, m: 1, at: gf(71, 1) | 0, rw: gf(41), ls: gf(44, 1) || 1, ws: 1 }; break;
+        }
+        case 'INSERT': {
+          e = { k: 'I', n: (g(2, '') || '').trim(), x: gf(10), y: gf(20), sx: gf(41, 1) || 1, sy: gf(42, 1) || 1, r: gf(50) * Math.PI / 180, nc: gf(70) | 0, nr: gf(71) | 0, cs: gf(44), rs: gf(45), att: [] };
+          if ((gf(66) | 0) === 1) {
+            const sub = [];
+            while (r + 1 < recs.length && recs[r + 1].type === 'ATTRIB') { r++; sub.push(recs[r]); }
+            if (r + 1 < recs.length && recs[r + 1].type === 'SEQEND') r++;
+            e.att = buildEnts(sub, C, V, skipped, inBlock);
+          }
+          break;
+        }
+        case 'DIMENSION': { const n = (g(2, '') || '').trim(); if (n) e = { k: 'D', n }; break; }
+        case 'SOLID': case 'TRACE': e = { k: 'F', p: [gf(10), gf(20), gf(11), gf(21), gf(13, gf(12)), gf(23, gf(22)), gf(12), gf(22)] }; break;
+        case '3DFACE': e = { k: 'P', p: [gf(10), gf(20), 0, gf(11), gf(21), 0, gf(12), gf(22), 0, gf(13), gf(23), 0], cl: 1 }; break;
+        case 'LEADER': {
+          const p = []; for (let k = R.s; k < R.e; k++) { if (C[k] === 10) p.push(f(k), 0, 0); else if (C[k] === 20 && p.length) p[p.length - 2] = f(k); }
+          if (p.length >= 6) e = { k: 'P', p, cl: 0 }; break;
+        }
+        case 'HATCH': e = parseHatch(R, C, V); break;
+        case 'ATTDEF': case 'SEQEND': case 'VIEWPORT': case 'POINT': break;
+        default: skipped[R.type] = (skipped[R.type] || 0) + 1;
+      }
+    } catch (err) { e = null; }
+    if (e) out.push(Object.assign(base, e));
+  }
+  return out;
+}
+
+function parseHatch(R, C, V) {
+  let k = R.s;
+  const end = R.e;
+  const num = () => parseFloat(V[k]) || 0;
+  let pat = '', sol = 0;
+  while (k < end && C[k] !== 91) { if (C[k] === 2) pat = V[k].trim(); else if (C[k] === 70) sol = parseInt(V[k], 10) & 1; k++; }
+  if (k >= end) return null;
+  const nPaths = parseInt(V[k], 10) || 0; k++;
+  const loops = [];
+  // read the next value with code `code`, skipping unrelated codes but never crossing `stop` codes
+  const take = (code, stops) => {
+    while (k < end) {
+      if (C[k] === code) { const v = num(); k++; return v; }
+      if (stops && stops.includes(C[k])) return null;
+      k++;
+    }
+    return null;
+  };
+  for (let p = 0; p < nPaths && k < end; p++) {
+    while (k < end && C[k] !== 92) k++;
+    if (k >= end) break;
+    const flag = parseInt(V[k], 10) || 0; k++;
+    if (flag & 2) {
+      let hasB = 0, nv = 0;
+      while (k < end && C[k] !== 93) { if (C[k] === 72) hasB = parseInt(V[k], 10); k++; }
+      nv = parseInt(V[k], 10) || 0; k++;
+      const pts = [];
+      for (let v = 0; v < nv && k < end; v++) {
+        const x = take(10, [92, 75]), y = take(20, [92, 75]);
+        let b = 0;
+        if (hasB && C[k] === 42) { b = num(); k++; }
+        pts.push(x, y, b);
+      }
+      loops.push([['p', pts, 1]]);
+    } else {
+      while (k < end && C[k] !== 93) k++;
+      const ne = parseInt(V[k], 10) || 0; k++;
+      const edges = [];
+      for (let q = 0; q < ne && k < end; q++) {
+        while (k < end && C[k] !== 72) k++;
+        const t = parseInt(V[k], 10); k++;
+        const S = [72, 92, 97];
+        if (t === 1) edges.push(['l', take(10, S), take(20, S), take(11, S), take(21, S)]);
+        else if (t === 2) {
+          const cx = take(10, S), cy = take(20, S), r = take(40, S), a0 = take(50, S), a1 = take(51, S);
+          let ccw = 1; if (C[k] === 73) { ccw = parseInt(V[k], 10); k++; }
+          edges.push(['a', cx, cy, r, a0 * Math.PI / 180, a1 * Math.PI / 180, ccw]);
+        } else if (t === 3) {
+          const cx = take(10, S), cy = take(20, S), mx = take(11, S), my = take(21, S), ra = take(40, S), a0 = take(50, S), a1 = take(51, S);
+          let ccw = 1; if (C[k] === 73) { ccw = parseInt(V[k], 10); k++; }
+          edges.push(['e', cx, cy, mx, my, ra, a0 * Math.PI / 180, a1 * Math.PI / 180, ccw]);
+        } else if (t === 4) {
+          const deg = take(94, S) | 0;
+          let rational = 0; if (C[k] === 73) { rational = parseInt(V[k], 10); k++; }
+          if (C[k] === 74) k++;
+          const nk = take(95, S) | 0, nc = take(96, S) | 0;
+          const kn = [], cp = [], w = [], fp = [];
+          for (let a = 0; a < nk; a++) kn.push(take(40, S));
+          for (let a = 0; a < nc; a++) { cp.push(take(10, S), take(20, S)); if (C[k] === 42) { w.push(num()); k++; } }
+          if (C[k] === 97) { const nf = parseInt(V[k], 10) || 0; k++; for (let a = 0; a < nf; a++) fp.push(take(11, S), take(21, S)); }
+          while (k < end && (C[k] === 12 || C[k] === 22 || C[k] === 13 || C[k] === 23)) k++;
+          edges.push(['s', deg, cp, kn, w.length ? w : null, fp]);
+        }
+      }
+      if (edges.length) loops.push(edges);
+    }
+    // boundary object references
+    while (k < end && C[k] !== 97 && C[k] !== 92 && C[k] !== 75) k++;
+    if (C[k] === 97) { const ns = parseInt(V[k], 10) || 0; k++; for (let a = 0; a < ns && k < end; a++) { if (C[k] === 330) k++; } }
+  }
+  let ps = 1, pa = 0; const defs = [];
+  while (k < end) {
+    if (C[k] === 52) pa = num() * Math.PI / 180;
+    else if (C[k] === 41) ps = num() || 1;
+    else if (C[k] === 78) {
+      const nd = parseInt(V[k], 10) || 0; k++;
+      for (let d = 0; d < nd && k < end; d++) {
+        const S = [53, 47, 98];
+        while (k < end && C[k] !== 53) k++;
+        const ang = num() * Math.PI / 180; k++;
+        const bx = take(43, S), by = take(44, S), ox = take(45, S), oy = take(46, S);
+        let nds = 0; if (C[k] === 79) { nds = parseInt(V[k], 10) || 0; k++; }
+        const ds = []; for (let a = 0; a < nds; a++) ds.push(take(49, S));
+        defs.push([ang, bx || 0, by || 0, ox || 0, oy || 0, ds]);
+      }
+      continue;
+    }
+    k++;
+  }
+  if (pat.toUpperCase() === 'SOLID') sol = 1;
+  return loops.length ? { k: 'H', sol, pat, loops, defs, ps, pa } : null;
+}
+
+/* ================= geometry ================= */
+const I = [1, 0, 0, 1, 0, 0];
+const mul = (A, B) => [A[0] * B[0] + A[2] * B[1], A[1] * B[0] + A[3] * B[1], A[0] * B[2] + A[2] * B[3], A[1] * B[2] + A[3] * B[3], A[0] * B[4] + A[2] * B[5] + A[4], A[1] * B[4] + A[3] * B[5] + A[5]];
+const T = (x, y) => [1, 0, 0, 1, x, y];
+const Rm = (a) => { const c = Math.cos(a), s = Math.sin(a); return [c, s, -s, c, 0, 0]; };
+const Sm = (x, y) => [x, 0, 0, y, 0, 0];
+const MIRROR = [-1, 0, 0, 1, 0, 0];
+
+function arcPts(out, cx, cy, r, a0, sweep, rx, ry, rot) {
+  // ellipse-capable arc tessellation (rx/ry/rot optional)
+  const n = Math.max(2, Math.min(256, Math.ceil(Math.abs(sweep) / TAU * 72)));
+  const c = rot ? Math.cos(rot) : 1, s = rot ? Math.sin(rot) : 0;
+  for (let i = 0; i <= n; i++) {
+    const a = a0 + sweep * i / n;
+    if (rx === undefined) out.push(cx + r * Math.cos(a), cy + r * Math.sin(a));
+    else { const ex = rx * Math.cos(a), ey = ry * Math.sin(a); out.push(cx + ex * c - ey * s, cy + ex * s + ey * c); }
+  }
+  return out;
+}
+function bulgePts(out, x1, y1, x2, y2, b) {
+  const dx = x2 - x1, dy = y2 - y1, cl = Math.hypot(dx, dy);
+  if (!b || cl < 1e-12) { out.push(x2, y2); return; }
+  const th = 4 * Math.atan(b), h = cl / 2, sag = b * h, r = (h * h + sag * sag) / (2 * sag);
+  const mx = (x1 + x2) / 2, my = (y1 + y2) / 2, px = -dy / cl, py = dx / cl;
+  const cx = mx + px * (r - sag), cy = my + py * (r - sag);
+  const a0 = Math.atan2(y1 - cy, x1 - cx), R = Math.abs(r);
+  const n = Math.max(2, Math.min(128, Math.ceil(Math.abs(th) / TAU * 72)));
+  for (let i = 1; i <= n; i++) { const a = a0 + th * i / n; out.push(cx + R * Math.cos(a), cy + R * Math.sin(a)); }
+}
+function polyPts(p, closed) {
+  const out = [];
+  const nv = p.length / 3;
+  if (!nv) return out;
+  out.push(p[0], p[1]);
+  for (let i = 0; i < nv - 1; i++) bulgePts(out, p[i * 3], p[i * 3 + 1], p[i * 3 + 3], p[i * 3 + 4], p[i * 3 + 2]);
+  if (closed && nv > 1) bulgePts(out, p[(nv - 1) * 3], p[(nv - 1) * 3 + 1], p[0], p[1], p[(nv - 1) * 3 + 2]);
+  return out;
+}
+function splinePts(deg, cp, kn, w, fp, closed) {
+  const n = cp.length / 2;
+  if (n >= 2 && deg >= 1) {
+    let K = kn;
+    if (!K || K.length !== n + deg + 1) { K = []; for (let i = 0; i < n + deg + 1; i++) K.push(i < deg + 1 ? 0 : i > n - 1 ? n - deg : i - deg); }
+    const lo = K[deg], hi = K[n];
+    if (!(hi > lo)) return cp.slice();
+    const samples = Math.min(600, Math.max(16, n * 10));
+    const out = [];
+    for (let s = 0; s <= samples; s++) {
+      const t = lo + (hi - lo) * s / samples;
+      let k = deg;
+      while (k < n - 1 && !(t < K[k + 1])) k++;
+      const d = [];
+      for (let j = 0; j <= deg; j++) { const id = k - deg + j, wj = w ? (w[id] ?? 1) : 1; d.push([cp[id * 2] * wj, cp[id * 2 + 1] * wj, wj]); }
+      for (let r = 1; r <= deg; r++) for (let j = deg; j >= r; j--) {
+        const id = k - deg + j, den = K[id + deg - r + 1] - K[id], a = den ? (t - K[id]) / den : 0;
+        d[j] = [(1 - a) * d[j - 1][0] + a * d[j][0], (1 - a) * d[j - 1][1] + a * d[j][1], (1 - a) * d[j - 1][2] + a * d[j][2]];
+      }
+      const q = d[deg]; out.push(q[0] / (q[2] || 1), q[1] / (q[2] || 1));
+    }
+    return out;
+  }
+  const m = fp.length / 2;
+  if (m < 2) return fp.slice();
+  const out = [], P = (i) => { i = Math.max(0, Math.min(m - 1, i)); return [fp[i * 2], fp[i * 2 + 1]]; };
+  for (let i = 0; i < m - 1; i++) {
+    const p0 = P(i - 1), p1 = P(i), p2 = P(i + 1), p3 = P(i + 2);
+    for (let s = (i ? 1 : 0); s <= 8; s++) {
+      const t = s / 8, t2 = t * t, t3 = t2 * t;
+      out.push(0.5 * (2 * p1[0] + (-p0[0] + p2[0]) * t + (2 * p0[0] - 5 * p1[0] + 4 * p2[0] - p3[0]) * t2 + (-p0[0] + 3 * p1[0] - 3 * p2[0] + p3[0]) * t3),
+        0.5 * (2 * p1[1] + (-p0[1] + p2[1]) * t + (2 * p0[1] - 5 * p1[1] + 4 * p2[1] - p3[1]) * t2 + (-p0[1] + 3 * p1[1] - 3 * p2[1] + p3[1]) * t3));
+    }
+  }
+  return out;
+}
+function ellipsePts(x, y, mx, my, ra, s, e) {
+  const rx = Math.hypot(mx, my), rot = Math.atan2(my, mx);
+  let sw = e - s; while (sw <= 0) sw += TAU; if (sw > TAU) sw = TAU;
+  return arcPts([], x, y, 0, s, sw, rx, rx * ra, rot);
+}
+function edgePts(ed) {
+  switch (ed[0]) {
+    case 'l': return [ed[1], ed[2], ed[3], ed[4]];
+    case 'a': {
+      let [, cx, cy, r, s, e, ccw] = ed;
+      if (!ccw) { const t = s; s = -e; e = -t; }
+      let sw = e - s; while (sw <= 0) sw += TAU; if (sw > TAU + 1e-9) sw = TAU;
+      return arcPts([], cx, cy, r, s, sw);
+    }
+    case 'e': {
+      let [, cx, cy, mx, my, ra, s, e, ccw] = ed;
+      if (!ccw) { const t = s; s = -e; e = -t; }
+      return ellipsePts(cx, cy, mx, my, ra, s, e);
+    }
+    case 's': return splinePts(ed[1], ed[2], ed[3], ed[4], ed[5]);
+    case 'p': return polyPts(ed[1], ed[2]);
+  }
+  return [];
+}
+function loopPts(edges) {
+  if (edges.length === 1) return edgePts(edges[0]);
+  const out = [];
+  for (const ed of edges) {
+    let p = edgePts(ed);
+    if (p.length < 2) continue;
+    if (out.length) {
+      const lx = out[out.length - 2], ly = out[out.length - 1];
+      const d0 = Math.hypot(p[0] - lx, p[1] - ly), d1 = Math.hypot(p[p.length - 2] - lx, p[p.length - 1] - ly);
+      if (d1 < d0) { const r = []; for (let i = p.length - 2; i >= 0; i -= 2) r.push(p[i], p[i + 1]); p = r; }
+    }
+    for (let i = 0; i < p.length; i++) out.push(p[i]);
+  }
+  return out;
+}
+
+/* ================= scene building ================= */
+let measureCtx = null;
+const CAP = 0.72; // cap height / em for the drawing face
+function textWidth(s, h, ws) {
+  if (!measureCtx) { measureCtx = document.createElement('canvas').getContext('2d'); }
+  measureCtx.font = '100px ' + getComputedStyle(document.documentElement).getPropertyValue('--f-draw');
+  return measureCtx.measureText(s).width / 100 * (h / CAP) * ws;
+}
+
+function buildScene(model) {
+  const layers = [], lidx = new Map();
+  const addLayer = (L) => { if (lidx.has(L.name)) return lidx.get(L.name); lidx.set(L.name, layers.length); layers.push({ name: L.name, c: L.c || 7, rgb: L.rgb, on: !L.off, count: 0 }); return layers.length - 1; };
+  addLayer({ name: '0', c: 7 });
+  for (const L of model.layers) {
+    if (lidx.has(L.name)) { const o = layers[lidx.get(L.name)]; o.c = L.c || 7; o.rgb = L.rgb; o.on = !L.off; }
+    else addLayer(L);
+  }
+  const li = (name) => lidx.has(name) ? lidx.get(name) : addLayer({ name, c: 7 });
+  const layerColor = (i) => layers[i].rgb != null ? 'r' + layers[i].rgb : 'a' + layers[i].c;
+
+  const strokes = new Map(), fills = new Map();
+  const hatches = [], texts = [];
+  const snapX = [], snapY = [], snapL = [];
+  let ptCount = 0, truncated = false;
+  const LIMIT = 9e6;
+
+  const bucket = (map, L, Tl, ck) => { const key = L + '|' + Tl + '|' + ck; let b = map.get(key); if (!b) { b = { L, T: Tl, ck, polys: [] }; map.set(key, b); } return b; };
+  const tf = (M, pts) => {
+    const o = new Float64Array(pts.length);
+    for (let i = 0; i < pts.length; i += 2) { const x = pts[i], y = pts[i + 1]; o[i] = M[0] * x + M[2] * y + M[4]; o[i + 1] = M[1] * x + M[3] * y + M[5]; }
+    ptCount += pts.length / 2;
+    return o;
+  };
+  const snap = (M, x, y, L) => { snapX.push(M[0] * x + M[2] * y + M[4]); snapY.push(M[1] * x + M[3] * y + M[5]); snapL.push(L); };
+
+  function walk(ents, M, pL, pC, topL, depth) {
+    for (const e of ents) {
+      if (ptCount > LIMIT) { truncated = true; return; }
+      const L = (e.l === '0' && pL != null) ? pL : li(e.l);
+      const Tl = topL != null ? topL : L;
+      let ck;
+      if (e.c === 0) ck = pC || 'a7';
+      else if (e.c === 256 || e.c == null || Number.isNaN(e.c)) ck = layerColor(L);
+      else if (e.c === -1) ck = 'r' + e.rgb;
+      else ck = 'a' + Math.min(255, Math.abs(e.c));
+      const Me = e.neg ? mul(M, MIRROR) : M;
+      if (depth === 0) layers[L].count++;
+      switch (e.k) {
+        case 'L': bucket(strokes, L, Tl, ck).polys.push(tf(Me, e.a)); snap(Me, e.a[0], e.a[1], L); snap(Me, e.a[2], e.a[3], L); snap(Me, (e.a[0] + e.a[2]) / 2, (e.a[1] + e.a[3]) / 2, L); break;
+        case 'P': {
+          if (e.p.length < 6) break;
+          const pts = polyPts(e.p, e.cl);
+          bucket(strokes, L, Tl, ck).polys.push(tf(Me, pts));
+          for (let i = 0; i < e.p.length; i += 3) snap(Me, e.p[i], e.p[i + 1], L);
+          break;
+        }
+        case 'A': {
+          let sw = e.e - e.s; while (sw <= 0) sw += TAU;
+          bucket(strokes, L, Tl, ck).polys.push(tf(Me, arcPts([], e.x, e.y, e.r, e.s, sw)));
+          snap(Me, e.x, e.y, L); snap(Me, e.x + e.r * Math.cos(e.s), e.y + e.r * Math.sin(e.s), L); snap(Me, e.x + e.r * Math.cos(e.e), e.y + e.r * Math.sin(e.e), L);
+          break;
+        }
+        case 'C': bucket(strokes, L, Tl, ck).polys.push(tf(Me, arcPts([], e.x, e.y, e.r, 0, TAU))); snap(Me, e.x, e.y, L); break;
+        case 'E': bucket(strokes, L, Tl, ck).polys.push(tf(Me, ellipsePts(e.x, e.y, e.mx, e.my, e.ra, e.s, e.e))); snap(Me, e.x, e.y, L); break;
+        case 'SP': { const p = splinePts(e.deg, e.cp, e.kn, e.w, e.fp, e.cl); if (p.length >= 4) { bucket(strokes, L, Tl, ck).polys.push(tf(Me, p)); snap(Me, p[0], p[1], L); snap(Me, p[p.length - 2], p[p.length - 1], L); } break; }
+        case 'F': bucket(fills, L, Tl, ck).polys.push(tf(Me, e.p)); break;
+        case 'T': {
+          let s = e.m ? cleanMText(e.s) : cleanCommon(e.s);
+          if (!s.trim()) break;
+          const x = Me[0] * e.x + Me[2] * e.y + Me[4], y = Me[1] * e.x + Me[3] * e.y + Me[5];
+          const dx = Me[0] * Math.cos(e.r) + Me[2] * Math.sin(e.r), dy = Me[1] * Math.cos(e.r) + Me[3] * Math.sin(e.r);
+          const ux = -Me[0] * Math.sin(e.r) + Me[2] * Math.cos(e.r), uy = -Me[1] * Math.sin(e.r) + Me[3] * Math.cos(e.r);
+          const sl = Math.hypot(dx, dy) || 1, su = Math.hypot(ux, uy) || 1;
+          const h = Math.abs(e.h) * su, ws = (e.ws || 1) * sl / su;
+          let ang = Math.atan2(dy, dx);
+          let lines = s.split('\n');
+          if (e.m && e.rw > 0) {
+            const maxW = e.rw * sl, wrapped = [];
+            for (const ln of lines) {
+              const words = ln.split(/ +/); let cur = '';
+              for (const w of words) {
+                const tryS = cur ? cur + ' ' + w : w;
+                if (cur && textWidth(tryS, h, ws) > maxW * 1.02) { wrapped.push(cur); cur = w; } else cur = tryS;
+              }
+              wrapped.push(cur);
+            }
+            lines = wrapped;
+          }
+          let wmax = 0; for (const ln of lines) wmax = Math.max(wmax, textWidth(ln, h, ws));
+          const pitch = h * 5 / 3 * (e.ls || 1);
+          let ha, dy0;
+          if (e.m) {
+            const at = Math.min(9, Math.max(1, e.at || 1));
+            ha = (at - 1) % 3;
+            const H = h + (lines.length - 1) * pitch, row = Math.floor((at - 1) / 3);
+            dy0 = row === 0 ? h : row === 1 ? h - H / 2 : h - H;
+          } else {
+            ha = e.ha === 4 ? 1 : Math.min(2, e.ha | 0);
+            const va = e.va | 0; dy0 = va === 2 ? h / 2 : va === 3 ? h : 0;
+          }
+          const rad = Math.hypot(wmax, lines.length * pitch + h) + h;
+          texts.push({ x, y, ang, h, ws, lines, ha, dy0, pitch, L, T: Tl, ck, rad });
+          snap(Me, e.x, e.y, L);
+          break;
+        }
+        case 'H': {
+          const loops = [];
+          let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+          for (const lp of e.loops) {
+            const pts = loopPts(lp);
+            if (pts.length < 6) continue;
+            const t = tf(Me, pts);
+            for (let i = 0; i < t.length; i += 2) { if (t[i] < x0) x0 = t[i]; if (t[i] > x1) x1 = t[i]; if (t[i + 1] < y0) y0 = t[i + 1]; if (t[i + 1] > y1) y1 = t[i + 1]; }
+            loops.push(t);
+          }
+          if (!loops.length) break;
+          const sc = Math.sqrt(Math.abs(Me[0] * Me[3] - Me[1] * Me[2])) || 1;
+          let defs = e.defs && e.defs.length ? e.defs : null;
+          if (!e.sol && !defs) defs = [[Math.PI / 4 + (e.pa || 0), 0, 0, -Math.sin(Math.PI / 4) * 3.175 * (e.ps || 1), Math.cos(Math.PI / 4) * 3.175 * (e.ps || 1), []]];
+          const lines = [];
+          if (!e.sol && defs) for (const d of defs) {
+            const [ang, bx, by, ox, oy, ds] = d;
+            const ux0 = Math.cos(ang), uy0 = Math.sin(ang);
+            const ux = Me[0] * ux0 + Me[2] * uy0, uy = Me[1] * ux0 + Me[3] * uy0, ul = Math.hypot(ux, uy) || 1;
+            const ox2 = Me[0] * ox + Me[2] * oy, oy2 = Me[1] * ox + Me[3] * oy;
+            const bx2 = Me[0] * bx + Me[2] * by + Me[4], by2 = Me[1] * bx + Me[3] * by + Me[5];
+            const u = [ux / ul, uy / ul];
+            const sp = Math.abs(u[0] * oy2 - u[1] * ox2);
+            if (!(sp > 0)) continue;
+            lines.push({ u, b: [bx2, by2], o: [ox2, oy2], sp, ds: (ds || []).map(v => v * sc) });
+          }
+          hatches.push({ loops, sol: e.sol, lines, bb: [x0, y0, x1, y1], L, T: Tl, ck });
+          break;
+        }
+        case 'I': {
+          const B = model.blocks[e.n];
+          snap(Me, e.x, e.y, L);
+          if (B && depth < 14) {
+            const nc = Math.max(1, e.nc | 0), nr = Math.max(1, e.nr | 0);
+            const BASE = mul(Rm(e.r), Sm(e.sx, e.sy));
+            for (let r = 0; r < nr; r++) for (let c = 0; c < nc; c++) {
+              let Mi = mul(Me, T(e.x, e.y));
+              Mi = mul(Mi, Rm(e.r));
+              if (r || c) Mi = mul(Mi, T(c * e.cs, r * e.rs));
+              Mi = mul(Mi, Sm(e.sx, e.sy));
+              Mi = mul(Mi, T(-B.bx, -B.by));
+              walk(B.ents, Mi, L, ck, Tl, depth + 1);
+            }
+            void BASE;
+          }
+          if (e.att && e.att.length) walk(e.att, Me, L, ck, Tl, depth + 1);
+          break;
+        }
+        case 'D': { const B = model.blocks[e.n]; if (B && depth < 14) walk(B.ents, M, L, ck, Tl, depth + 1); break; }
+      }
+    }
+  }
+  walk(model.ents, I, null, null, null, 0);
+
+  // robust extents from all stroke vertices (sampled)
+  const xs = [], ys = [];
+  let total = 0; for (const b of strokes.values()) total += b.polys.length;
+  for (const b of fills.values()) total += b.polys.length;
+  const step = Math.max(1, Math.floor(total / 60000));
+  let cnt = 0;
+  const sample = (arr) => { for (const p of arr) { if ((cnt++ % step) === 0) { xs.push(p[0], p[p.length - 2]); ys.push(p[1], p[p.length - 1]); } } };
+  for (const b of strokes.values()) sample(b.polys);
+  for (const b of fills.values()) sample(b.polys);
+  for (const h of hatches) { xs.push(h.bb[0], h.bb[2]); ys.push(h.bb[1], h.bb[3]); }
+  for (let i = 0; i < texts.length; i += Math.max(1, Math.floor(texts.length / 4000))) { xs.push(texts[i].x); ys.push(texts[i].y); }
+  let ext;
+  if (!xs.length) ext = [-10, -10, 10, 10];
+  else {
+    const sx = xs.filter(Number.isFinite).sort((a, b) => a - b), sy = ys.filter(Number.isFinite).sort((a, b) => a - b);
+    const q = (a, t) => a[Math.min(a.length - 1, Math.max(0, Math.round(t * (a.length - 1))))];
+    const lo = sx.length > 200 ? 0.003 : 0, hi = 1 - lo;
+    ext = [q(sx, lo), q(sy, lo), q(sx, hi), q(sy, hi)];
+    // keep true extents when outliers are mild (e.g. a drawing frame)
+    const rw = ext[2] - ext[0], rh = ext[3] - ext[1];
+    if (sx[0] >= ext[0] - rw * 0.6) ext[0] = sx[0];
+    if (sx[sx.length - 1] <= ext[2] + rw * 0.6) ext[2] = sx[sx.length - 1];
+    if (sy[0] >= ext[1] - rh * 0.6) ext[1] = sy[0];
+    if (sy[sy.length - 1] <= ext[3] + rh * 0.6) ext[3] = sy[sy.length - 1];
+    if (ext[2] - ext[0] < 1e-9) { ext[0] -= 1; ext[2] += 1; }
+    if (ext[3] - ext[1] < 1e-9) { ext[1] -= 1; ext[3] += 1; }
+  }
+  const ox = (ext[0] + ext[2]) / 2, oy = (ext[1] + ext[3]) / 2;
+
+  const mkPath = (polys, close) => {
+    const P = new Path2D();
+    for (const p of polys) {
+      if (p.length < 4) continue;
+      P.moveTo(p[0] - ox, p[1] - oy);
+      for (let i = 2; i < p.length; i += 2) P.lineTo(p[i] - ox, p[i + 1] - oy);
+      if (close) P.closePath();
+    }
+    return P;
+  };
+  const S = [], F = [];
+  for (const b of strokes.values()) S.push({ L: b.L, T: b.T, ck: b.ck, path: mkPath(b.polys, false) });
+  for (const b of fills.values()) F.push({ L: b.L, T: b.T, ck: b.ck, path: mkPath(b.polys, true) });
+  for (const h of hatches) {
+    h.path = mkPath(h.loops, true);
+    h.bb = [h.bb[0] - ox, h.bb[1] - oy, h.bb[2] - ox, h.bb[3] - oy];
+    for (const ln of h.lines) { ln.b = [ln.b[0] - ox, ln.b[1] - oy]; }
+    delete h.loops;
+  }
+  for (const t of texts) { t.x -= ox; t.y -= oy; }
+
+  // snap grid
+  const sn = snapX.length, SX = new Float64Array(sn), SY = new Float64Array(sn), SL = new Uint32Array(sn);
+  for (let i = 0; i < sn; i++) { SX[i] = snapX[i] - ox; SY[i] = snapY[i] - oy; SL[i] = snapL[i]; }
+  const cell = Math.max(ext[2] - ext[0], ext[3] - ext[1]) / 256 || 1;
+  const grid = new Map();
+  for (let i = 0; i < sn; i++) {
+    const k = Math.floor(SX[i] / cell) + ',' + Math.floor(SY[i] / cell);
+    let a = grid.get(k); if (!a) grid.set(k, a = []); a.push(i);
+  }
+  return {
+    layers, strokes: S, fills: F, hatches, texts, ox, oy,
+    ext: [ext[0] - ox, ext[1] - oy, ext[2] - ox, ext[3] - oy],
+    snaps: { X: SX, Y: SY, L: SL, grid, cell }, truncated, skipped: model.skipped || {},
+    units: model.units | 0, entCount: model.ents.length,
+  };
+}
+
+/* ================= state & view ================= */
+const stage = $('stage'), cv = $('cv'), ctx = cv.getContext('2d');
+const loupe = $('loupe'), lctx = loupe.getContext('2d');
+let scene = null, docInfo = { name: '', kind: '' };
+const view = { s: 1, tx: 0, ty: 0 };
+let W = 0, H = 0, dpr = 1;
+let dark = false;
+let unitM = 0.001, unitName = 'mm';
+const UNITS = [['mm', 0.001], ['cm', 0.01], ['m', 1], ['inç', 0.0254], ['ft', 0.3048]];
+
+function isDark() {
+  const a = document.documentElement.getAttribute('data-theme');
+  if (a === 'dark') return true; if (a === 'light') return false;
+  return matchMedia('(prefers-color-scheme: dark)').matches;
+}
+const colorCache = new Map();
+function css(ck) {
+  let v = colorCache.get(ck); if (v) return v;
+  let rgb;
+  if (ck[0] === 'r') { const n = +ck.slice(1); rgb = [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
+  else { const i = +ck.slice(1); rgb = ACI[i] || ACI[7]; if (i === 7) rgb = dark ? [232, 234, 237] : [29, 33, 38]; }
+  const lum = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255;
+  if (!dark && lum > 0.72) rgb = rgb.map(c => Math.round(c * 0.55));
+  if (dark && lum < 0.16) rgb = rgb.map(c => Math.round(c + (255 - c) * 0.4));
+  v = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+  colorCache.set(ck, v);
+  return v;
+}
+function readTheme() { dark = isDark(); colorCache.clear(); requestDraw(); }
+new MutationObserver(readTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readTheme);
+
+function resize() {
+  const r = stage.getBoundingClientRect();
+  dpr = Math.min(3, window.devicePixelRatio || 1);
+  const nw = r.width, nh = r.height;
+  if (W && H) { view.tx += (nw - W) / 2; view.ty += (nh - H) / 2; }
+  W = nw; H = nh;
+  cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+  snapshot = null;
+  requestDraw();
+}
+new ResizeObserver(resize).observe(stage);
+
+function fit() {
+  if (!scene) return;
+  const [x0, y0, x1, y1] = scene.ext;
+  const padT = 70, padB = 110, padS = 24;
+  const s = Math.min((W - padS * 2) / (x1 - x0), (H - padT - padB) / (y1 - y0));
+  view.s = s > 0 && isFinite(s) ? s : 1;
+  view.tx = W / 2 - (x0 + x1) / 2 * view.s;
+  view.ty = padT + (H - padT - padB) / 2 + (y0 + y1) / 2 * view.s;
+  requestDraw(true);
+}
+const toScreen = (x, y) => [x * view.s + view.tx, -y * view.s + view.ty];
+const toWorld = (sx, sy) => [(sx - view.tx) / view.s, (view.ty - sy) / view.s];
+
+/* ================= drawing ================= */
+let drawQueued = false, fullQueued = false, lastFullMs = 0, snapshot = null, gestureActive = false, idleTimer = 0;
+function requestDraw(full) {
+  if (full) fullQueued = true;
+  if (drawQueued) return;
+  drawQueued = true;
+  requestAnimationFrame(() => {
+    drawQueued = false;
+    const useSnap = gestureActive && snapshot && lastFullMs > 22 && !fullQueued;
+    if (useSnap) drawFromSnapshot(); else drawFull();
+    fullQueued = false;
+    drawOverlay();
+    updateScale();
+    if (loupeOn) drawLoupe();
+  });
+}
+function bgColor() { return getComputedStyle(document.documentElement).getPropertyValue('--canvas').trim() || (dark ? '#13171b' : '#fbfbf8'); }
+
+function drawFull() {
+  const t0 = performance.now();
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.fillStyle = bgColor();
+  ctx.fillRect(0, 0, cv.width, cv.height);
+  if (!scene) return;
+  const { s, tx, ty } = view;
+  const L = scene.layers;
+  const vis = (b) => L[b.L].on && L[b.T].on;
+  const vx0 = (0 - tx) / s, vx1 = (W - tx) / s, vy0 = (ty - H) / s, vy1 = ty / s;
+  ctx.setTransform(dpr * s, 0, 0, -dpr * s, dpr * tx, dpr * ty);
+  // fills (solids)
+  for (const b of scene.fills) { if (!vis(b)) continue; ctx.fillStyle = css(b.ck); ctx.fill(b.path); }
+  // hatches
+  const lw = (dpr > 1 ? 0.85 : 1) / s;
+  for (const h of scene.hatches) {
+    if (!vis(h)) continue;
+    const bb = h.bb; if (bb[2] < vx0 || bb[0] > vx1 || bb[3] < vy0 || bb[1] > vy1) continue;
+    const col = css(h.ck);
+    if (h.sol) { ctx.fillStyle = col; ctx.fill(h.path, 'evenodd'); continue; }
+    const cx0 = Math.max(bb[0], vx0), cx1 = Math.min(bb[2], vx1), cy0 = Math.max(bb[1], vy0), cy1 = Math.min(bb[3], vy1);
+    ctx.save();
+    ctx.clip(h.path, 'evenodd');
+    let dense = false;
+    for (const ln of h.lines) if (ln.sp * s < 2.6) dense = true;
+    if (dense || !h.lines.length) { ctx.globalAlpha = 0.22; ctx.fillStyle = col; ctx.fillRect(cx0, cy0, cx1 - cx0, cy1 - cy0); ctx.restore(); continue; }
+    ctx.strokeStyle = col; ctx.lineWidth = lw * 0.85; ctx.globalAlpha = 0.8;
+    const cs = [[cx0, cy0], [cx1, cy0], [cx1, cy1], [cx0, cy1]];
+    for (const ln of h.lines) {
+      const [ux, uy] = ln.u, nx = -uy, ny = ux;
+      const on = ln.o[0] * nx + ln.o[1] * ny; // perpendicular step per line index
+      if (Math.abs(on) < 1e-12) continue;
+      let tmin = Infinity, tmax = -Infinity, amin = Infinity, amax = -Infinity;
+      for (const c of cs) { const t = c[0] * nx + c[1] * ny, a = c[0] * ux + c[1] * uy; if (t < tmin) tmin = t; if (t > tmax) tmax = t; if (a < amin) amin = a; if (a > amax) amax = a; }
+      const tb = ln.b[0] * nx + ln.b[1] * ny;
+      let k0 = Math.ceil((tmin - tb) / on), k1 = Math.floor((tmax - tb) / on);
+      if (k0 > k1) { const t = k0; k0 = k1; k1 = t; k0 = Math.ceil(Math.min((tmin - tb) / on, (tmax - tb) / on)); k1 = Math.floor(Math.max((tmin - tb) / on, (tmax - tb) / on)); }
+      if (k1 - k0 > 3000) { ctx.globalAlpha = 0.22; ctx.fillStyle = col; ctx.fillRect(cx0, cy0, cx1 - cx0, cy1 - cy0); ctx.globalAlpha = 0.8; continue; }
+      let dash = null, period = 0;
+      if (ln.ds.length) {
+        const segs = [];
+        for (const d of ln.ds) { const on2 = d >= 0, len = Math.max(Math.abs(d), on2 ? 0.9 / s : 0); if (segs.length && segs[segs.length - 1][1] === on2) segs[segs.length - 1][0] += len; else segs.push([len, on2]); }
+        let lead = 0; if (segs.length && !segs[0][1]) { lead = segs[0][0]; segs.push(segs.shift()); }
+        if (segs.length && segs.length % 2) segs.push([0, false]);
+        dash = segs.map(x => x[0]); period = dash.reduce((a, b) => a + b, 0);
+        if (period * s < 1.5) dash = null; else ln._lead = lead;
+      }
+      if (dash) {
+        ctx.setLineDash(dash);
+        for (let k = k0; k <= k1; k++) {
+          const qx = ln.b[0] + k * ln.o[0], qy = ln.b[1] + k * ln.o[1];
+          const qa = qx * ux + qy * uy;
+          ctx.beginPath();
+          ctx.moveTo(qx + ux * (amin - qa), qy + uy * (amin - qa));
+          ctx.lineTo(qx + ux * (amax - qa), qy + uy * (amax - qa));
+          let off = ((qa - amin) - (ln._lead || 0)) % period; if (off < 0) off += period;
+          ctx.lineDashOffset = -off;
+          ctx.stroke();
+        }
+        ctx.setLineDash([]);
+      } else {
+        ctx.beginPath();
+        for (let k = k0; k <= k1; k++) {
+          const qx = ln.b[0] + k * ln.o[0], qy = ln.b[1] + k * ln.o[1];
+          const qa = qx * ux + qy * uy;
+          ctx.moveTo(qx + ux * (amin - qa), qy + uy * (amin - qa));
+          ctx.lineTo(qx + ux * (amax - qa), qy + uy * (amax - qa));
+        }
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+  // strokes
+  ctx.lineWidth = lw; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  for (const b of scene.strokes) { if (!vis(b)) continue; ctx.strokeStyle = css(b.ck); ctx.stroke(b.path); }
+  // texts
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const face = getComputedStyle(document.documentElement).getPropertyValue('--f-draw');
+  ctx.textBaseline = 'alphabetic';
+  let lastFont = '';
+  for (const t of scene.texts) {
+    if (!L[t.L].on || !L[t.T].on) continue;
+    const hp = t.h * s;
+    if (hp < 1.8) continue;
+    if (t.x + t.rad < vx0 || t.x - t.rad > vx1 || t.y + t.rad < vy0 || t.y - t.rad > vy1) continue;
+    const [sx, sy] = toScreen(t.x, t.y);
+    ctx.save();
+    ctx.translate(sx, sy); ctx.rotate(-t.ang);
+    if (t.ws !== 1) ctx.scale(t.ws, 1);
+    ctx.fillStyle = css(t.ck);
+    if (hp < 3.2) {
+      ctx.globalAlpha = 0.5;
+      const w = textWidth(t.lines[0] || '', t.h, 1) * s;
+      const x0 = t.ha === 1 ? -w / 2 : t.ha === 2 ? -w : 0;
+      for (let i = 0; i < t.lines.length; i++) ctx.fillRect(x0, (t.dy0 + i * t.pitch) * s - hp, w, Math.max(0.8, hp * 0.6));
+    } else {
+      const font = (hp / CAP).toFixed(1) + 'px ' + face;
+      if (font !== lastFont) { ctx.font = font; lastFont = font; }
+      ctx.textAlign = t.ha === 1 ? 'center' : t.ha === 2 ? 'right' : 'left';
+      for (let i = 0; i < t.lines.length; i++) ctx.fillText(t.lines[i], 0, (t.dy0 + i * t.pitch) * s);
+    }
+    ctx.restore();
+    lastFont = '';
+  }
+  lastFullMs = performance.now() - t0;
+  if (lastFullMs > 22) {
+    if (!snapshot) snapshot = document.createElement('canvas');
+    snapshot.width = cv.width; snapshot.height = cv.height;
+    snapshot.getContext('2d').drawImage(cv, 0, 0);
+    snapshot.view = { ...view };
+  } else snapshot = null;
+}
+function drawFromSnapshot() {
+  const v0 = snapshot.view, k = view.s / v0.s;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.fillStyle = bgColor(); ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.setTransform(k, 0, 0, k, dpr * (view.tx - v0.tx * k), dpr * (view.ty - v0.ty * k));
+  ctx.drawImage(snapshot, 0, 0);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+
+/* ================= measuring ================= */
+let mode = 'view'; // view | dist | area
+let pts = [];          // current measurement points (world, offset coords)
+let done = [];         // finished: {mode, pts}
+let hoverPt = null, snapHit = null;
+
+function fmtNum(v, d = 2) { return v.toLocaleString('tr-TR', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+function fmtLen(u) { // u in drawing units
+  const m = u * unitM;
+  if (Math.abs(m) >= 1) return fmtNum(m, 2) + ' m';
+  if (Math.abs(m) >= 0.01) return fmtNum(m * 100, 1) + ' cm';
+  return fmtNum(m * 1000, 1) + ' mm';
+}
+function fmtArea(a) { const m2 = a * unitM * unitM; return m2 >= 0.01 ? fmtNum(m2, 2) + ' m²' : fmtNum(m2 * 1e4, 1) + ' cm²'; }
+function polyLen(P, closed) { let s = 0; for (let i = 1; i < P.length; i++) s += Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]); if (closed && P.length > 2) s += Math.hypot(P[0][0] - P[P.length - 1][0], P[0][1] - P[P.length - 1][1]); return s; }
+function polyArea(P) { let a = 0; for (let i = 0; i < P.length; i++) { const j = (i + 1) % P.length; a += P[i][0] * P[j][1] - P[j][0] * P[i][1]; } return Math.abs(a) / 2; }
+
+function findSnap(sx, sy) {
+  if (!scene) return null;
+  const R = 16;
+  const [wx, wy] = toWorld(sx, sy);
+  const rw = R / view.s, c = scene.snaps.cell;
+  const cx0 = Math.floor((wx - rw) / c), cx1 = Math.floor((wx + rw) / c), cy0 = Math.floor((wy - rw) / c), cy1 = Math.floor((wy + rw) / c);
+  if ((cx1 - cx0 + 1) * (cy1 - cy0 + 1) > 900) return null;
+  let best = -1, bd = rw * rw;
+  const { X, Y, L, grid } = scene.snaps, LY = scene.layers;
+  for (let gx = cx0; gx <= cx1; gx++) for (let gy = cy0; gy <= cy1; gy++) {
+    const a = grid.get(gx + ',' + gy); if (!a) continue;
+    for (const i of a) { if (!LY[L[i]].on) continue; const d = (X[i] - wx) ** 2 + (Y[i] - wy) ** 2; if (d < bd) { bd = d; best = i; } }
+  }
+  return best >= 0 ? [X[best], Y[best]] : null;
+}
+function pickPoint(sx, sy) { const s = findSnap(sx, sy); return s ? { p: s, snapped: true } : { p: toWorld(sx, sy), snapped: false }; }
+
+function setMode(m) {
+  if (m === mode) m = 'view';
+  if (mode !== 'view' && pts.length >= (mode === 'area' ? 3 : 2)) done.push({ mode, pts });
+  pts = []; hoverPt = null; snapHit = null;
+  mode = m;
+  $('tDist').setAttribute('aria-pressed', mode === 'dist');
+  $('tArea').setAttribute('aria-pressed', mode === 'area');
+  stage.classList.toggle('measuring', mode !== 'view');
+  updateCard(); requestDraw();
+}
+function addPoint(p) { pts.push(p); updateCard(); requestDraw(); }
+function finishArea() { if (mode === 'area' && pts.length >= 3) { done.push({ mode, pts }); pts = []; updateCard(); requestDraw(); } }
+
+function updateCard() {
+  const card = $('mcard');
+  const hasDone = done.length > 0;
+  if (mode === 'view' && !hasDone) { card.hidden = true; return; }
+  card.hidden = false;
+  const rows = [];
+  let val = '—', hint = '';
+  const touch = matchMedia('(pointer: coarse)').matches;
+  const last = done[done.length - 1];
+  const showMode = mode !== 'view' ? mode : last.mode;
+  const fromDone = !pts.length && last && last.mode === showMode;
+  const P = pts.length ? pts : (fromDone ? last.pts : []);
+  if (showMode === 'dist') {
+    $('mTitle').textContent = 'Mesafe';
+    if (P.length >= 2) {
+      const a = P[P.length - 2], b = P[P.length - 1];
+      val = fmtLen(polyLen(P));
+      const dx = b[0] - a[0], dy = b[1] - a[1];
+      if (P.length > 2) rows.push(['Son parça', fmtLen(Math.hypot(dx, dy))]);
+      rows.push(['Δx', fmtLen(Math.abs(dx))], ['Δy', fmtLen(Math.abs(dy))]);
+      let ang = Math.atan2(dy, dx) * 180 / Math.PI; if (ang < 0) ang += 360;
+      rows.push(['Açı', fmtNum(ang, 1) + '°']);
+      rows.push(['Çizim birimi', fmtNum(polyLen(P), polyLen(P) > 100 ? 0 : 2) + ' ' + unitName]);
+    }
+    if (mode === 'dist') hint = pts.length === 0 ? (fromDone ? 'Yeni ölçüm için başlangıç noktasını seç.' : touch ? 'Başlangıç noktasına dokun. Hassas seçim için parmağını basılı tut: büyüteç açılır.' : 'Başlangıç noktasına tıkla. Uç ve merkez noktalarına otomatik yakalar.') : 'Sonraki noktayı seç. Her nokta yeni bir parça ekler.';
+  } else {
+    $('mTitle').textContent = 'Alan';
+    if (P.length >= 3) { val = fmtArea(polyArea(P)); rows.push(['Çevre', fmtLen(polyLen(P, true))], ['Köşe', String(P.length)]); }
+    else if (P.length === 2) val = fmtLen(polyLen(P));
+    if (mode === 'area') hint = pts.length === 0 && fromDone ? 'Yeni alan için ilk köşeyi seç.' : P.length < 3 ? (touch ? 'Alanın köşelerine sırayla dokun (en az 3).' : 'Köşelere sırayla tıkla. Bitirmek için çift tıkla ya da Enter.') : 'Köşe eklemeye devam et ya da alanı kapat.';
+  }
+  $('mVal').innerHTML = val.replace(/ (\S+)$/, ' <small>$1</small>');
+  $('mRows').innerHTML = rows.map(r => `<span>${r[0]}</span><span>${r[1]}</span>`).join('');
+  $('mHint').textContent = hint; $('mHint').hidden = !hint;
+  $('mCount').textContent = done.length ? done.length + ' ölçüm' : '';
+  $('mDone').hidden = !(mode === 'area' && pts.length >= 3);
+  $('mUndo').disabled = !pts.length && !done.length;
+}
+
+function drawOverlay() {
+  if (!scene) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const acc = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+  const halo = bgColor();
+  const drawSet = (P, isArea, live, faded) => {
+    if (!P.length) return;
+    const S = P.map(p => toScreen(p[0], p[1]));
+    if (live && hoverPt) S.push(toScreen(hoverPt[0], hoverPt[1]));
+    ctx.save();
+    ctx.globalAlpha = faded ? 0.55 : 1;
+    if (isArea && S.length >= 3) {
+      ctx.beginPath(); S.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath();
+      ctx.fillStyle = acc; ctx.globalAlpha *= 0.16; ctx.fill(); ctx.globalAlpha = faded ? 0.55 : 1;
+    }
+    ctx.beginPath(); S.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); if (isArea && S.length >= 3) ctx.closePath();
+    ctx.lineWidth = 4; ctx.strokeStyle = halo; ctx.stroke();
+    ctx.lineWidth = 2; ctx.strokeStyle = acc; ctx.setLineDash(live ? [7, 4] : []); ctx.stroke(); ctx.setLineDash([]);
+    for (const p of S.slice(0, P.length)) { ctx.beginPath(); ctx.arc(p[0], p[1], 4, 0, TAU); ctx.fillStyle = halo; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = acc; ctx.stroke(); }
+    // labels
+    ctx.font = '500 12px ' + getComputedStyle(document.documentElement).getPropertyValue('--f-num');
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const label = (txt, x, y) => {
+      const w = ctx.measureText(txt).width + 12;
+      ctx.fillStyle = acc; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x - w / 2, y - 10, w, 20, 6) : ctx.rect(x - w / 2, y - 10, w, 20); ctx.fill();
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-ink').trim(); ctx.fillText(txt, x, y + 0.5);
+    };
+    const WP = live && hoverPt ? [...P, hoverPt] : P;
+    if (!isArea) {
+      for (let i = 1; i < WP.length; i++) {
+        const a = S[i - 1], b = S[i];
+        if (Math.hypot(b[0] - a[0], b[1] - a[1]) < 60) continue;
+        label(fmtLen(Math.hypot(WP[i][0] - WP[i - 1][0], WP[i][1] - WP[i - 1][1])), (a[0] + b[0]) / 2, (a[1] + b[1]) / 2);
+      }
+    } else if (WP.length >= 3) {
+      let cx = 0, cy = 0; S.forEach(p => { cx += p[0]; cy += p[1]; });
+      label(fmtArea(polyArea(WP)), cx / S.length, cy / S.length);
+    }
+    ctx.restore();
+  };
+  for (const d of done) drawSet(d.pts, d.mode === 'area', false, true);
+  if (mode !== 'view') drawSet(pts, mode === 'area', true, false);
+  if (snapHit && mode !== 'view') {
+    const [x, y] = toScreen(snapHit[0], snapHit[1]);
+    ctx.lineWidth = 2; ctx.strokeStyle = acc; ctx.strokeRect(x - 6, y - 6, 12, 12);
+  }
+  if (loupeOn && loupeTarget) {
+    const [x, y] = loupeTarget;
+    ctx.strokeStyle = acc; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(x - 14, y); ctx.lineTo(x - 4, y); ctx.moveTo(x + 4, y); ctx.lineTo(x + 14, y); ctx.moveTo(x, y - 14); ctx.lineTo(x, y - 4); ctx.moveTo(x, y + 4); ctx.lineTo(x, y + 14); ctx.stroke();
+  }
+}
+
+/* ================= loupe ================= */
+let loupeOn = false, loupeTarget = null;
+function drawLoupe() {
+  if (!loupeTarget) return;
+  const [x, y] = loupeTarget;
+  const size = 132, zoom = 2.6;
+  let lx = x - size / 2, ly = y - size - 46;
+  if (ly < 6) ly = y + 46;
+  lx = Math.max(6, Math.min(W - size - 6, lx));
+  loupe.style.left = lx + 'px'; loupe.style.top = ly + 'px';
+  const src = size / zoom * dpr;
+  lctx.setTransform(1, 0, 0, 1, 0, 0);
+  lctx.fillStyle = bgColor(); lctx.fillRect(0, 0, loupe.width, loupe.height);
+  lctx.save(); lctx.beginPath(); lctx.arc(loupe.width / 2, loupe.height / 2, loupe.width / 2, 0, TAU); lctx.clip();
+  lctx.drawImage(cv, x * dpr - src / 2, y * dpr - src / 2, src, src, 0, 0, loupe.width, loupe.height);
+  lctx.restore();
+  const acc = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+  lctx.strokeStyle = acc; lctx.lineWidth = 2;
+  const c = loupe.width / 2;
+  lctx.beginPath(); lctx.moveTo(c - 22, c); lctx.lineTo(c + 22, c); lctx.moveTo(c, c - 22); lctx.lineTo(c, c + 22); lctx.stroke();
+}
+
+/* ================= scale bar ================= */
+function updateScale() {
+  if (!scene) { $('scale').hidden = true; return; }
+  $('scale').hidden = false;
+  const pxPerM = view.s / unitM;
+  const target = 110 / pxPerM; // metres
+  const p = Math.pow(10, Math.floor(Math.log10(target)));
+  let L = p; for (const f of [1, 2, 5, 10]) if (f * p <= target * 1.4) L = f * p;
+  const px = L * pxPerM;
+  $('scaleBar').style.width = px.toFixed(1) + 'px';
+  $('scaleLbl').textContent = L >= 1000 ? fmtNum(L / 1000, L % 1000 ? 1 : 0) + ' km' : L >= 1 ? fmtNum(L, L % 1 ? 1 : 0) + ' m' : L >= 0.01 ? fmtNum(L * 100, 0) + ' cm' : fmtNum(L * 1000, 0) + ' mm';
+}
+function setUnit(name) {
+  const u = UNITS.find(x => x[0] === name) || UNITS[0];
+  unitName = u[0]; unitM = u[1];
+  $('unitChip').textContent = '1 birim = ' + unitName;
+  updateCard(); requestDraw();
+}
+$('unitChip').addEventListener('click', () => {
+  const i = UNITS.findIndex(x => x[0] === unitName);
+  setUnit(UNITS[(i + 1) % UNITS.length][0]);
+});
+
+/* ================= input ================= */
+const ptrs = new Map();
+let gesture = null, lastTap = 0, lastTapXY = null, pressTimer = 0;
+const rel = (e) => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+function beginGesture() { gestureActive = true; clearTimeout(idleTimer); }
+function endGesture() { clearTimeout(idleTimer); idleTimer = setTimeout(() => { gestureActive = false; requestDraw(true); }, 140); }
+
+cv.addEventListener('pointerdown', (e) => {
+  cv.setPointerCapture(e.pointerId);
+  const p = rel(e);
+  ptrs.set(e.pointerId, p);
+  closeMenu();
+  if (ptrs.size === 1) {
+    gesture = { type: 'press', start: p, last: p, t: performance.now(), touch: e.pointerType !== 'mouse' };
+    if (mode !== 'view' && e.pointerType !== 'mouse') {
+      clearTimeout(pressTimer);
+      pressTimer = setTimeout(() => {
+        if (gesture && gesture.type === 'press') { gesture.type = 'precise'; loupeOn = true; loupe.hidden = false; updatePrecise(gesture.last); }
+      }, 260);
+    }
+  } else if (ptrs.size === 2) {
+    clearTimeout(pressTimer); loupeOn = false; loupe.hidden = true;
+    const [a, b] = [...ptrs.values()];
+    gesture = { type: 'pinch', d: Math.hypot(a[0] - b[0], a[1] - b[1]), c: [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], s: view.s, tx: view.tx, ty: view.ty };
+    beginGesture();
+  }
+});
+function updatePrecise(p) {
+  const target = [p[0], p[1] - 64];
+  const hit = findSnap(target[0], target[1]);
+  snapHit = hit;
+  loupeTarget = hit ? toScreen(hit[0], hit[1]) : target;
+  hoverPt = hit || toWorld(target[0], target[1]);
+  requestDraw();
+}
+cv.addEventListener('pointermove', (e) => {
+  const p = rel(e);
+  if (ptrs.has(e.pointerId)) ptrs.set(e.pointerId, p);
+  if (!gesture) {
+    if (e.pointerType === 'mouse' && mode !== 'view') {
+      const hit = findSnap(p[0], p[1]); snapHit = hit; hoverPt = hit || toWorld(p[0], p[1]); requestDraw();
+    }
+    return;
+  }
+  if (gesture.type === 'pinch' && ptrs.size >= 2) {
+    const [a, b] = [...ptrs.values()];
+    const d = Math.hypot(a[0] - b[0], a[1] - b[1]), c = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+    const k = d / gesture.d;
+    const ns = clampS(gesture.s * k), kk = ns / gesture.s;
+    view.s = ns;
+    view.tx = c[0] - (gesture.c[0] - gesture.tx) * kk;
+    view.ty = c[1] - (gesture.c[1] - gesture.ty) * kk;
+    requestDraw();
+    return;
+  }
+  if (gesture.type === 'precise') { gesture.last = p; updatePrecise(p); return; }
+  const dx = p[0] - gesture.last[0], dy = p[1] - gesture.last[1];
+  if (gesture.type === 'press' && Math.hypot(p[0] - gesture.start[0], p[1] - gesture.start[1]) > 6) {
+    gesture.type = 'pan'; clearTimeout(pressTimer); stage.classList.add('panning'); beginGesture();
+  }
+  if (gesture.type === 'pan') { view.tx += dx; view.ty += dy; requestDraw(); }
+  gesture.last = p;
+  if (e.pointerType === 'mouse' && mode !== 'view') { const hit = findSnap(p[0], p[1]); snapHit = hit; hoverPt = hit || toWorld(p[0], p[1]); }
+});
+function pointerEnd(e) {
+  const p = rel(e);
+  ptrs.delete(e.pointerId);
+  clearTimeout(pressTimer);
+  if (!gesture) return;
+  const g = gesture;
+  if (g.type === 'pinch') {
+    if (ptrs.size === 1) { const q = [...ptrs.values()][0]; gesture = { type: 'pan', start: q, last: q, t: 0 }; } else { gesture = null; endGesture(); }
+    return;
+  }
+  if (ptrs.size > 0) return;
+  gesture = null;
+  stage.classList.remove('panning');
+  if (g.type === 'precise') {
+    loupeOn = false; loupe.hidden = true; loupeTarget = null;
+    if (e.type !== 'pointercancel') addPoint(hoverPt);
+    hoverPt = null; snapHit = null; requestDraw();
+    return;
+  }
+  if (g.type === 'pan') { endGesture(); return; }
+  if (g.type === 'press' && e.type !== 'pointercancel') {
+    const now = performance.now();
+    if (mode !== 'view') {
+      const pk = pickPoint(p[0], p[1]);
+      if (mode === 'area' && e.pointerType === 'mouse' && now - lastTap < 320 && lastTapXY && Math.hypot(p[0] - lastTapXY[0], p[1] - lastTapXY[1]) < 8) { finishArea(); lastTap = 0; return; }
+      addPoint(pk.p);
+      if (g.touch) { hoverPt = null; snapHit = pk.snapped ? pk.p : null; }
+    } else if (now - lastTap < 300 && lastTapXY && Math.hypot(p[0] - lastTapXY[0], p[1] - lastTapXY[1]) < 24) {
+      zoomAt(p[0], p[1], 2, true); lastTap = 0; return;
+    }
+    lastTap = now; lastTapXY = p;
+  }
+}
+cv.addEventListener('pointerup', pointerEnd);
+cv.addEventListener('pointercancel', pointerEnd);
+cv.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !gesture) { hoverPt = null; snapHit = null; requestDraw(); } });
+const clampS = (s) => Math.max(1e-9, Math.min(1e9, s));
+function zoomAt(x, y, k, animate) {
+  const ns = clampS(view.s * k); k = ns / view.s;
+  if (!animate) { view.tx = x - (x - view.tx) * k; view.ty = y - (y - view.ty) * k; view.s = ns; requestDraw(); return; }
+  const s0 = view.s, tx0 = view.tx, ty0 = view.ty, t0 = performance.now(), dur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 180;
+  beginGesture();
+  const stepA = () => {
+    const t = Math.min(1, (performance.now() - t0) / dur), e = 1 - Math.pow(1 - t, 3), kk = Math.pow(k, e);
+    view.s = s0 * kk; view.tx = x - (x - tx0) * kk; view.ty = y - (y - ty0) * kk; requestDraw();
+    if (t < 1) requestAnimationFrame(stepA); else endGesture();
+  };
+  stepA();
+}
+cv.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const p = rel(e);
+  const k = Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0018));
+  beginGesture(); zoomAt(p[0], p[1], k, false); endGesture();
+}, { passive: false });
+window.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'Escape') { if (!$('sheet').hidden) toggleSheet(false); else if (mode !== 'view') { pts = []; setMode(mode); } closeMenu(); }
+  else if (e.key === 'Enter') finishArea();
+  else if ((e.key === 'z' && (e.ctrlKey || e.metaKey)) || e.key === 'Backspace') undo();
+  else if (e.key === 'f' || e.key === 'F') fit();
+  else if (e.key === 'm' || e.key === 'M') setMode('dist');
+  else if (e.key === 'a' || e.key === 'A') setMode('area');
+  else if (e.key === '+' || e.key === '=') zoomAt(W / 2, H / 2, 1.5, true);
+  else if (e.key === '-') zoomAt(W / 2, H / 2, 1 / 1.5, true);
+});
+function undo() {
+  if (pts.length) pts.pop();
+  else if (done.length) { const d = done.pop(); if (mode === d.mode) { pts = d.pts; pts.pop(); } }
+  updateCard(); requestDraw();
+}
+
+$('tDist').addEventListener('click', () => setMode('dist'));
+$('tArea').addEventListener('click', () => setMode('area'));
+$('tFit').addEventListener('click', fit);
+$('mUndo').addEventListener('click', undo);
+$('mClear').addEventListener('click', () => { pts = []; done = []; updateCard(); requestDraw(); });
+$('mDone').addEventListener('click', finishArea);
+
+/* ================= layers sheet ================= */
+function toggleSheet(open) {
+  const sh = $('sheet');
+  open = open === undefined ? sh.hidden : open;
+  sh.hidden = !open; $('tLayers').setAttribute('aria-pressed', open);
+  if (open) renderLayers();
+}
+$('tLayers').addEventListener('click', () => toggleSheet());
+$('sheetX').addEventListener('click', () => toggleSheet(false));
+$('lyrQ').addEventListener('input', renderLayers);
+$('lyrAll').addEventListener('click', () => { if (!scene) return; for (const l of filteredLayers()) l.on = true; renderLayers(); requestDraw(true); });
+$('lyrNone').addEventListener('click', () => { if (!scene) return; for (const l of filteredLayers()) l.on = false; renderLayers(); requestDraw(true); });
+function filteredLayers() {
+  const q = $('lyrQ').value.trim().toLocaleLowerCase('tr');
+  return scene.layers.filter(l => (l.count > 0 || l.name !== '0') && (!q || l.name.toLocaleLowerCase('tr').includes(q)));
+}
+const EYE = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M1.5 10S5 4 10 4s8.5 6 8.5 6S15 16 10 16 1.5 10 1.5 10z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2.6" fill="currentColor"/></svg>';
+const EYE_OFF = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M1.5 10S5 4 10 4s8.5 6 8.5 6S15 16 10 16 1.5 10 1.5 10z" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".45"/><path d="M3 17 17 3" stroke="currentColor" stroke-width="1.6"/></svg>';
+function renderLayers() {
+  if (!scene) return;
+  const list = filteredLayers().slice().sort((a, b) => a.name.localeCompare(b.name, 'tr', { numeric: true }));
+  const used = scene.layers.filter(l => l.count > 0).length;
+  $('lyrCount').textContent = scene.layers.filter(l => l.on && l.count > 0).length + ' / ' + used + ' açık';
+  const box = $('lyrs');
+  box.innerHTML = '';
+  const frag = document.createDocumentFragment();
+  for (const l of list) {
+    const row = document.createElement('div');
+    row.className = 'lyr' + (l.on ? '' : ' off');
+    const sw = document.createElement('span'); sw.className = 'sw'; sw.style.background = css(l.rgb != null ? 'r' + l.rgb : 'a' + l.c);
+    const nm = document.createElement('span'); nm.className = 'ln'; nm.textContent = l.name;
+    const sm = document.createElement('small'); sm.textContent = l.count ? l.count.toLocaleString('tr-TR') + ' nesne' : 'blok içinde'; nm.appendChild(sm);
+    const b = document.createElement('button'); b.innerHTML = l.on ? EYE : EYE_OFF; b.setAttribute('aria-label', (l.on ? 'Gizle: ' : 'Göster: ') + l.name); b.setAttribute('aria-pressed', l.on);
+    b.addEventListener('click', () => { l.on = !l.on; renderLayers(); requestDraw(true); });
+    row.append(sw, nm, b); frag.appendChild(row);
+  }
+  box.appendChild(frag);
+  const sk = Object.entries(scene.skipped).map(([k, v]) => [k.replace(/^\?/, ''), v]).filter(([k]) => !/^(VIEWPORT|POINT|ATTDEF|SEQEND)$/.test(k));
+  const foot = $('lyrFoot');
+  const notes = [];
+  if (sk.length) notes.push('Gösterilmeyen nesne türleri: ' + sk.map(([k, v]) => `${k} ×${v}`).join(', ') + '.');
+  if (scene.truncated) notes.push('Çizim çok büyük olduğu için bazı bloklar atlandı.');
+  foot.textContent = notes.join(' ');
+  foot.hidden = !notes.length;
+}
+
+/* ================= files ================= */
+let worker = null, jobId = 0;
+const pending = new Map();
+function getWorker() {
+  if (worker) return worker;
+  worker = new Worker(new URL('dwg-worker.js', location.href), { type: 'module' });
+  worker.onmessage = (ev) => {
+    const { id, stage: st, model, error } = ev.data;
+    const p = pending.get(id); if (!p) return;
+    if (st === 'engine') busy(true, 'DWG motoru yükleniyor…', 'İlk açılışta yaklaşık 9 MB indirilir.');
+    else if (st === 'parse') busy(true, 'Çizim okunuyor…', p.name);
+    else { pending.delete(id); error ? p.reject(new Error(error)) : p.resolve(model); }
+  };
+  worker.onerror = (ev) => { for (const [id, p] of pending) { p.reject(new Error(ev.message || 'worker')); pending.delete(id); } worker = null; };
+  return worker;
+}
+function parseDwg(buf, name) {
+  return new Promise((resolve, reject) => {
+    let w;
+    try { w = getWorker(); } catch (err) { reject(err); return; }
+    const id = ++jobId; pending.set(id, { resolve, reject, name });
+    w.postMessage({ id, buf }, [buf]);
+  });
+}
+function busy(on, t, s) { $('busy').hidden = !on; if (t) $('busyT').textContent = t; $('busyS').textContent = s || ''; }
+let toastTimer = 0;
+function toast(msg, ok) { $('toastT').textContent = msg; $('toast').classList.toggle('ok', !!ok); $('toast').hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { $('toast').hidden = true; }, ok ? 3500 : 12000); }
+$('toastX').addEventListener('click', () => { $('toast').hidden = true; });
+
+async function openBytes(name, bytes, opts = {}) {
+  const lower = name.toLowerCase();
+  const head = new TextDecoder('latin1').decode(bytes.subarray(0, 6));
+  const isDwg = /^AC1\d{3}/.test(head) || (lower.endsWith('.dwg') && !/^\s*0/.test(head));
+  busy(true, 'Açılıyor…', name);
+  await new Promise(r => setTimeout(r, 30));
+  try {
+    let model;
+    if (isDwg) {
+      if (!/^AC1\d{3}/.test(head)) throw new Error('Bu dosya geçerli bir DWG gibi görünmüyor.');
+      if (head < 'AC1012') throw new Error(`Bu DWG çok eski bir sürüm (${head}). R14 ve sonrası desteklenir.`);
+      try { model = await parseDwg(bytes.slice().buffer, name); }
+      catch (err) {
+        throw new Error('DWG okunamadı (' + String(err.message || err).slice(0, 80) + '). Dosyayı ZWCAD\'de "Farklı kaydet → DXF" ile kaydedip tekrar deneyin.');
+      }
+      model.ver = head;
+    } else {
+      model = parseDxf(bytes);
+    }
+    busy(true, 'Çiziliyor…', name);
+    await new Promise(r => setTimeout(r, 10));
+    try { await Promise.race([document.fonts.load('100px "Archivo Narrow"'), new Promise(r => setTimeout(r, 1500))]); } catch (e) { /* ignore */ }
+    const sc = buildScene(model);
+    if (!sc.strokes.length && !sc.texts.length && !sc.hatches.length) throw new Error('Çizimde gösterilecek model alanı nesnesi bulunamadı.');
+    scene = sc;
+    docInfo = { name, kind: isDwg ? 'DWG' : 'DXF' };
+    pts = []; done = []; mode = 'view'; setMode('view');
+    // units
+    const umap = { 1: 'inç', 2: 'ft', 4: 'mm', 5: 'cm', 6: 'm' };
+    let un = umap[sc.units];
+    if (!un) { const w = Math.max(sc.ext[2] - sc.ext[0], sc.ext[3] - sc.ext[1]); un = w > 4000 ? 'mm' : w > 300 ? 'cm' : 'm'; }
+    setUnit(un);
+    $('fname').textContent = opts.label || name;
+    const used = sc.layers.filter(l => l.count > 0).length;
+    $('fmeta').textContent = [docInfo.kind + (model.ver ? ' ' + model.ver : ''), sc.entCount.toLocaleString('tr-TR') + ' nesne', used + ' katman'].join(' · ');
+    colorCache.clear();
+    fit();
+    if (!$('sheet').hidden) renderLayers();
+    if (opts.remember) remember(name, bytes);
+  } catch (err) {
+    toast(err.message || String(err));
+  } finally { busy(false); }
+}
+
+$('openBtn').addEventListener('click', (e) => { e.stopPropagation(); const m = $('menu'); m.hidden = !m.hidden; $('openBtn').setAttribute('aria-expanded', !m.hidden); if (!m.hidden) listRecent(); });
+function closeMenu() { $('menu').hidden = true; $('openBtn').setAttribute('aria-expanded', 'false'); }
+document.addEventListener('click', (e) => { if (!e.target.closest('.menuwrap')) closeMenu(); });
+$('pickFile').addEventListener('click', () => { closeMenu(); $('fileIn').click(); });
+$('openSample').addEventListener('click', () => { closeMenu(); openSample(); });
+$('fileIn').addEventListener('change', async () => {
+  const f = $('fileIn').files[0]; if (!f) return;
+  const buf = new Uint8Array(await f.arrayBuffer());
+  $('fileIn').value = '';
+  openBytes(f.name, buf, { remember: true });
+});
+function openSample() {
+  const txt = $('sample-dxf').textContent.replace(/^\s+/, '');
+  openBytes('ornek-daire.dxf', new TextEncoder().encode(txt), { label: 'Örnek daire planı' });
+}
+
+// drag & drop
+let dragDepth = 0;
+stage.addEventListener('dragenter', (e) => { e.preventDefault(); dragDepth++; $('drop').hidden = false; });
+stage.addEventListener('dragover', (e) => e.preventDefault());
+stage.addEventListener('dragleave', () => { if (--dragDepth <= 0) { dragDepth = 0; $('drop').hidden = true; } });
+stage.addEventListener('drop', async (e) => {
+  e.preventDefault(); dragDepth = 0; $('drop').hidden = true;
+  const f = e.dataTransfer.files[0]; if (!f) return;
+  openBytes(f.name, new Uint8Array(await f.arrayBuffer()), { remember: true });
+});
+
+/* recent files in this browser (IndexedDB) */
+function idb() {
+  return new Promise((res, rej) => {
+    try {
+      const r = indexedDB.open('acad', 1);
+      r.onupgradeneeded = () => r.result.createObjectStore('files', { keyPath: 'name' });
+      r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+    } catch (e) { rej(e); }
+  });
+}
+async function remember(name, bytes) {
+  if (bytes.length > 60e6) return;
+  try {
+    const db = await idb();
+    const tx = db.transaction('files', 'readwrite'), st = tx.objectStore('files');
+    st.put({ name, date: Date.now(), size: bytes.length, data: bytes.slice().buffer });
+    const all = await new Promise(r => { const q = st.getAll(); q.onsuccess = () => r(q.result || []); q.onerror = () => r([]); });
+    all.sort((a, b) => b.date - a.date).slice(6).forEach(x => st.delete(x.name));
+  } catch (e) { /* storage unavailable */ }
+}
+async function listRecent() {
+  const wrap = $('recentWrap'), box = $('recent');
+  try {
+    const db = await idb();
+    const all = await new Promise(r => { const q = db.transaction('files').objectStore('files').getAll(); q.onsuccess = () => r(q.result || []); q.onerror = () => r([]); });
+    all.sort((a, b) => b.date - a.date);
+    box.innerHTML = '';
+    for (const f of all.slice(0, 6)) {
+      const b = document.createElement('button');
+      const d = new Date(f.date);
+      b.innerHTML = '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 2h7l3 3v11H4z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg><span></span>';
+      const sp = b.querySelector('span'); sp.textContent = f.name;
+      const sub = document.createElement('span'); sub.className = 'sub';
+      sub.textContent = (f.size / 1048576).toLocaleString('tr-TR', { maximumFractionDigits: 1 }) + ' MB · ' + d.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' }) + ' ' + d.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+      sp.appendChild(sub);
+      b.addEventListener('click', () => { closeMenu(); openBytes(f.name, new Uint8Array(f.data), { remember: true }); });
+      box.appendChild(b);
+    }
+    wrap.hidden = !all.length;
+  } catch (e) { wrap.hidden = true; }
+}
+
+/* ================= boot ================= */
+readTheme();
+resize();
+openSample();
+async function openUrl(url, name) {
+  try { busy(true, 'Açılıyor…', name); const r = await fetch(url); if (!r.ok) throw new Error('Dosya okunamadı (' + r.status + ').'); await openBytes(name, new Uint8Array(await r.arrayBuffer()), { remember: true }); }
+  catch (err) { busy(false); toast(err.message || String(err)); }
+}
+window.__acad = { get scene() { return scene; }, openBytes, openUrl, view };
+})();
+</script>
+</body></html>
